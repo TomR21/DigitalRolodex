@@ -97,7 +97,7 @@ export async function getCardsFromDatabase() {
   let allRows: Array<Card>;
 
   // `getAllAsync()` is useful when you want to get all results as an array of objects.
-  allRows = await db.getAllAsync('SELECT id, name FROM test')
+  allRows = await db.getAllAsync('SELECT id, name FROM test ORDER BY name')
   console.log(allRows)
 
   return allRows;
