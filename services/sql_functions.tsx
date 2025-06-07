@@ -3,6 +3,10 @@ import * as SQLite from 'expo-sqlite';
 import { Card, QueryInput, data_row } from '@/constants/Types';
 
 
+// Create a database connection at the opening of the application. 
+const db = SQLite.openDatabaseSync('contactData');
+
+
 /** Converts null and empty strings to null values and adds quotations to string.
  *  Function is required to parse both null values and strings into 1 SQL statement. 
  */
@@ -11,11 +15,9 @@ function sqlTypeConverter (value: string | null) {
   return output
 }
 
+/** Adds info from input to SQL database */
 export async function addToDatabase(input: QueryInput) {
   console.log("Trying to save information...")
-
-  // Create connection with SQL database
-  const db = await SQLite.openDatabaseAsync('contactData');
   
   // Convert every contact property except contactId to either null or string with single quotation marks
   let SQL_input = Object.fromEntries(Object.entries(input).map(([key, value]) => [key, sqlTypeConverter(value)]))
@@ -31,12 +33,8 @@ export async function addToDatabase(input: QueryInput) {
   console.log("Saved info")
 }
 
-
 /** Change the row corresponding to contactId with all the supplied information (overrides all information) */
-export async function editDatabase(contactId: string, input: QueryInput) {
-  // Create connection with SQL database
-  const db = await SQLite.openDatabaseAsync('contactData');
-
+export async function editDatabase(contactId: string, input: QueryInput) { 
   // Convert every contact property except contactId to either null or string with single quotation marks
   let SQL_input = Object.fromEntries(Object.entries(input).map(([key, value]) => [key, sqlTypeConverter(value)]))
   console.log(SQL_input)
@@ -62,14 +60,10 @@ export async function editDatabase(contactId: string, input: QueryInput) {
   console.log("Changed info")
 }
 
-
 /** Function to obtain contact id and name from SQL database  */
 export async function getFromDatabase(contactId: string) {
-  const db = await SQLite.openDatabaseAsync('contactData');
-
+  // Array to store the data_row objects retrieved from the query
   let allRows: Array<data_row>;
-
-  console.log(contactId)
 
   // `getAllAsync()` is useful when you want to get all results as an array of objects.
   const query = `SELECT * FROM test WHERE id=${contactId}`
@@ -81,12 +75,11 @@ export async function getFromDatabase(contactId: string) {
 
 /** Function to obtain contact id and name from SQL database  */
 export async function getCardsFromDatabase() {
-  const db = await SQLite.openDatabaseAsync('contactData');
-
+  // Array to store the Card objects retrieved from the query
   let allRows: Array<Card>;
 
   // `getAllAsync()` is useful when you want to get all results as an array of objects.
-  allRows = await db.getAllAsync('SELECT id, name FROM test ORDER BY name')
+  allRows = await  db.getAllAsync('SELECT id, name FROM test ORDER BY name')
   console.log(allRows)
 
   return allRows;
@@ -94,8 +87,7 @@ export async function getCardsFromDatabase() {
 
 /** Function to obtain contact id and name from SQL database  */
 export async function removeFromDatabase(contactId: string) {
-  const db = await SQLite.openDatabaseAsync('contactData');
-
+  
   console.log("About to delete: ", contactId)
 
   // `getAllAsync()` is useful when you want to get all results as an array of objects.
