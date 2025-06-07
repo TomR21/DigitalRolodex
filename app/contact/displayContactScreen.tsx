@@ -17,15 +17,35 @@ const contactDeletionAlert = (contactId: string) =>
       {text: 'Delete', onPress: () => deleteContact(contactId)},
     ]);
 
+/** Deletes contact in SQL database and goes back to previous screen */
 async function deleteContact(contactId: string) {
   await removeFromDatabase(contactId)
   const router = useRouter()
   router.back()
 }
 
+/** Pushes user to addContactScreen with contactId to edit info */
 function editContact(contactId: string) {
   const router = useRouter()
   router.push({pathname: "../contact/addContactScreen", params: {contactId: contactId}})
+}
+
+/** Converts string with delimiter to multiline string for Text display */
+function makeTextHeader(notes: string|null, delimiter: string, emoji: string) {
+    if (notes === null) {
+      return null
+    } else {
+      // Store each separate note on a new line
+      var message: string = ""
+      
+      for (const str of notes.split(delimiter)) {
+        message += emoji + str + "\n"
+      }
+      
+      // Cut off final newline and return message
+      //message = message.replace(/\n$/, "")
+      return message.trim()
+    }
 }
 
 
@@ -36,7 +56,7 @@ export default function displayContactScreen() {
     
     // Use state to hold contact data
     const initialData = {id:0, name:"", birthday:"", address:"", location:"", celnumber:"", job:"", employer:"",
-      hobbies:"", goals: "", wishes:"", recentEvents:""}
+      hobbies:"", goals:"", wishes:"", recent_events:""}
     const [contactData, setContactData] = React.useState<Array<data_row>>([initialData]);
 
     // Obtain the list of all contacts each time the screen is in focus 
@@ -67,10 +87,10 @@ export default function displayContactScreen() {
         <Text> Celphone number: {contactData[0].celnumber}</Text>
         <Text> Job: {contactData[0].job}</Text>
         <Text> Employer: {contactData[0].employer}</Text>
-        <Text> Hobbies: {contactData[0].hobbies}</Text>
-        <Text> Goals: {contactData[0].goals}</Text>
-        <Text> Wishes: {contactData[0].wishes}</Text>
-        <Text> Recent Events: {contactData[0].recentEvents}</Text>
+        <Text> Hobbies: {'\n'}  {makeTextHeader(contactData[0].hobbies, ".", "  ⚽️  ")} </Text>
+        <Text> Goals: {'\n'}  {makeTextHeader(contactData[0].goals, ".", "  🎯  ")} </Text>
+        <Text> Wishes: {'\n'}  {makeTextHeader(contactData[0].wishes, ".", "  🎁  ")} </Text>
+        <Text> Recent Events: {'\n'}  {makeTextHeader(contactData[0].recent_events, ".", "  👀  ")} </Text>
 
 
         <Button 

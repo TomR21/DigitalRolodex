@@ -77,7 +77,7 @@ export default function addContactScreen() {
             setHobbies(sqlData[0].hobbies)
             setGoals(sqlData[0].goals)
             setWishes(sqlData[0].wishes)
-            setRecentEvents(sqlData[0].recentEvents)
+            setRecentEvents(sqlData[0].recent_events)
 
             console.log('All Information Fields filled!')
           };

@@ -26,7 +26,7 @@ export interface data_row {
   hobbies: string | null, 
   goals: string | null, 
   wishes: string | null, 
-  recentEvents: string | null
+  recent_events: string | null
 }
 
 export interface Card {
