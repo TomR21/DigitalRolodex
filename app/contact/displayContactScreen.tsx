@@ -48,6 +48,23 @@ function makeTextHeader(notes: string|null, delimiter: string, emoji: string) {
     }
 }
 
+/** Calculate age from birthday */
+function calculateAge(date: string|null) {
+  if (date === null) {
+    return null
+  } else{
+    // Get birthyear from entered date
+    const birthyear = date.split("-")[2] 
+
+    // Get current year
+    const today = new Date().toString()
+    const yeartoday = today.split(" ")[3] // Date format: Mon 30 12 1991 23:55:14 GMT+0200
+    
+    const age = Number(yeartoday) - Number(birthyear) - 1
+    return age
+  }
+}
+
 
 export default function displayContactScreen() {
     
@@ -81,7 +98,7 @@ export default function displayContactScreen() {
         <Text> Personal Information </Text>
         <Text> Contact ID: {contactId} </Text>
         <Text> Name: {contactData[0].name}</Text>
-        <Text> Birthday: {contactData[0].birthday}</Text>
+        <Text> Birthday: {contactData[0].birthday} ({calculateAge(contactData[0].birthday)})</Text>
         <Text> Address: {contactData[0].address}</Text>
         <Text> Location: {contactData[0].location}</Text>
         <Text> Celphone number: {contactData[0].celnumber}</Text>
