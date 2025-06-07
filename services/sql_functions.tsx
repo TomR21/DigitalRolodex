@@ -3,30 +3,28 @@ import * as SQLite from 'expo-sqlite';
 import { Card, QueryInput, data_row } from '@/constants/Types';
 
 
+/** Converts null and empty strings to null values and adds quotations to string.
+ *  Function is required to parse both null values and strings into 1 SQL statement. 
+ */
+function sqlTypeConverter (value: string | null) {
+  const output: string|null = (value === null || value == "") ? null : `'${value}'`  
+  return output
+}
+
 export async function addToDatabase(input: QueryInput) {
   console.log("Trying to save information...")
 
   // Create connection with SQL database
   const db = await SQLite.openDatabaseAsync('contactData');
   
-  // Set var to null if text is empty, otherwise keep text and enclose within quotation marks for query
-  // Does not work without quotation marks, SQL will read it like its a column name
-  var SQL_birthday = (input.birthday === null) ? null :  `'${input.birthday}'`
-  var SQL_address = (input.address === null) ? null :  `'${input.address}'`
-  var SQL_location = (input.location === null) ? null :  `'${input.location}'`
-  var SQL_celnumber = (input.celnumber === null) ? null :  `'${input.celnumber}'`
-  var SQL_job = (input.job === null) ? null :  `'${input.job}'`
-  var SQL_employer = (input.employer === null) ? null :  `'${input.employer}'`
-  var SQL_hobbies = (input.hobbies === null) ? null :  `'${input.hobbies}'`
-  var SQL_goals = (input.goals === null) ? null :  `'${input.goals}'`
-  var SQL_wishes = (input.wishes === null) ? null :  `'${input.wishes}'`
-  var SQL_recentEvents = (input.recentEvents === null) ? null :  `'${input.recentEvents}'`
+  // Convert every contact property except contactId to either null or string with single quotation marks
+  let SQL_input = Object.fromEntries(Object.entries(input).map(([key, value]) => [key, sqlTypeConverter(value)]))
 
   // Query to add all values into corresponding table
   const query = `INSERT INTO test 
     (name, birthday, address, location, celnumber, job, employer, hobbies, goals, wishes, recent_events) 
-    VALUES ('${input.name}', ${SQL_birthday}, ${SQL_address}, ${SQL_location}, ${SQL_celnumber}, ${SQL_job}, 
-    ${SQL_employer}, ${SQL_hobbies}, ${SQL_goals}, ${SQL_wishes}, ${SQL_recentEvents});`;
+    VALUES ('${SQL_input.name}', ${SQL_input.birthday}, ${SQL_input.address}, ${SQL_input.location}, ${SQL_input.celnumber}, 
+    ${SQL_input.job}, ${SQL_input.employer}, ${SQL_input.hobbies}, ${SQL_input.goals}, ${SQL_input.wishes}, ${SQL_input.recentEvents});`;
 
   // Execute query and log errors or succes
   await db.runAsync(query).catch((err) => console.log(err));
@@ -39,34 +37,25 @@ export async function editDatabase(contactId: string, input: QueryInput) {
   // Create connection with SQL database
   const db = await SQLite.openDatabaseAsync('contactData');
 
-  // Set var to null if text is empty, otherwise keep text and enclose within quotation marks for query
-  // Does not work without quotation marks, SQL will read it like its a column name
-  var SQL_birthday = (input.birthday === null) ? null :  `'${input.birthday}'`
-  var SQL_address = (input.address === null) ? null :  `'${input.address}'`
-  var SQL_location = (input.location === null) ? null :  `'${input.location}'`
-  var SQL_celnumber = (input.celnumber === null) ? null :  `'${input.celnumber}'`
-  var SQL_job = (input.job === null) ? null :  `'${input.job}'`
-  var SQL_employer = (input.employer === null) ? null :  `'${input.employer}'`
-  var SQL_hobbies = (input.hobbies === null) ? null :  `'${input.hobbies}'`
-  var SQL_goals = (input.goals === null) ? null :  `'${input.goals}'`
-  var SQL_wishes = (input.wishes === null) ? null :  `'${input.wishes}'`
-  var SQL_recentEvents = (input.recentEvents === null) ? null :  `'${input.recentEvents}'`
+  // Convert every contact property except contactId to either null or string with single quotation marks
+  let SQL_input = Object.fromEntries(Object.entries(input).map(([key, value]) => [key, sqlTypeConverter(value)]))
+  console.log(SQL_input)
 
   // Query to add all values into corresponding table
   const query = `UPDATE test 
     SET
-    name = '${input.name}',
-    birthday = ${SQL_birthday},
-    address = ${SQL_address},
-    location = ${SQL_location},
-    celnumber = ${SQL_celnumber},
-    job = ${SQL_job},
-    employer = ${SQL_employer},
-    hobbies = ${SQL_hobbies},
-    goals = ${SQL_goals},
-    wishes = ${SQL_wishes},
-    recent_events = ${SQL_recentEvents}
-    WHERE id=${contactId};`;
+    name =          ${SQL_input.name},
+    birthday =      ${SQL_input.birthday},
+    address =       ${SQL_input.address},
+    location =      ${SQL_input.location},
+    celnumber =     ${SQL_input.celnumber},
+    job =           ${SQL_input.job},
+    employer =      ${SQL_input.employer},
+    hobbies =       ${SQL_input.hobbies},
+    goals =         ${SQL_input.goals},
+    wishes =        ${SQL_input.wishes},
+    recent_events = ${SQL_input.recentEvents}
+    WHERE id = ${contactId};`;
 
   // Execute query and log errors or succes
   await db.runAsync(query).catch((err) => console.log(err));
