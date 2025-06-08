@@ -65,7 +65,7 @@ export default function contactScreen() {
 
       <TouchableOpacity style={Styles.button} 
         onPress={() => openAddContactScreen()}>
-        <Text style={Styles.text}> Click me! </Text>
+        <Text style={Styles.text}> Add Contact </Text>
       </TouchableOpacity>
           
     </View>

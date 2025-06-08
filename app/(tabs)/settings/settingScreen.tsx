@@ -7,7 +7,7 @@ import { Styles } from '@/constants/Styles';
 function settingScreen() {
   return (
     <View>
-      <Text style={Styles.text}> Settings screen </Text>
+      <Text style={Styles.text}> Setting 1 </Text>
     </View>
   );
 }

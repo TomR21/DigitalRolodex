@@ -9,7 +9,7 @@ import { Styles } from "@/constants/Styles";
 function Index() {
   return (
     <View>
-      <Text style={Styles.text}> Home screen </Text>
+      <Text style={Styles.text}> Home Info 1 </Text>
     </View>
   );
 }
