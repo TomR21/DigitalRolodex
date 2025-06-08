@@ -25,16 +25,14 @@ export const Styles = StyleSheet.create({
     flexDirection: "row"
   },
   button: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 5,
-  },
-  buttonRounded: {
     backgroundColor: 'blue',
     borderWidth: 1,
+    height: 50,
     padding: 10,
     borderRadius: 15
+  },
+  buttonBox: {
+    flex: 0.3
   },
   flatListItem: {
     backgroundColor: '#f9c2ff',

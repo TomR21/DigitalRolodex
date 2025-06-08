@@ -63,7 +63,7 @@ export default function contactScreen() {
           </TouchableOpacity>
       )}/>
 
-      <TouchableOpacity style={Styles.buttonRounded} 
+      <TouchableOpacity style={Styles.button} 
         onPress={() => openAddContactScreen()}>
         <Text style={Styles.text}> Click me! </Text>
       </TouchableOpacity>

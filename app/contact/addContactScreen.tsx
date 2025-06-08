@@ -184,7 +184,7 @@ export default function addContactScreen() {
 
       </View>
 
-      <TouchableOpacity style={Styles.buttonRounded} 
+      <TouchableOpacity style={Styles.button} 
         onPress={() => changeDatabase(contactId, input)}>
         <Text style={Styles.text}> Save Information </Text>
       </TouchableOpacity>
