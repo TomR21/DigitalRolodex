@@ -21,12 +21,6 @@ function openDisplayContactScreen(contactid: string) {
   router.push({pathname: "../contact/displayContactScreen", params: {contactId: contactid}})
 }
 
-/** Opens the displayContactScreen */
-function openAddContactScreen() {
-  const router = useRouter();
-  router.push("../contact/addContactScreen")
-}
-
 
 export default function contactScreen() {
   
@@ -63,10 +57,5 @@ export default function contactScreen() {
           </TouchableOpacity>
       )}/>
 
-      <TouchableOpacity style={Styles.button} 
-        onPress={() => openAddContactScreen()}>
-        <Text style={Styles.text}> Add Contact </Text>
-      </TouchableOpacity>
-          
     </View>
 )}

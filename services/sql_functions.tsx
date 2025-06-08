@@ -25,7 +25,7 @@ export async function addToDatabase(input: QueryInput) {
   // Query to add all values into corresponding table
   const query = `INSERT INTO test 
     (name, birthday, address, location, celnumber, job, employer, hobbies, goals, wishes, recent_events) 
-    VALUES ('${SQL_input.name}', ${SQL_input.birthday}, ${SQL_input.address}, ${SQL_input.location}, ${SQL_input.celnumber}, 
+    VALUES (${SQL_input.name}, ${SQL_input.birthday}, ${SQL_input.address}, ${SQL_input.location}, ${SQL_input.celnumber}, 
     ${SQL_input.job}, ${SQL_input.employer}, ${SQL_input.hobbies}, ${SQL_input.goals}, ${SQL_input.wishes}, ${SQL_input.recentEvents});`;
 
   // Execute query and log errors or succes
