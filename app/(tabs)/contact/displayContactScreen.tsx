@@ -55,13 +55,20 @@ function calculateAge(date: string|null) {
     return null
   } else{
     // Get birthyear from entered date
-    const birthyear = date.split("-")[2] 
+    const birthdayArray = date.split("-") 
+    const birthyear = birthdayArray[2]
 
     // Get current year
-    const today = new Date().toString()
-    const yeartoday = today.split(" ")[3] // Date format: Mon 30 12 1991 23:55:14 GMT+0200
+    const currdayArray = new Date().toString().split(" ")
+    const yeartoday = currdayArray[3] // Date format: Mon 30 12 1991 23:55:14 GMT+0200
     
-    const age = Number(yeartoday) - Number(birthyear) - 1
+    // Calculate age difference between today and birth
+    var age = Number(yeartoday) - Number(birthyear) - 1 
+    
+    // Add 1 to age if day of birth has already taken place this year
+    if (Number(birthdayArray[1]) < Number(currdayArray[2])) {age++} 
+    if (Number(birthdayArray[1]) == Number(currdayArray[2]) && Number(birthdayArray[0]) <= Number(currdayArray[1])) {age++} 
+
     return age
   }
 }

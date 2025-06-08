@@ -6,6 +6,7 @@ import { Styles } from "@/constants/Styles";
 import { Card } from '@/constants/Types';
 import { getCardsFromDatabase } from '@/services/sql_functions';
 
+
 type ItemProps = {title: string};
 
 const Item = ({title}: ItemProps) => (
@@ -27,17 +28,16 @@ export default function contactScreen() {
   // Holds all card information: (name, id) of all contacts
   const [data, setData] = React.useState<Array<Card>>([]);
 
-  // Obtain the list of all contacts each time the screen is in focus 
+  // Obtain the name and contactId of all contacts each time the screen is in focus 
   useFocusEffect(
     // Callback should be wrapped in `React.useCallback` to avoid running the effect too often.
     React.useCallback(() => {
       // Invoked whenever the route is focused.
-      console.log("Hello, I'm focused!");
-
       async function loadData() {
         const sqlData = await getCardsFromDatabase(); 
         setData(sqlData);
       };
+
       loadData();
     }, []));
 
