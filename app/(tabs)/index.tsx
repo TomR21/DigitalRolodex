@@ -1,13 +1,17 @@
 import React from "react";
-import { Text } from "react-native";
+import { Text, View } from "react-native";
+
+import { Styles } from "@/constants/Styles";
 
 // Voor starten van de applicatie
 // npx expo start
 
 function Index() {
-    return (
-        <Text> Home screen </Text>
-    );
+  return (
+    <View>
+      <Text style={Styles.text}> Home screen </Text>
+    </View>
+  );
 }
 
 export default Index;

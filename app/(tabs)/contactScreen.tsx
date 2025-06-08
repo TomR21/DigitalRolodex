@@ -1,6 +1,6 @@
 import { useFocusEffect, useRouter } from 'expo-router';
 import React from "react";
-import { Button, FlatList, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
 
 import { Styles } from "@/constants/Styles";
 import { Card } from '@/constants/Types';
@@ -63,9 +63,10 @@ export default function contactScreen() {
           </TouchableOpacity>
       )}/>
 
-      <Button 
-          title = "Add contact"
-          onPress={() => openAddContactScreen()}/>
+      <TouchableOpacity style={Styles.buttonRounded} 
+        onPress={() => openAddContactScreen()}>
+        <Text style={Styles.text}> Click me! </Text>
+      </TouchableOpacity>
           
     </View>
 )}

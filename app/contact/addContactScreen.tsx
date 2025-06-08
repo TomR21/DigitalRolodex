@@ -1,6 +1,6 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from "react";
-import { Button, Text, TextInput, View } from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 
 import { Styles } from "@/constants/Styles";
 import { QueryInput } from '@/constants/Types';
@@ -88,95 +88,108 @@ export default function addContactScreen() {
   return (
     <View>
 
-      <Text> Enter Personal Information </Text> 
+      <Text style={Styles.text}> Enter Personal Information </Text> 
       <View>
 
-      <View style= {Styles.buttonPlacing}>
-        <View style = {Styles.textInput}>
-        <TextInput  
+      <View style= {Styles.textInputPlacing}>
+        <View style = {Styles.textInputBox}>
+        <TextInput  style = {Styles.textInput}
             onChangeText={name => setName(name)}
             value={name}
-            placeholder="Enter Name"/>
+            placeholder="Enter Name"
+            placeholderTextColor = 'gray' />
         </View>
-        <View style = {Styles.textInput}>
-        <TextInput 
+        <View style = {Styles.textInputBox}>
+        <TextInput style = {Styles.textInput} 
             onChangeText={birthday => setBirthday(birthday)}
             value={birthday ?? undefined}
-            placeholder="Enter Birthday"/>
+            placeholder="Enter Birthday"
+            placeholderTextColor = 'gray'/>
         </View>
       </View>
 
-      <View style = {Styles.buttonPlacing}>
-        <View style = {Styles.textInput}>
-        <TextInput
+      <View style = {Styles.textInputPlacing}>
+        <View style = {Styles.textInputBox}>
+        <TextInput style = {Styles.textInput}
             onChangeText={address => setAddress(address)}
             value={address ?? undefined}
-            placeholder="Enter Address"/>
+            placeholder="Enter Address"
+            placeholderTextColor = 'gray'/>
         </View>
-        <View style = {Styles.textInput}>
-        <TextInput 
+        <View style = {Styles.textInputBox}>
+        <TextInput style = {Styles.textInput}
             onChangeText={location => setLocation(location)}
             value={location ?? undefined}
-            placeholder="Enter Living Location"/>
+            placeholder="Enter Living Location"
+            placeholderTextColor = 'gray'/>
         </View>
       </View>
 
-      <View style = {Styles.buttonPlacing}>
-        <View style = {Styles.textInput}>
-        <TextInput
+      <View style = {Styles.textInputPlacing}>
+        <View style = {Styles.textInputBox}>
+        <TextInput style = {Styles.textInput}
             onChangeText={celnumber => setCelnumber(celnumber)}
             value={celnumber ?? undefined}
-            placeholder="Enter Celphone Number"/>
+            placeholder="Enter Celphone Number"
+            placeholderTextColor = 'gray'/>
         </View>
-        <View style = {Styles.textInput}>
-        <TextInput
+        <View style = {Styles.textInputBox}>
+        <TextInput style = {Styles.textInput}
             onChangeText={job => setJob(job)}
             value={job ?? undefined}
-            placeholder="Enter Job"/>
+            placeholder="Enter Job"
+            placeholderTextColor = 'gray'/>
         </View>
       </View>
 
-      <View style = {Styles.buttonPlacing}>
-        <View style = {Styles.textInput}>
-        <TextInput
+      <View style = {Styles.textInputPlacing}>
+        <View style = {Styles.textInputBox}>
+        <TextInput style = {Styles.textInput}
             onChangeText={employer => setEmployer(employer)}
             value={employer ?? undefined}
-            placeholder="Enter Employer"/>
+            placeholder="Enter Employer"
+            placeholderTextColor = 'gray'/>
         </View>
-        <View style = {Styles.textInput}>
-        <TextInput 
+        <View style = {Styles.textInputBox}>
+        <TextInput style = {Styles.textInput}
             onChangeText={hobbies => setHobbies(hobbies)}
             value={hobbies ?? undefined}
-            placeholder="Enter Hobbies"/>
+            placeholder="Enter Hobbies"
+            placeholderTextColor = 'gray'/>
         </View>
       </View>
 
-      <View style = {Styles.buttonPlacing}>
-        <View style = {Styles.textInput}>
-        <TextInput  
+      <View style = {Styles.textInputPlacing}>
+        <View style = {Styles.textInputBox}>
+        <TextInput style = {Styles.textInput} 
             onChangeText={goals => setGoals(goals)}
             value={goals ?? undefined}
-            placeholder="Enter Goals"/>
+            placeholder="Enter Goals"
+            placeholderTextColor = 'gray'/>
         </View>
-        <View style = {Styles.textInput}>
-        <TextInput
+        <View style = {Styles.textInputBox}>
+        <TextInput style = {Styles.textInput}
             onChangeText={wishes => setWishes(wishes)}
             value={wishes ?? undefined}
-            placeholder="Enter Wishes"/>
+            placeholder="Enter Wishes"
+            placeholderTextColor = 'gray'/>
         </View>
       </View>
 
-      <TextInput
+      <TextInput style = {Styles.textInput}
           onChangeText={recentEvents => setRecentEvents(recentEvents)}
           value={recentEvents ?? undefined}
-          placeholder="Enter Recent Events"/>
+          placeholder="Enter Recent Events"
+          placeholderTextColor = 'gray'/>
 
       </View>
 
-      <Button 
-          title = "Save Information"
-          onPress={() => changeDatabase(contactId, input)}/>
+      <TouchableOpacity style={Styles.buttonRounded} 
+        onPress={() => changeDatabase(contactId, input)}>
+        <Text style={Styles.text}> Save Information </Text>
+      </TouchableOpacity>
 
     </View>
-)};
+  )
+};
 
