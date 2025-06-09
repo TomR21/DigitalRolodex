@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 
-import { Card, QueryInput, data_row } from '@/constants/Types';
+import { BirthdayInfo, Card, QueryInput, data_row } from '@/constants/Types';
 
 
 // Create a database connection at the opening of the application. 
@@ -80,6 +80,16 @@ export async function getCardsFromDatabase() {
 
   // `getAllAsync()` is useful when you want to get all results as an array of objects.
   allRows = await  db.getAllAsync('SELECT id, name FROM test ORDER BY name')
+  console.log(allRows)
+
+  return allRows;
+}
+
+export async function getBirthdaysFromDatabase() {
+  let allRows: Array<BirthdayInfo>
+
+  // `getAllAsync()` is useful when you want to get all results as an array of objects.
+  allRows = await  db.getAllAsync('SELECT id, name, birthday FROM test WHERE birthday IS NOT NULL')
   console.log(allRows)
 
   return allRows;

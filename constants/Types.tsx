@@ -33,3 +33,9 @@ export interface Card {
     id: string,
     name: string
 }
+
+export interface BirthdayInfo {
+  id: string,
+  name: string,
+  birthday: string // null not allowed because only entered birthday entries are considered
+}

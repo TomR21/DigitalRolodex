@@ -60,29 +60,29 @@ export default function addContactScreen() {
 
   // Load all information upon visiting the screen
   React.useEffect(() => {
-          const fetchDataAsync = async () => {
-            // Get SQL data from row corresponding to contactId 
-            const sqlData = await getFromDatabase(contactId); 
+    const fetchDataAsync = async () => {
+      // Get SQL data from row corresponding to contactId 
+      const sqlData = await getFromDatabase(contactId); 
 
-            console.log("Will fill the fields with: ", sqlData)
+      console.log("Will fill the fields with: ", sqlData)
 
-            // Set all the text fields to current data 
-            setName(sqlData[0].name)
-            setBirthday(sqlData[0].birthday)
-            setAddress(sqlData[0].address)
-            setLocation(sqlData[0].location)
-            setCelnumber(sqlData[0].celnumber)
-            setJob(sqlData[0].job)
-            setEmployer(sqlData[0].employer)
-            setHobbies(sqlData[0].hobbies)
-            setGoals(sqlData[0].goals)
-            setWishes(sqlData[0].wishes)
-            setRecentEvents(sqlData[0].recent_events)
+      // Set all the text fields to current data 
+      setName(sqlData[0].name)
+      setBirthday(sqlData[0].birthday)
+      setAddress(sqlData[0].address)
+      setLocation(sqlData[0].location)
+      setCelnumber(sqlData[0].celnumber)
+      setJob(sqlData[0].job)
+      setEmployer(sqlData[0].employer)
+      setHobbies(sqlData[0].hobbies)
+      setGoals(sqlData[0].goals)
+      setWishes(sqlData[0].wishes)
+      setRecentEvents(sqlData[0].recent_events)
 
-            console.log('All Information Fields filled!')
-          };
-          fetchDataAsync();
-        }, []);
+      console.log('All Information Fields filled!')
+    };
+    fetchDataAsync();
+  }, []);
 
   // Return addContactScreen element
   return (
