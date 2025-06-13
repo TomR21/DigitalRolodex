@@ -7,13 +7,18 @@ import { Card } from '@/constants/Types';
 import { getCardsFromDatabase } from '@/services/sql_functions';
 
 
-type ItemProps = {title: string};
+type ItemProps = {title: string, onPress(): void};
 
-const Item = ({title}: ItemProps) => (
-  <View style={Styles.flatListItem}>
-    <Text style={Styles.flatListTitle}>{title}</Text>
-  </View>
+const ClickableContact = ({ title, onPress}: ItemProps) => (
+  <TouchableOpacity
+    onPress={onPress}
+    style={Styles.clickableContactTouchable}
+    activeOpacity={0.7}  // Opacity when Touchable is active (in focus)
+  >
+    <Text style={Styles.clickableContactText}> {title} </Text>
+  </TouchableOpacity>
 );
+
 
 /** Opens the displayContactScreen and passes along the userId */
 function openDisplayContactScreen(contactid: string) {
@@ -48,13 +53,11 @@ export default function contactScreen() {
       {/* Create a list of clickable contacts. Clicking opens new DisplayContact screen*/}
       <FlatList
         data={data}
-        renderItem={({item ,index}) => (
-          <TouchableOpacity 
-            key={index.toString()} 
-            onPress={() => openDisplayContactScreen((item.id).toString())}
-          >
-          <Item title = {item.name} />
-          </TouchableOpacity>
+        renderItem={({item, index}) => (
+          <ClickableContact
+          title={item.name}
+          onPress={() => openDisplayContactScreen(item.id.toString())}
+        />
       )}/>
 
     </View>
