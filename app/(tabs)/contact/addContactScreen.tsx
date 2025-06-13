@@ -36,12 +36,16 @@ export default function addContactScreen() {
   const [address, setAddress] = React.useState<string|null>(null);
   const [location, setLocation] = React.useState<string|null>(null);
   const [celnumber, setCelnumber] = React.useState<string|null>(null);
+  const [email, setEmail] = React.useState<string|null>(null);
   const [job, setJob] = React.useState<string|null>(null);
   const [employer, setEmployer] = React.useState<string|null>(null);
+  const [knowFrom, setKnowFrom] = React.useState<string|null>(null);
+  const [knowFromDate, setKnowFromDate] = React.useState<string|null>(null);
   const [hobbies, setHobbies] = React.useState<string|null>(null);
   const [goals, setGoals] = React.useState<string|null>(null);
   const [wishes, setWishes] = React.useState<string|null>(null);
   const [recentEvents, setRecentEvents] = React.useState<string|null>(null);
+  const [notes, setNotes] = React.useState<string|null>(null);
   
   // Object which stores all the current fields in the TextInput fields
   const input: QueryInput = {
@@ -50,12 +54,16 @@ export default function addContactScreen() {
     address: address,
     location: location,
     celnumber: celnumber,
+    email: email,
     job: job,
     employer: employer,
+    knowFrom: knowFrom,
+    knowFromDate: knowFromDate,
     hobbies: hobbies,
     goals: goals,
     wishes: wishes,
-    recentEvents: recentEvents
+    recentEvents: recentEvents,
+    notes: notes
   }
 
   // Load all information upon visiting the screen
@@ -72,15 +80,18 @@ export default function addContactScreen() {
       setAddress(sqlData[0].address)
       setLocation(sqlData[0].location)
       setCelnumber(sqlData[0].celnumber)
+      setEmail(sqlData[0].email)
       setJob(sqlData[0].job)
       setEmployer(sqlData[0].employer)
+      setKnowFrom(sqlData[0].know_from)
+      setKnowFromDate(sqlData[0].know_from_date)
       setHobbies(sqlData[0].hobbies)
       setGoals(sqlData[0].goals)
       setWishes(sqlData[0].wishes)
       setRecentEvents(sqlData[0].recent_events)
-
-      console.log('All Information Fields filled!')
+      setNotes(sqlData[0].notes)
     };
+    
     fetchDataAsync();
   }, []);
 
@@ -135,9 +146,9 @@ export default function addContactScreen() {
         </View>
         <View style = {Styles.textInputBox}>
         <TextInput style = {Styles.textInput}
-            onChangeText={job => setJob(job)}
-            value={job ?? undefined}
-            placeholder="Enter Job"
+            onChangeText={email => setEmail(email)}
+            value={email ?? undefined}
+            placeholder="Enter Email"
             placeholderTextColor = 'gray'/>
         </View>
       </View>
@@ -145,9 +156,43 @@ export default function addContactScreen() {
       <View style = {Styles.textInputPlacing}>
         <View style = {Styles.textInputBox}>
         <TextInput style = {Styles.textInput}
+            onChangeText={job => setJob(job)}
+            value={job ?? undefined}
+            placeholder="Enter Job"
+            placeholderTextColor = 'gray'/>
+        </View>
+        <View style = {Styles.textInputBox}>
+        <TextInput style = {Styles.textInput}
             onChangeText={employer => setEmployer(employer)}
             value={employer ?? undefined}
             placeholder="Enter Employer"
+            placeholderTextColor = 'gray'/>
+        </View>
+      </View>
+
+      <View style = {Styles.textInputPlacing}>
+        <View style = {Styles.textInputBox}>
+        <TextInput style = {Styles.textInput}
+            onChangeText={knowFrom => setKnowFrom(knowFrom)}
+            value={knowFrom ?? undefined}
+            placeholder="Eerste ontmoeting"
+            placeholderTextColor = 'gray'/>
+        </View>
+        <View style = {Styles.textInputBox}>
+        <TextInput style = {Styles.textInput}
+            onChangeText={knowFromDate => setKnowFromDate(knowFromDate)}
+            value={knowFromDate ?? undefined}
+            placeholder="Datum Eerste Ontmoeting"
+            placeholderTextColor = 'gray'/>
+        </View>
+      </View>
+
+      <View style = {Styles.textInputPlacing}>
+        <View style = {Styles.textInputBox}>
+        <TextInput style = {Styles.textInput}
+            onChangeText={notes => setNotes(notes)}
+            value={notes ?? undefined}
+            placeholder="Enter Notes"
             placeholderTextColor = 'gray'/>
         </View>
         <View style = {Styles.textInputBox}>

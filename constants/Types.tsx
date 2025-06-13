@@ -5,12 +5,16 @@ export interface QueryInput {
   address: string | null,
   location: string | null,
   celnumber: string | null, 
+  email: string | null,
   job: string | null,
   employer: string | null,
+  knowFrom: string | null,
+  knowFromDate: string | null,
   hobbies: string | null,
   goals: string | null,
   wishes: string | null,
-  recentEvents: string | null
+  recentEvents: string | null,
+  notes: string | null
 }
 
 // Interface to store all data retrieved from a row of the SQL database
@@ -21,12 +25,16 @@ export interface data_row {
   address: string | null,
   location: string | null, 
   celnumber: string | null, 
+  email: string | null,
   job: string | null, 
   employer: string | null,
+  know_from: string | null,
+  know_from_date: string | null,
   hobbies: string | null, 
   goals: string | null, 
   wishes: string | null, 
-  recent_events: string | null
+  recent_events: string | null,
+  notes: string | null
 }
 
 export interface Card {

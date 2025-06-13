@@ -24,9 +24,13 @@ export async function addToDatabase(input: QueryInput) {
 
   // Query to add all values into corresponding table
   const query = `INSERT INTO test 
-    (name, birthday, address, location, celnumber, job, employer, hobbies, goals, wishes, recent_events) 
+    (name, birthday, address, location, celnumber, email, job, employer, know_from, know_from_date, 
+    hobbies, goals, wishes, recent_events, notes) 
     VALUES (${SQL_input.name}, ${SQL_input.birthday}, ${SQL_input.address}, ${SQL_input.location}, ${SQL_input.celnumber}, 
-    ${SQL_input.job}, ${SQL_input.employer}, ${SQL_input.hobbies}, ${SQL_input.goals}, ${SQL_input.wishes}, ${SQL_input.recentEvents});`;
+    ${SQL_input.email}, ${SQL_input.job}, ${SQL_input.employer}, ${SQL_input.knowFrom}, ${SQL_input.knowFromDate}, 
+    ${SQL_input.hobbies}, ${SQL_input.goals}, ${SQL_input.wishes}, ${SQL_input.recentEvents}, ${SQL_input.notes});`;
+
+  console.log(query)
 
   // Execute query and log errors or succes
   await db.runAsync(query).catch((err) => console.log(err));
@@ -47,12 +51,16 @@ export async function editDatabase(contactId: string, input: QueryInput) {
     address =       ${SQL_input.address},
     location =      ${SQL_input.location},
     celnumber =     ${SQL_input.celnumber},
+    email =         ${SQL_input.email},
     job =           ${SQL_input.job},
     employer =      ${SQL_input.employer},
+    know_from =     ${SQL_input.knowFrom},
+    know_from_date= ${SQL_input.knowFromDate}, 
     hobbies =       ${SQL_input.hobbies},
     goals =         ${SQL_input.goals},
     wishes =        ${SQL_input.wishes},
-    recent_events = ${SQL_input.recentEvents}
+    recent_events = ${SQL_input.recentEvents},
+    notes =         ${SQL_input.notes}
     WHERE id = ${contactId};`;
 
   // Execute query and log errors or succes

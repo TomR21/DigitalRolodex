@@ -80,8 +80,8 @@ export default function displayContactScreen() {
   const { contactId } = useLocalSearchParams<{ contactId: string }>();
   
   // Use state to hold contact data
-  const initialData = {id:0, name:"", birthday:"", address:"", location:"", celnumber:"", job:"", employer:"",
-    hobbies:"", goals:"", wishes:"", recent_events:""}
+  const initialData = {id:0, name:"", birthday:"", address:"", location:"", celnumber:"", email:"", job:"", employer:"",
+    know_from:"", know_from_date:"", hobbies:"", goals:"", wishes:"", recent_events:"", notes:""}
   const [contactData, setContactData] = React.useState<Array<data_row>>([initialData]);
 
   // Obtain the list of all contacts each time the screen is in focus 
@@ -119,19 +119,22 @@ export default function displayContactScreen() {
 
       <ScrollView contentContainerStyle={{flexGrow: 1}}>
 
-      <Text style={Styles.text}> Personal Information {'\n'} </Text>
-      <Text style={Styles.text}> Contact ID: {contactId} </Text>
       <Text style={Styles.text}> Name: {contactData[0].name}</Text>
       <Text style={Styles.text}> Birthday: {contactData[0].birthday} ({calculateAge(contactData[0].birthday)})</Text>
       <Text style={Styles.text}> Address: {contactData[0].address}</Text>
       <Text style={Styles.text}> Location: {contactData[0].location}</Text>
       <Text style={Styles.text}> Celphone number: {contactData[0].celnumber}</Text>
+      <Text style={Styles.text}> Email: {contactData[0].email} </Text>
       <Text style={Styles.text}> Job: {contactData[0].job}</Text>
       <Text style={Styles.text}> Employer: {contactData[0].employer}</Text>
+      <Text style={Styles.text}> Eerst ontmoet: {contactData[0].know_from} ({contactData[0].know_from_date})</Text>
+
       <Text style={Styles.text}> Hobbies: {'\n'}  {makeTextHeader(contactData[0].hobbies, ".", "  ⚽️  ")} </Text>
       <Text style={Styles.text}> Goals: {'\n'}  {makeTextHeader(contactData[0].goals, ".", "  🎯  ")} </Text>
       <Text style={Styles.text}> Wishes: {'\n'}  {makeTextHeader(contactData[0].wishes, ".", "  🎁  ")} </Text>
       <Text style={Styles.text}> Recent Events: {'\n'}  {makeTextHeader(contactData[0].recent_events, ".", "  👀  ")} </Text>
+      <Text style={Styles.text}> Notes: {'\n'}  {makeTextHeader(contactData[0].notes, ".", "  🗒️  ")}   </Text>
+
       </ScrollView>
 
     </View>
