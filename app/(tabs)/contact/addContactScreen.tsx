@@ -30,22 +30,22 @@ export default function addContactScreen() {
   // Retrieve passed contactId parameter   
   const { contactId } = useLocalSearchParams<{ contactId: string }>();
 
-  // Variables which update using set... when information is changed in TextInput
-  const [name, setName] = React.useState<string>('');
-  const [birthday, setBirthday] = React.useState<string|null>(null);
-  const [address, setAddress] = React.useState<string|null>(null);
-  const [location, setLocation] = React.useState<string|null>(null);
-  const [celnumber, setCelnumber] = React.useState<string|null>(null);
-  const [email, setEmail] = React.useState<string|null>(null);
-  const [job, setJob] = React.useState<string|null>(null);
-  const [employer, setEmployer] = React.useState<string|null>(null);
-  const [knowFrom, setKnowFrom] = React.useState<string|null>(null);
+  // Variables states to keep track of TextInput field values
+  const [name, setName]                 = React.useState<string>('');
+  const [birthday, setBirthday]         = React.useState<string|null>(null);
+  const [address, setAddress]           = React.useState<string|null>(null);
+  const [location, setLocation]         = React.useState<string|null>(null);
+  const [celnumber, setCelnumber]       = React.useState<string|null>(null);
+  const [email, setEmail]               = React.useState<string|null>(null);
+  const [job, setJob]                   = React.useState<string|null>(null);
+  const [employer, setEmployer]         = React.useState<string|null>(null);
+  const [knowFrom, setKnowFrom]         = React.useState<string|null>(null);
   const [knowFromDate, setKnowFromDate] = React.useState<string|null>(null);
-  const [hobbies, setHobbies] = React.useState<string|null>(null);
-  const [goals, setGoals] = React.useState<string|null>(null);
-  const [wishes, setWishes] = React.useState<string|null>(null);
+  const [hobbies, setHobbies]           = React.useState<string|null>(null);
+  const [goals, setGoals]               = React.useState<string|null>(null);
+  const [wishes, setWishes]             = React.useState<string|null>(null);
   const [recentEvents, setRecentEvents] = React.useState<string|null>(null);
-  const [notes, setNotes] = React.useState<string|null>(null);
+  const [notes, setNotes]               = React.useState<string|null>(null);
   
   // Object which stores all the current fields in the TextInput fields
   const input: QueryInput = {

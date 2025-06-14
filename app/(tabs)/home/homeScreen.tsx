@@ -1,5 +1,6 @@
+import { useFocusEffect } from "expo-router";
 import React from "react";
-import { Button, Text, View } from "react-native";
+import { Text, View } from "react-native";
 
 import { Styles } from "@/constants/Styles";
 import { BirthdayInfo } from "@/constants/Types";
@@ -23,7 +24,7 @@ function getBirthdaysThisMonth(birthdayData: Array<BirthdayInfo>) {
 
     if (Number(birthMonth) == Number(currMonth)) {
       const daysDiff = Number(birthDate[0]) - Number(currDay)
-      birthdayText += contact["name"] + " is jarig over " + daysDiff + " dagen!\n"
+      birthdayText += contact["name"] + " is jarig over " + daysDiff + " dagen!\n "
     }
   }
 
@@ -32,30 +33,33 @@ function getBirthdaysThisMonth(birthdayData: Array<BirthdayInfo>) {
 
 
 function Index() {
-  //const data = await getBirthdaysFromDatabase()
+  
   // Use state to hold contact data
   const initialData = {id:'0', name:"", birthday: "0-0-0000"}
   const [birthdayData, setBirthdayData] = React.useState<Array<BirthdayInfo>>([initialData]);
   const [birthdayText, setBirthdayText] = React.useState<string>("");
 
-  // Load all information upon visiting the screen
-    React.useEffect(() => {
+  // Obtain the list of all birthdays each time the screen is in focus 
+  useFocusEffect(
+    // Callback should be wrapped in `React.useCallback` to avoid running the effect too often.
+    React.useCallback(() => {
+      // Invoked whenever the route is focused.
       const fetchDataAsync = async () => {
-        // Get SQL data from row corresponding to contactId 
-        const sqlData = await getBirthdaysFromDatabase(); 
-  
-        console.log("Will fill the fields with: ", sqlData)
-  
-        // Set all the text fields to current data 
-        setBirthdayData(sqlData)
+      // Get all birthdays, names and contact ID's from SQL data 
+      const sqlData = await getBirthdaysFromDatabase(); 
+
+      // Set all the text fields to birthdays this month
+      setBirthdayData(sqlData)
+      setBirthdayText(getBirthdaysThisMonth(sqlData))
       };
+
       fetchDataAsync();
-    }, []);
+
+    }, []));
 
   return (
     <View>
-      <Text style={Styles.text}> Home Info 1 </Text>
-      <Button title="Get Birthdays" onPress={() => setBirthdayText(getBirthdaysThisMonth(birthdayData))}/>
+      <Text style={Styles.text}> Verjaardagen: </Text>
       <Text style={Styles.text}> {birthdayText} </Text>
     </View>
   );
