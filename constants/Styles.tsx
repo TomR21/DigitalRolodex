@@ -41,6 +41,12 @@ export const Styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
   },
+  textEvents: {
+    fontSize: 14,
+    fontFamily: 'Serif',
+    fontWeight: 'normal',
+    color: 'white'
+  },
   textInput: {
     fontSize: 16,
     fontFamily: 'Serif',

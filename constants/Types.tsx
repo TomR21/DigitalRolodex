@@ -47,3 +47,9 @@ export interface BirthdayInfo {
   name: string,
   birthday: string // null not allowed because only entered birthday entries are considered
 }
+
+export interface recentEventsData {
+  id: string,
+  name: string,
+  recent_events: string  // null not allowed because only entered birthday entries are considered
+}
