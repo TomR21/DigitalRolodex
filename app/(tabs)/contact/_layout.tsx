@@ -48,7 +48,7 @@ const StackLayout = () => {
 
           // Display an add contact button (+) on the right of the header
           headerRight: () => (
-            <FontAwesome.Button size={24} name="user-plus" color="white" backgroundColor="dark" 
+            <FontAwesome.Button size={24} name="user-plus" color="white" backgroundColor="dark" underlayColor="dark" 
               onPress={() => openAddContactScreen()}/>
           )
 
@@ -61,10 +61,10 @@ const StackLayout = () => {
           // Display the edit and delete button on the right of the header
           headerRight: () => (
             <View style = {{flexDirection: 'row'}}>
-              <FontAwesome.Button size={24} name="pencil" color="white" backgroundColor="dark" 
-              onPress={() => openEditContactScreen(contactId)}/>
-            <FontAwesome.Button size={24} name="trash" color="white" backgroundColor="dark" 
-              onPress={() => contactDeletionAlert(contactId)}/>
+              <FontAwesome.Button size={24} name="pencil" color="white" backgroundColor="dark" underlayColor="dark" 
+                onPress={() => openEditContactScreen(contactId)}/>
+              <FontAwesome.Button size={24} name="trash" color="white" backgroundColor="dark" underlayColor="dark" 
+                onPress={() => contactDeletionAlert(contactId)}/>
             </View>
           )
 
