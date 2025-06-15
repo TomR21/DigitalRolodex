@@ -1,35 +1,11 @@
-import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
+import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import React from 'react';
-import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
 import { Styles } from '@/constants/Styles';
 import { data_row } from '@/constants/Types';
-import { getFromDatabase, removeFromDatabase } from '@/services/sql_functions';
+import { getFromDatabase } from '@/services/sql_functions';
 
-
-/** Creates an alert window to confirm if the info corresponding contactId needs to be removed  */
-const contactDeletionAlert = (contactId: string) =>
-    Alert.alert('Delete Contact Information', 'Are you sure you want to delete all the information about this contact?', [
-      {
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-      },
-      {text: 'Delete', onPress: () => deleteContact(contactId)},
-    ]);
-
-/** Deletes contact in SQL database and goes back to previous screen */
-async function deleteContact(contactId: string) {
-  await removeFromDatabase(contactId)
-  const router = useRouter()
-  router.back()
-}
-
-/** Pushes user to addContactScreen with contactId to edit info */
-function editContact(contactId: string) {
-  const router = useRouter()
-  router.push({pathname: "../contact/addContactScreen", params: {contactId: contactId}})
-}
 
 /** Converts string with delimiter to multiline string for Text display */
 function makeTextHeader(notes: string|null, delimiter: string, emoji: string) {
@@ -104,19 +80,7 @@ export default function displayContactScreen() {
   return (
     <View style = {{flex: 1}}> 
       {/* flex: 1 required to scroll all the way to the bottom  */}
-      
-      <View style={Styles.textInputPlacing}>
-        <TouchableOpacity style={{...Styles.button, flex: 0.5 }} 
-          onPress={() => contactDeletionAlert(contactId)}>
-          <Text style={Styles.text}> Remove Contact </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={{...Styles.button, flex: 0.5 }} 
-          onPress={() => editContact(contactId)}>
-          <Text style={Styles.text}> Edit Contact </Text>
-        </TouchableOpacity>
-      </View>
-
-
+    
       <ScrollView contentContainerStyle={{flexGrow: 1}}>
 
       <Text style={Styles.text}> Name: {contactData[0].name}</Text>
