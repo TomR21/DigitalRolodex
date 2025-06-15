@@ -35,6 +35,13 @@ export const Styles = StyleSheet.create({
     borderTopColor: '#ccc',
     justifyContent: 'center',
   },
+  eventView: {
+    backgroundColor: "steelblue",
+    borderWidth: 1,
+    //height: 50,
+    padding: 10,
+    borderRadius: 15
+  },
   text: {
     fontSize: 20,
     fontFamily: 'Serif',

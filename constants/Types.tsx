@@ -18,7 +18,7 @@ export interface QueryInput {
 }
 
 // Interface to store all data retrieved from a row of the SQL database
-export interface data_row {
+export interface QueryOutput {
   id: number,
   name: string,
   birthday: string | null,
@@ -48,8 +48,14 @@ export interface BirthdayInfo {
   birthday: string // null not allowed because only entered birthday entries are considered
 }
 
-export interface recentEventsData {
+export interface RecentEventsData {
   id: string,
   name: string,
   recent_events: string  // null not allowed because only entered birthday entries are considered
+}
+
+export interface EventData {
+  name: string, 
+  event: string | undefined,  // allow undefined values if regex string does not match any characters
+  daysLeft: string
 }

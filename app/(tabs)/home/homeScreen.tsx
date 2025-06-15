@@ -1,9 +1,9 @@
 import { useFocusEffect } from "expo-router";
 import React from "react";
-import { Text, View } from "react-native";
+import { FlatList, Text, View } from "react-native";
 
 import { Styles } from "@/constants/Styles";
-import { BirthdayInfo, recentEventsData } from "@/constants/Types";
+import { BirthdayInfo, EventData, RecentEventsData } from "@/constants/Types";
 import { getBirthdaysFromDatabase, getRecentEventsFromDatabase } from "@/services/sql_functions";
 
 // Voor starten van de applicatie
@@ -32,16 +32,16 @@ function findBirthdaysThisMonth(birthdayData: Array<BirthdayInfo>) {
   return birthdayText
 }
 
-/** Returns a string containing the names, event names and dates of all users with events occuring this month  */
-function findSoonEvents(recentEventsData: Array<recentEventsData>) {
+/** Returns an array of objects containing the name, event name and date of events occuring this month  */
+function findSoonEvents2(recentEventsData: Array<RecentEventsData>) {
   // Text variable to store all output information
-  var displayText: string = ""
+  var eventArray: Array<EventData> = []
 
   const currDateArray = new Date().toLocaleDateString().split("/")  // Date format: 04/30/2025
   const currMonth = currDateArray[0]
   const currDay = currDateArray[1]
 
-  let contact: recentEventsData;
+  let contact: RecentEventsData;
   let recentEvent: string
 
   // Matches all text between '[' and ']' 
@@ -71,20 +71,29 @@ function findSoonEvents(recentEventsData: Array<recentEventsData>) {
           const eventName = recentEvent.match(regex2)?.toString()
           const daysDiff = Number(eventDay) - Number(currDay)
 
-          displayText += "  🗣️  " + eventName + "van " + contact.name + " is in " + daysDiff + " dagen!\n "
+          const res = {name: contact.name, event: eventName, daysLeft: daysDiff.toString()}
+          eventArray.push(res)
         }   
       }
     }
   }
-  return displayText
+  return eventArray
 }
+
+/** Component which displays the event info */
+const EventDisplay = ({ name, event, daysLeft}: EventData) => (
+  <View style={Styles.eventView}>
+    <Text style={{...Styles.text, fontSize: 16}}> {name} </Text>
+    <Text style={{...Styles.text, fontSize: 14, color:'azure'}}> {event} in {daysLeft} dagen! </Text>
+  </View>
+);
 
 
 function Index() {
   
-  // Use state to store birthday and events text
-  const [birthdayText, setBirthdayText]         = React.useState<string>("");
-  const [recentEventsText, setRecentEventsText] = React.useState<string>("");
+  // Use state to store birthday text and an array of events taking place soon
+  const [birthdayText, setBirthdayText] = React.useState<string>("");
+  const [eventData, setEventData]       = React.useState<Array<EventData>>([]);
 
   // Obtain the list of all birthdays each time the screen is in focus 
   useFocusEffect(
@@ -98,7 +107,7 @@ function Index() {
 
       // Set all the text fields to birthdays this month
       setBirthdayText(findBirthdaysThisMonth(birthdayData))
-      setRecentEventsText(findSoonEvents(recentEventsData))
+      setEventData(findSoonEvents2(recentEventsData))
       };
 
       fetchDataAsync();
@@ -107,10 +116,19 @@ function Index() {
 
   return (
     <View>
-      <Text style={Styles.text}> Verjaardagen: </Text>
-      <Text style={Styles.textEvents}> {birthdayText} </Text>
-      <Text style={Styles.text}> {'\n'}Upcoming Events:</Text>
-      <Text style={Styles.textEvents}> {recentEventsText} </Text>
+      <Text style={Styles.text}> Verjaardagen </Text>
+      <Text style={Styles.textEvents}> {birthdayText} {'\n'}</Text>
+      <Text style={Styles.text}> Upcoming Events </Text>
+
+      {/* Create a list of events taking place this month */}
+      <FlatList
+        data={eventData}
+        renderItem={({item, index}) => (
+          <EventDisplay
+            name={item.name}
+            event={item.event}
+            daysLeft={item.daysLeft}/>
+      )}/>
     </View>
   );
 }

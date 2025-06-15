@@ -3,7 +3,7 @@ import React from 'react';
 import { ScrollView, Text, View } from "react-native";
 
 import { Styles } from '@/constants/Styles';
-import { data_row } from '@/constants/Types';
+import { QueryOutput } from '@/constants/Types';
 import { getFromDatabase } from '@/services/sql_functions';
 
 
@@ -58,7 +58,7 @@ export default function displayContactScreen() {
   // Use state to hold contact data
   const initialData = {id:0, name:"", birthday:"", address:"", location:"", celnumber:"", email:"", job:"", employer:"",
     know_from:"", know_from_date:"", hobbies:"", goals:"", wishes:"", recent_events:"", notes:""}
-  const [contactData, setContactData] = React.useState<Array<data_row>>([initialData]);
+  const [contactData, setContactData] = React.useState<Array<QueryOutput>>([initialData]);
 
   // Obtain the list of all contacts each time the screen is in focus 
   useFocusEffect(

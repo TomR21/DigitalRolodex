@@ -9,6 +9,7 @@ import { getCardsFromDatabase } from '@/services/sql_functions';
 
 type ItemProps = {title: string, onPress(): void};
 
+/** Component which displays the contact name and activates redirect on press */
 const ClickableContact = ({ title, onPress}: ItemProps) => (
   <TouchableOpacity
     onPress={onPress}
@@ -55,10 +56,10 @@ export default function contactScreen() {
         data={data}
         renderItem={({item, index}) => (
           <ClickableContact
-          title={item.name}
-          onPress={() => openDisplayContactScreen(item.id.toString())}
-        />
-      )}/>
+            title={item.name}
+            onPress={() => openDisplayContactScreen(item.id.toString())}/>
+        )
+      }/>
 
     </View>
 )}
