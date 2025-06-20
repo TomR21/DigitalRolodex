@@ -4,6 +4,7 @@ import { FlatList, Text, View } from "react-native";
 
 import { Styles } from "@/constants/Styles";
 import { BirthdayInfo, EventData, RecentEventsData } from "@/constants/Types";
+import { findDaysDifference } from "@/services/datetimeFunctions";
 import { getBirthdaysFromDatabase, getRecentEventsFromDatabase } from "@/services/sql_functions";
 
 // Voor starten van de applicatie
@@ -14,18 +15,16 @@ function findBirthdaysThisMonth(birthdayData: Array<BirthdayInfo>) {
   // Text variable to store all output information
   var birthdayText: string = ""
 
-  const currDateArray = new Date().toLocaleDateString().split("/")  // Date format: 04/30/2025
-  const currMonth = currDateArray[0]
-  const currDay = currDateArray[1]
-
+  // Loop over every contact
   let contact: BirthdayInfo;
-
   for (contact of birthdayData) {
-    const birthDate = contact["birthday"].split("-")
 
-    if (Number(birthDate[1]) == Number(currMonth)) {
-      const daysDiff = Number(birthDate[0]) - Number(currDay)
-      birthdayText += "  🎉  " + contact["name"] + " is jarig over " + daysDiff + " dagen!\n "
+    // Obtain the number of days between today and contact's birthday
+    const daysDiff2 = findDaysDifference(contact["birthday"]) 
+
+    // Add to text if birthday is within the next or previous 30 days
+    if ( Math.abs(daysDiff2) < 30) {
+      birthdayText += "  🎉  " + contact["name"] + " is jarig over " + daysDiff2 + " dagen!\n "
     }
   }
 
@@ -36,10 +35,6 @@ function findBirthdaysThisMonth(birthdayData: Array<BirthdayInfo>) {
 function findSoonEvents2(recentEventsData: Array<RecentEventsData>) {
   // Text variable to store all output information
   var eventArray: Array<EventData> = []
-
-  const currDateArray = new Date().toLocaleDateString().split("/")  // Date format: 04/30/2025
-  const currMonth = currDateArray[0]
-  const currDay = currDateArray[1]
 
   let contact: RecentEventsData;
   let recentEvent: string
@@ -61,16 +56,13 @@ function findSoonEvents2(recentEventsData: Array<RecentEventsData>) {
       if ( eventDate !== null) {
 
         // Find day and month from the event date 
-        const dateSplit = eventDate.toString().split("-")
-        const eventDay = dateSplit[0]
-        const eventMonth = dateSplit[1]
+        const daysDiff = findDaysDifference(eventDate.toString())
         
         // If event is in this month add it to output text
-        if (Number(eventMonth) == Number(currMonth)) {
+        if ( Math.abs(daysDiff) < 30 ) {
           // Matches the regex expression to obtain all text before "[". ? required for null matching. 
           const eventName = recentEvent.match(regex2)?.toString()
-          const daysDiff = Number(eventDay) - Number(currDay)
-
+          
           const res = {name: contact.name, event: eventName, daysLeft: daysDiff.toString()}
           eventArray.push(res)
         }   
