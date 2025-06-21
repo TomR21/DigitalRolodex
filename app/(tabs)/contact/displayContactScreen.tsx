@@ -7,7 +7,18 @@ import { QueryOutput } from '@/constants/Types';
 import { getFromDatabase } from '@/services/sql_functions';
 
 
-const BAR_COLOR = '#2980b9';
+const VBarColors = {
+  blue: '#2980b9',             // strong blue
+  orange: '#d35400',           // warm orange
+  teal: '#16a085',             // calm teal greenish-blue
+  purple: '#8e44ad',           // rich moderate purple
+  pink: '#e91e63',             // vibrant pink
+  cyan: '#00bcd4',             // bright cyan, fresh and readable
+  lime: '#cddc39',             // yellow-green fresh accent
+  amber: '#ffc107',            // warm amber gold for highlights
+  redAccent: '#e74c3c',        // vivid red for alert or emphasis
+  magenta: '#d81b60',          // deep magenta, elegant contrast
+};
 
 /** Converts string with delimiter to multiline string for Text display */
 function makeTextHeader(notes: string|null, delimiter: string, emoji: string) {
@@ -143,7 +154,7 @@ export default function displayContactScreen() {
 
         {/* Recent Events Box with vertical bar */}
         <View style={displayStyle.notesContainer}>
-          <View style={{...displayStyle.verticalBarNotes, backgroundColor: BAR_COLOR}} />
+          <View style={{...displayStyle.verticalBarNotes, backgroundColor: VBarColors.magenta}} />
           <View style={displayStyle.notesContent}>
             <Text style={displayStyle.label}>Recent Events</Text>
             <Text style={displayStyle.text}>{makeTextHeader(contactData[0].recent_events, ".", "👀  ")}</Text>
@@ -152,7 +163,7 @@ export default function displayContactScreen() {
 
         {/* Hobbies Box with vertical bar */}
         <View style={displayStyle.notesContainer}>
-          <View style={displayStyle.verticalBarNotes} />
+          <View style={{...displayStyle.verticalBarNotes, backgroundColor: VBarColors.blue}} />
           <View style={displayStyle.notesContent}>
             <Text style={displayStyle.label}>Hobbies</Text>
             <Text style={displayStyle.text}>{makeTextHeader(contactData[0].hobbies, ".", "⚽️  ")}</Text>
@@ -161,7 +172,7 @@ export default function displayContactScreen() {
 
         {/* Wishes Box with vertical bar */}
         <View style={displayStyle.notesContainer}>
-          <View style={displayStyle.verticalBarNotes} />
+          <View style={{...displayStyle.verticalBarNotes, backgroundColor: VBarColors.orange}}/>
           <View style={displayStyle.notesContent}>
             <Text style={displayStyle.label}>Wishes</Text>
             <Text style={displayStyle.text}>{makeTextHeader(contactData[0].wishes, ".", "🎁  ")}</Text>
@@ -170,7 +181,7 @@ export default function displayContactScreen() {
 
         {/* Goals Box with vertical bar */}
         <View style={displayStyle.notesContainer}>
-          <View style={displayStyle.verticalBarNotes} />
+          <View style={{...displayStyle.verticalBarNotes, backgroundColor: VBarColors.teal}} />
           <View style={displayStyle.notesContent}>
             <Text style={displayStyle.label}>Goals</Text>
             <Text style={displayStyle.text}>{makeTextHeader(contactData[0].goals, ".", "🎯  ")}</Text>
@@ -179,7 +190,7 @@ export default function displayContactScreen() {
 
         {/* Notes Box with vertical bar */}
         <View style={displayStyle.notesContainer}>
-          <View style={displayStyle.verticalBarNotes} />
+          <View style={{...displayStyle.verticalBarNotes, backgroundColor: VBarColors.amber}} />
           <View style={displayStyle.notesContent}>
             <Text style={displayStyle.label}>Notes</Text>
             <Text style={displayStyle.text}>{makeTextHeader(contactData[0].notes, ".", "🗒️  ")}</Text>
