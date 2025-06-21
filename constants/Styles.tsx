@@ -1,13 +1,15 @@
 import { Dimensions, StyleSheet } from "react-native";
 
+import { Colors } from "./Colors";
+
 const screenWidth = Dimensions.get('window').width;
 
 export const Styles = StyleSheet.create({
   background: {
-    backgroundColor: '#fff',
+    backgroundColor: Colors.black
   },
   button: {
-    backgroundColor: 'blue',
+    backgroundColor: Colors.blue,
     borderWidth: 1,
     height: 50,
     padding: 10,
@@ -22,21 +24,21 @@ export const Styles = StyleSheet.create({
     alignItems: "center",
   },
   clickableContactText: {
-    color: '#eee',                // Light text color for contrast
+    color: Colors.white,           
     fontSize: 26,
     fontFamily: 'Serif',
     fontWeight: 'bold'
   },
   clickableContactTouchable: {
     width: screenWidth,
-    backgroundColor: '#121212',
+    backgroundColor: Colors.black,
     padding: 15,
     borderTopWidth: 1,
     borderTopColor: '#ccc',
     justifyContent: 'center',
   },
   eventView: {
-    backgroundColor: "steelblue",
+    backgroundColor: Colors.blue,
     borderWidth: 1,
     padding: 10,
     borderRadius: 15
@@ -45,18 +47,18 @@ export const Styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'Serif',
     fontWeight: 'bold',
-    color: 'white',
+    color: Colors.white,
   },
   textEvents: {
     fontSize: 14,
     fontFamily: 'Serif',
     fontWeight: 'normal',
-    color: 'white'
+    color: Colors.white
   },
   textInput: {
     fontSize: 16,
     fontFamily: 'Serif',
-    color: 'white'
+    color: Colors.white
   },
   textInputBox: {
     flex: 0.5,
@@ -68,17 +70,14 @@ export const Styles = StyleSheet.create({
 });
 
 
-const BAR_COLOR = '#2980b9';
-const NOTES_BAR_COLOR = '#d35400';
-
 export const displayStyle = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
-    backgroundColor: '#121212',
+    backgroundColor: Colors.black,
     justifyContent: 'center',
   },
   card: {
-    backgroundColor: '#1e1e1e',
+    backgroundColor: Colors.black,
     borderRadius: 16,
     paddingVertical: 28,
     paddingHorizontal: 24,
@@ -95,7 +94,7 @@ export const displayStyle = StyleSheet.create({
   name: {
     fontSize: 30,
     fontWeight: '800',
-    color: '#eee',
+    color: Colors.white,
     letterSpacing: 0.5,
   },
   roleBadge: {
@@ -103,34 +102,34 @@ export const displayStyle = StyleSheet.create({
     borderRadius: 20,
     paddingHorizontal: 16,
     paddingVertical: 6,
-    backgroundColor: BAR_COLOR,
+    backgroundColor: Colors.blue,
   },
   roleText: {
-    color: '#ecf0f1',
+    color: Colors.white,
     fontWeight: '600',
     fontSize: 14,
     letterSpacing: 0.5,
   },
   divider: {
     height: 1,
-    backgroundColor: '#333',
+    backgroundColor: Colors.lightgray,
     marginVertical: 12,
   },
   label: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#aaa',
+    color: Colors.smoke,
     textTransform: 'uppercase',
     letterSpacing: 1,
   },
   text: {
     fontSize: 16,
-    color: '#ddd',
+    color: Colors.white,
     lineHeight: 22,
   },
   notesContainer: {
     flexDirection: 'row',
-    backgroundColor: '#2a2a2a',
+    backgroundColor: Colors.lightgray,
     borderRadius: 14,
     paddingVertical: 10,
     paddingHorizontal: 5,
@@ -141,7 +140,6 @@ export const displayStyle = StyleSheet.create({
   verticalBarNotes: {
     width: 6,
     height: '100%',
-    backgroundColor: NOTES_BAR_COLOR,
     borderRadius: 3,
     marginRight: 16,
   },

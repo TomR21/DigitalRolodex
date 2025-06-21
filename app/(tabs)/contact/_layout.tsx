@@ -2,8 +2,8 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Stack, useGlobalSearchParams, useRouter } from 'expo-router';
 import { Alert, View } from 'react-native';
 
+import { Colors } from '@/constants/Colors';
 import { removeFromDatabase } from '@/services/sql_functions';
-
 
 /** Opens the displayContactScreen */
 function openAddContactScreen() {
@@ -41,7 +41,7 @@ const StackLayout = () => {
   const { contactId } = useGlobalSearchParams<{ contactId: string }>();
 
   return ( 
-    <Stack>
+    <Stack screenOptions={{headerStyle: {backgroundColor: Colors.gray}}}>
       <Stack.Screen name="index" 
         options = {{
           title: "Contact List",

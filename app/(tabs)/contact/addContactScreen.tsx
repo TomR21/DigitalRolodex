@@ -97,7 +97,7 @@ export default function addContactScreen() {
 
   // Return addContactScreen element
   return (
-    <View>
+    <View style={Styles.background}>
 
       <Text style={Styles.text}> Enter Personal Information </Text> 
       <View>

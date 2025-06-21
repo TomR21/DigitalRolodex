@@ -20,7 +20,7 @@ async function shareDB() {
 
 function settingScreen() {
   return (
-    <View>
+    <View style={Styles.background}>
       <Text style={Styles.text}> Setting 1 </Text>
       <Button title="Share DB" onPress={() => shareDB()}/>  
     </View>

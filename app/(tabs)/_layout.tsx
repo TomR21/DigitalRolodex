@@ -1,11 +1,13 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from "expo-router";
 
+import { Colors } from '@/constants/Colors';
+
 
 export default function RootLayout() {
   return (
     // Create a bottom tab to switch between the different screens
-    <Tabs>
+    <Tabs screenOptions={{tabBarStyle: {backgroundColor: Colors.gray}, headerStyle: {backgroundColor: Colors.gray}}}>
       <Tabs.Screen
         name="home/homeScreen"
         options={{

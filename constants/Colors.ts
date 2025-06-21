@@ -1,26 +1,19 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
 
 export const Colors = {
-  light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
-  },
-  dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
-  },
+  black: '#121212',
+  gray: '#1e1e1e',
+  lightgray: '#2a2a2a',
+  smoke: '#aaa',               // light light gray
+  white: '#eee',               // soft white 
+  blue: '#2980b9',             // strong blue
+  orange: '#d35400',           // warm orange
+  teal: '#16a085',             // calm teal greenish-blue
+  purple: '#8e44ad',           // rich moderate purple
+  pink: '#e91e63',             // vibrant pink
+  cyan: '#00bcd4',             // bright cyan, fresh and readable
+  lime: '#cddc39',             // yellow-green fresh accent
+  amber: '#ffc107',            // warm amber gold for highlights
+  redAccent: '#e74c3c',        // vivid red for alert or emphasis
+  magenta: '#d81b60',          // deep magenta, elegant contrast
 };

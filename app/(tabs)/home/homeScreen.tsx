@@ -107,7 +107,7 @@ function Index() {
     }, []));
 
   return (
-    <View>
+    <View style={Styles.background}>
       <Text style={Styles.text}> Verjaardagen </Text>
       <Text style={Styles.textEvents}> {birthdayText} {'\n'}</Text>
       <Text style={Styles.text}> Upcoming Events </Text>
