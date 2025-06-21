@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 
-import { BirthdayInfo, Card, data_row, QueryInput, recentEventsData } from '@/constants/Types';
+import { BirthdayInfo, Card, QueryInput, QueryOutput, RecentEventsData } from '@/constants/Types';
 
 
 // Create a database connection at the opening of the application. 
@@ -71,7 +71,7 @@ export async function editDatabase(contactId: string, input: QueryInput) {
 /** Function to obtain contact id and name from SQL database  */
 export async function getFromDatabase(contactId: string) {
   // Array to store the data_row objects retrieved from the query
-  let allRows: Array<data_row>;
+  let allRows: Array<QueryOutput>;
 
   // `getAllAsync()` is useful when you want to get all results as an array of objects.
   const query = `SELECT * FROM test WHERE id=${contactId}`
@@ -105,7 +105,7 @@ export async function getBirthdaysFromDatabase() {
 
 /** Gets all ids, names and recent_events with non-empty event values */
 export async function getRecentEventsFromDatabase() {
-  let allRows: Array<recentEventsData>
+  let allRows: Array<RecentEventsData>
 
   // `getAllAsync()` is useful when you want to get all results as an array of objects.
   allRows = await  db.getAllAsync('SELECT id, name, recent_events FROM test WHERE recent_events IS NOT NULL')
@@ -125,3 +125,42 @@ export async function removeFromDatabase(contactId: string) {
   const result = await db.getAllAsync(query).catch((err) => console.log(err))
   console.log("Deletion completed")
 }
+
+/** Creates the sqlite databases used to store all contact data  */ 
+export async function createDatabase() {
+  const createContactQuery = 
+  `PRAGMA journal_mode = WAL;
+  CREATE TABLE IF NOT EXISTS contact 
+    (id INTEGER PRIMARY KEY NOT NULL,
+    tag_id INTEGER,
+    name TEXT NOT NULL, 
+    birthday TEXT,
+    location TEXT,
+    address TEXT,
+    celnumber TEXT,
+    email TEXT,
+    linkedin TEXT
+    job TEXT
+    employer TEXT
+    know_from TEXT
+    know_from_date TEXT
+    hobbies TEXT
+    wishes TEXT
+    goals TEXT
+    recent-events TEXT
+    notes TEXT
+    FOREIGN KEY (tag_id) REFERENCES tag(id));
+  INSERT INTO contact (name, birthday) VALUES ('Tom van Rees', '16-11-1999');`
+  
+  const createTagQuery = 
+  `PRAGMA journal_mode = WAL;
+  CREATE TABLE IF NOT EXISTS tag (
+    id INTEGER PRIMARY KEY NOT NULL, 
+    tag_name TEXT NOT NULL, 
+    notify_recently_met BOOL);
+  INSERT INTO tag (tag_name, notify_recently_met) VALUES ('Unspecified', 0);
+  INSERT INTO tag (tag_name, notify_recently_met) VALUES ('Vriend', 1);
+  INSERT INTO tag (tag_name, notify_recently_met) VALUES ('Collega', 0);`
+
+  await db.execAsync(createContactQuery);
+} 
