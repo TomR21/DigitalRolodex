@@ -67,7 +67,7 @@ export default function displayContactScreen() {
   
   // Use state to hold contact data
   const initialData = {id:0, name:"", birthday:"", address:"", location:"", celnumber:"", email:"", job:"", employer:"",
-    know_from:"", know_from_date:"", hobbies:"", goals:"", wishes:"", recent_events:"", notes:""}
+    know_from:"", know_from_date:"", last_met_date:"", hobbies:"", goals:"", wishes:"", recent_events:"", notes:""}
   const [contactData, setContactData] = React.useState<Array<QueryOutput>>([initialData]);
 
   // Obtain the list of all contacts each time the screen is in focus 
@@ -91,7 +91,7 @@ export default function displayContactScreen() {
     <ScrollView contentContainerStyle={displayStyle.scrollContainer}>
       <View style={displayStyle.card}>
 
-        {/* Header with name and role */}
+        {/* Header with name and job */}
         <View style={displayStyle.headerSection}>
           <Text style={displayStyle.name}> {contactData[0].name} </Text>
           <View style={displayStyle.roleBadge}>
@@ -101,10 +101,9 @@ export default function displayContactScreen() {
           </View>
         </View>
 
-
-        {/* Divider */}
         <View style={displayStyle.divider} />
 
+        {/* Display birthday and other timestamps labels and values side by side*/}
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>Birthday</Text>
           <Text adjustsFontSizeToFit={true} numberOfLines={1} style={displayStyle.text}>
@@ -114,12 +113,14 @@ export default function displayContactScreen() {
           <Text style={{...displayStyle.label, width: '30%'}}>First Met</Text>
           <Text adjustsFontSizeToFit={true} numberOfLines={1} style={displayStyle.text}>{contactData[0].know_from} {contactData[0].know_from_date}</Text>
         </View>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={{...displayStyle.label, width: '30%'}}>Last Met</Text>
+          <Text adjustsFontSizeToFit={true} numberOfLines={1} style={displayStyle.text}>{contactData[0].last_met_date}</Text>
+        </View>
 
-        {/* Divider */}
         <View style={displayStyle.divider} />
 
-
-        {/* Contact Info Box with labels and values side by side */}
+        {/* Display contact info labels and values side by side*/}
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>Phone</Text>
           <Text adjustsFontSizeToFit={true} numberOfLines={1} style={displayStyle.text}>{contactData[0].celnumber}</Text>
@@ -137,7 +138,6 @@ export default function displayContactScreen() {
           <Text adjustsFontSizeToFit={true} numberOfLines={1} style={displayStyle.text}>{contactData[0].location}</Text>
         </View>
 
-        {/* Horizontal Divider */}
         <View style={[displayStyle.divider, { marginVertical: 24 }]} />
 
         {/* Recent Events Box with vertical bar */}

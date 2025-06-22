@@ -41,6 +41,7 @@ export default function addContactScreen() {
   const [employer, setEmployer]         = React.useState<string|null>(null);
   const [knowFrom, setKnowFrom]         = React.useState<string|null>(null);
   const [knowFromDate, setKnowFromDate] = React.useState<string|null>(null);
+  const [lastMetDate, setLastMetDate]   = React.useState<string|null>(null);
   const [hobbies, setHobbies]           = React.useState<string|null>(null);
   const [goals, setGoals]               = React.useState<string|null>(null);
   const [wishes, setWishes]             = React.useState<string|null>(null);
@@ -59,6 +60,7 @@ export default function addContactScreen() {
     employer: employer,
     knowFrom: knowFrom,
     knowFromDate: knowFromDate,
+    lastMetDate: lastMetDate,
     hobbies: hobbies,
     goals: goals,
     wishes: wishes,
@@ -85,6 +87,7 @@ export default function addContactScreen() {
       setEmployer(sqlData[0].employer)
       setKnowFrom(sqlData[0].know_from)
       setKnowFromDate(sqlData[0].know_from_date)
+      setLastMetDate(sqlData[0].last_met_date)
       setHobbies(sqlData[0].hobbies)
       setGoals(sqlData[0].goals)
       setWishes(sqlData[0].wishes)
@@ -225,6 +228,12 @@ export default function addContactScreen() {
           onChangeText={recentEvents => setRecentEvents(recentEvents)}
           value={recentEvents ?? undefined}
           placeholder="Enter Recent Events"
+          placeholderTextColor = 'gray'/>
+
+      <TextInput style = {Styles.textInput}
+          onChangeText={lastMetDate => setLastMetDate(lastMetDate)}
+          value={lastMetDate ?? undefined}
+          placeholder="Enter Last Met Date"
           placeholderTextColor = 'gray'/>
 
       </View>

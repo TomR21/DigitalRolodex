@@ -24,10 +24,10 @@ export async function addToDatabase(input: QueryInput) {
 
   // Query to add all values into corresponding table
   const query = `INSERT INTO test 
-    (name, birthday, address, location, celnumber, email, job, employer, know_from, know_from_date, 
+    (name, birthday, address, location, celnumber, email, job, employer, know_from, know_from_date, last_met_date, 
     hobbies, goals, wishes, recent_events, notes) 
     VALUES (${SQL_input.name}, ${SQL_input.birthday}, ${SQL_input.address}, ${SQL_input.location}, ${SQL_input.celnumber}, 
-    ${SQL_input.email}, ${SQL_input.job}, ${SQL_input.employer}, ${SQL_input.knowFrom}, ${SQL_input.knowFromDate}, 
+    ${SQL_input.email}, ${SQL_input.job}, ${SQL_input.employer}, ${SQL_input.knowFrom}, ${SQL_input.knowFromDate}, ${SQL_input.lastMetDate}, 
     ${SQL_input.hobbies}, ${SQL_input.goals}, ${SQL_input.wishes}, ${SQL_input.recentEvents}, ${SQL_input.notes});`;
 
   console.log(query)
@@ -55,7 +55,8 @@ export async function editDatabase(contactId: string, input: QueryInput) {
     job =           ${SQL_input.job},
     employer =      ${SQL_input.employer},
     know_from =     ${SQL_input.knowFrom},
-    know_from_date= ${SQL_input.knowFromDate}, 
+    know_from_date= ${SQL_input.knowFromDate},
+    last_met_date = ${SQL_input.lastMetDate}, 
     hobbies =       ${SQL_input.hobbies},
     goals =         ${SQL_input.goals},
     wishes =        ${SQL_input.wishes},
@@ -126,6 +127,11 @@ export async function removeFromDatabase(contactId: string) {
   console.log("Deletion completed")
 }
 
+
+// Table columns
+// id
+// name, birthday, address, location, celnumber, job, employer, hobbies, goals, wishes, recent_events
+
 /** Creates the sqlite databases used to store all contact data  */ 
 export async function createDatabase() {
   const createContactQuery = 
@@ -144,6 +150,7 @@ export async function createDatabase() {
     employer TEXT
     know_from TEXT
     know_from_date TEXT
+    last_met_date TEXT
     hobbies TEXT
     wishes TEXT
     goals TEXT

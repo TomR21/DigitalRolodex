@@ -1,8 +1,5 @@
 import * as SQLite from 'expo-sqlite';
 
-// Table columns
-// id
-// name, birthday, address, location, celnumber, job, employer, hobbies, goals, wishes, recent_events
 
 export async function addColumnToDatabase(name: string) {
   const db = await SQLite.openDatabaseAsync('contactData');
