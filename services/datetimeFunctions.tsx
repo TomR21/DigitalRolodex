@@ -21,3 +21,27 @@ export function findDaysDifference(dateString1: string, dateString2?: string): n
     return Math.round((date1 - date2) / millisecondsPerDay);
   }
 }
+
+/** Calculates the numbers of years between input date and date of today */
+export function findYearsDifference(date: string): number {
+
+  // Get birthyear from entered date
+  const birthdayArray = date.split("-") 
+  const birthyear = birthdayArray[2]
+
+  // Get current year, month and day
+  const currDate = new Date()   // Date format: Mon 30 12 1991 23:55:14 GMT+0200
+  const currYear = currDate.getFullYear()
+  const currMonth = currDate.getMonth() + 1    // months are counted from 0
+  const currDay = currDate.getDate() 
+  
+  // Calculate age difference between today and birth and assume birthday has not yet taken place
+  var age = currYear - Number(birthyear) - 1
+  
+  // Add 1 to age if day of birth has already taken place this year
+  if (Number(birthdayArray[1]) < currMonth) {age++} 
+  if ((Number(birthdayArray[1]) == currMonth) && (Number(birthdayArray[0]) <= currDay)) {age++} 
+
+  return age
+  
+}

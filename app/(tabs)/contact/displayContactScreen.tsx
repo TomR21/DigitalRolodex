@@ -5,6 +5,7 @@ import { ScrollView, Text, View } from "react-native";
 import { Colors } from '@/constants/Colors';
 import { displayStyle } from '@/constants/Styles';
 import { QueryOutput } from '@/constants/Types';
+import { findDaysDifference, findYearsDifference } from '@/services/datetimeFunctions';
 import { getFromDatabase } from '@/services/sql_functions';
 
 
@@ -20,42 +21,35 @@ function makeTextHeader(notes: string|null, delimiter: string, emoji: string) {
         message += emoji + str + "\n"
       }
       
-      // Cut off final newline and return message
-      //message = message.replace(/\n$/, "")
+      // return trimmed message, cuts off last newline
       return message.trim()
     }
 }
 
 /** Return empty header for unknown age and age within brackets for calculated age  */
-function makeAgeHeader(age: number | null) {
-  if (age === null) {
+function makeAgeHeader(date: string | null) {
+  if (date === null) {
     return ""
   } else {
-    return "(" + age + ")"
+    return "(" + findYearsDifference(date) + ")"
   }
 }
 
-/** Calculate age from birthday */
-function calculateAge(date: string|null) {
+/** Return empty header for unknown seen time ago and days/years ago within brackets */
+function makeLastMetHeader(date: string | null) {
   if (date === null) {
-    return null
+    return ""
   } else {
-    // Get birthyear from entered date
-    const birthdayArray = date.split("-") 
-    const birthyear = birthdayArray[2]
-
-    // Get current year
-    const currdayArray = new Date().toString().split(" ")
-    const yeartoday = currdayArray[3] // Date format: Mon 30 12 1991 23:55:14 GMT+0200
+    const yearsDiff = findYearsDifference(date)
+    const daysDiff = findDaysDifference(date)
+    var printText = "(" 
+    if (yearsDiff == 0) {
+      printText += daysDiff + " days)"
+    } else {
+      printText += yearsDiff + "yrs)"
+    }
     
-    // Calculate age difference between today and birth
-    var age = Number(yeartoday) - Number(birthyear) - 1 
-    
-    // Add 1 to age if day of birth has already taken place this year
-    if (Number(birthdayArray[1]) < Number(currdayArray[2])) {age++} 
-    if (Number(birthdayArray[1]) == Number(currdayArray[2]) && Number(birthdayArray[0]) <= Number(currdayArray[1])) {age++} 
-
-    return age
+    return printText 
   }
 }
 
@@ -107,7 +101,7 @@ export default function displayContactScreen() {
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>Birthday</Text>
           <Text adjustsFontSizeToFit={true} numberOfLines={1} style={displayStyle.text}>
-            {contactData[0].birthday} {makeAgeHeader(calculateAge(contactData[0].birthday))}</Text>
+            {contactData[0].birthday} {makeAgeHeader(contactData[0].birthday)}</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>First Met</Text>
@@ -115,7 +109,8 @@ export default function displayContactScreen() {
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>Last Met</Text>
-          <Text adjustsFontSizeToFit={true} numberOfLines={1} style={displayStyle.text}>{contactData[0].last_met_date}</Text>
+          <Text adjustsFontSizeToFit={true} numberOfLines={1} style={displayStyle.text}>
+            {contactData[0].last_met_date} {makeLastMetHeader(contactData[0].last_met_date)}</Text>
         </View>
 
         <View style={displayStyle.divider} />

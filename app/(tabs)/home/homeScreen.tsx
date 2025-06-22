@@ -20,11 +20,11 @@ function findBirthdaysThisMonth(birthdayData: Array<BirthdayInfo>) {
   for (contact of birthdayData) {
 
     // Obtain the number of days between today and contact's birthday
-    const daysDiff2 = findDaysDifference(contact["birthday"]) 
+    const daysDiff = findDaysDifference(contact["birthday"]) 
 
     // Add to text if birthday is within the next or previous 30 days
-    if ( Math.abs(daysDiff2) < 30) {
-      birthdayText += "  🎉  " + contact["name"] + " is jarig over " + daysDiff2 + " dagen!\n "
+    if ( Math.abs(daysDiff) < 30) {
+      birthdayText += "  🎉  " + contact["name"] + " is jarig over " + daysDiff + " dagen!\n "
     }
   }
 
@@ -59,7 +59,7 @@ function findSoonEvents2(recentEventsData: Array<RecentEventsData>) {
         const daysDiff = findDaysDifference(eventDate.toString())
         
         // If event is in this month add it to output text
-        if ( Math.abs(daysDiff) < 30 ) {
+        if ( daysDiff < 30 && daysDiff > -1 ) {
           // Matches the regex expression to obtain all text before "[". ? required for null matching. 
           const eventName = recentEvent.match(regex2)?.toString()
           
