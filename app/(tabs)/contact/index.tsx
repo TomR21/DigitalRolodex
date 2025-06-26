@@ -1,6 +1,6 @@
 import { useFocusEffect, useRouter } from 'expo-router';
 import React from "react";
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Keyboard, Text, TouchableOpacity, View } from "react-native";
 
 import { Styles } from "@/constants/Styles";
 import { Card } from '@/constants/Types';
@@ -29,19 +29,20 @@ function openDisplayContactScreen(contactid: string) {
 }
 
 
-
-function dataFilter(data: Array<Card>, search: string) {
-  const dataFilter = data.filter(data =>
+/** Filters the input array by checking all matches which include the search string */
+function dataFilter(dataArray: Array<Card>, search: string) {
+  const dataArrayFiltered = dataArray.filter(data =>
     data.name.toLowerCase().includes(search.toLowerCase()));
-  return dataFilter
+  return dataArrayFiltered
 }
+
 
 export default function contactScreen() {
   
   // Holds all card information: (name, id) of all contacts
   const [data, setData] = React.useState<Array<Card>>([]);
 
-  // Find the search value entered in the search bar 
+  // Find the search value entered in the search bar, default is ''
   const { search } = useSearch();
 
   // Obtain the name and contactId of all contacts each time the screen is in focus 
@@ -64,6 +65,9 @@ export default function contactScreen() {
       {/* Create a list of clickable contacts. Clicking opens new DisplayContact screen*/}
       <FlatList
         data={dataFilter(data, search)}
+        onScrollBeginDrag={() => {
+              Keyboard.dismiss()} // disable keyboard on scroll (automatically puts search bar out of focus)
+        }
         renderItem={({item, index}) => (
           <ClickableContact
             title={item.name}
