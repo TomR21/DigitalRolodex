@@ -5,7 +5,7 @@ import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { Styles } from "@/constants/Styles";
 import { Card } from '@/constants/Types';
 import { getCardsFromDatabase } from '@/services/sql_functions';
-
+import { useSearch } from './_layout';
 
 type ItemProps = {title: string, onPress(): void};
 
@@ -29,10 +29,20 @@ function openDisplayContactScreen(contactid: string) {
 }
 
 
+
+function dataFilter(data: Array<Card>, search: string) {
+  const dataFilter = data.filter(data =>
+    data.name.toLowerCase().includes(search.toLowerCase()));
+  return dataFilter
+}
+
 export default function contactScreen() {
   
   // Holds all card information: (name, id) of all contacts
   const [data, setData] = React.useState<Array<Card>>([]);
+
+  // Find the search value entered in the search bar 
+  const { search } = useSearch();
 
   // Obtain the name and contactId of all contacts each time the screen is in focus 
   useFocusEffect(
@@ -53,7 +63,7 @@ export default function contactScreen() {
       
       {/* Create a list of clickable contacts. Clicking opens new DisplayContact screen*/}
       <FlatList
-        data={data}
+        data={dataFilter(data, search)}
         renderItem={({item, index}) => (
           <ClickableContact
             title={item.name}

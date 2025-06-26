@@ -1,9 +1,11 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Stack, useGlobalSearchParams, useRouter } from 'expo-router';
-import { Alert, View } from 'react-native';
+import { createContext, useContext, useState } from 'react';
+import { Alert, Text, TextInput, View } from 'react-native';
 
 import { Colors } from '@/constants/Colors';
 import { removeFromDatabase } from '@/services/sql_functions';
+
 
 /** Opens the displayContactScreen */
 function openAddContactScreen() {
@@ -36,40 +38,100 @@ async function deleteContact(contactId: string) {
   router.back()
 }
 
+/** Context from search bar that will be passed on to contact list for filtering */
+const SearchContext = createContext<{search: string, setSearch: (val: string) => void;}> (
+  { search: '',
+    setSearch: () => {},
+  });
+
+// Create function useSearch which finds the context passed down to the child component
+export const useSearch = () => useContext(SearchContext);
+
+/** Component which passes down the search state and setSearch function onto the child component */
+const SearchProvider = ({ children }: { children: React.ReactNode }) => {
+  const [search, setSearch] = useState('');
+  return (
+    <SearchContext.Provider value={{ search, setSearch }}>
+      {children}
+    </SearchContext.Provider>
+  );
+};
+
+/** Component  */
+function SearchBar() {
+  const { search, setSearch } = useSearch();
+
+  return (
+    <TextInput
+      placeholder="Search..."
+      value={search}
+      onChangeText={setSearch}
+      style={{
+        backgroundColor: Colors.lightgray,
+        color: Colors.white,
+        borderRadius: 8,
+        paddingHorizontal: 10,
+        paddingVertical: 6,
+        fontSize: 14,
+      }}
+      placeholderTextColor='gray'
+    />
+  );
+}
+
+
 const StackLayout = () => {
   // Obtain current contactId if passed through
   const { contactId } = useGlobalSearchParams<{ contactId: string }>();
 
   return ( 
-    <Stack screenOptions={{headerStyle: {backgroundColor: Colors.gray}}}>
-      <Stack.Screen name="index" 
-        options = {{
-          title: "Contact List",
+    <SearchProvider>
+      <Stack screenOptions={{headerStyle: {backgroundColor: Colors.gray}}}>
+        
+        <Stack.Screen name="index" 
+          options = {{
+            headerLeft: () => (
+              <View style={{ paddingLeft: 5 }}>
+                <Text style={{ color: Colors.white, fontSize: 20, fontWeight: 'bold' }}>
+                  Contacts
+                </Text>
+              </View>
+            ),
 
-          // Display an add contact button (+) on the right of the header
-          headerRight: () => (
-            <FontAwesome.Button size={24} name="user-plus" color="white" backgroundColor="dark" underlayColor="dark" 
-              onPress={() => openAddContactScreen()}/>
-          )
+            headerTitle: () => (
+              <View style={{ width: 150, paddingLeft: 10 }}>
+                <SearchBar />
+              </View>
+            ),
 
-        }}/>
-      <Stack.Screen name="addContactScreen" options={{title: "Add Contact Information"}}/>
-      <Stack.Screen name="displayContactScreen" 
-        options = {{
-          title: "Contact Info",
-          
-          // Display the edit and delete button on the right of the header
-          headerRight: () => (
-            <View style = {{flexDirection: 'row'}}>
-              <FontAwesome.Button size={24} name="pencil" color="white" backgroundColor="dark" underlayColor="dark" 
-                onPress={() => openEditContactScreen(contactId)}/>
-              <FontAwesome.Button size={24} name="trash" color="white" backgroundColor="dark" underlayColor="dark" 
-                onPress={() => contactDeletionAlert(contactId)}/>
-            </View>
-          )
+            // Display an add contact button (+) on the right of the header
+            headerRight: () => (
+              <FontAwesome.Button size={24} name="user-plus" color="white" backgroundColor="dark" underlayColor="dark" 
+                onPress={() => openAddContactScreen()}/>
+            )
 
-        }}/>        
-    </Stack>
+          }}/>
+    
+        <Stack.Screen name="addContactScreen" options={{title: "Add Contact Information"}}/>
+        
+        <Stack.Screen name="displayContactScreen" 
+          options = {{
+            title: "Contact Info",
+            
+            // Display the edit and delete button on the right of the header
+            headerRight: () => (
+              <View style = {{flexDirection: 'row'}}>
+                <FontAwesome.Button size={24} name="pencil" color="white" backgroundColor="dark" underlayColor="dark" 
+                  onPress={() => openEditContactScreen(contactId)}/>
+                <FontAwesome.Button size={24} name="trash" color="white" backgroundColor="dark" underlayColor="dark" 
+                  onPress={() => contactDeletionAlert(contactId)}/>
+              </View>
+            )
+
+          }}/>
+
+      </Stack>
+    </SearchProvider>
   )
 }
 
