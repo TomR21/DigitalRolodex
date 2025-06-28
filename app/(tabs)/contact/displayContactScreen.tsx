@@ -2,29 +2,13 @@ import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { ScrollView, Text, View } from "react-native";
 
+import { VerticalBarBox } from '@/components';
 import { Colors } from '@/constants/Colors';
 import { displayStyle } from '@/constants/Styles';
 import { QueryOutput } from '@/constants/Types';
 import { findDaysDifference, findYearsDifference } from '@/services/datetimeFunctions';
 import { getFromDatabase } from '@/services/sql_functions';
 
-
-/** Converts string with delimiter to multiline string for Text display */
-function makeTextHeader(notes: string|null, delimiter: string, emoji: string) {
-    if (notes === null) {
-      return null
-    } else {
-      // Store each separate note on a new line
-      var message: string = ""
-      
-      for (const str of notes.split(delimiter)) {
-        message += emoji + str + "\n"
-      }
-      
-      // return trimmed message, cuts off last newline
-      return message.trim()
-    }
-}
 
 /** Return empty header for unknown age and age within brackets for calculated age  */
 function makeAgeHeader(date: string | null) {
@@ -135,50 +119,36 @@ export default function displayContactScreen() {
 
         <View style={[displayStyle.divider, { marginVertical: 24 }]} />
 
-        {/* Recent Events Box with vertical bar */}
-        <View style={displayStyle.notesContainer}>
-          <View style={{...displayStyle.verticalBarNotes, backgroundColor: Colors.magenta}} />
-          <View style={displayStyle.notesContent}>
-            <Text style={displayStyle.label}>Recent Events</Text>
-            <Text style={displayStyle.text}>{makeTextHeader(contactData[0].recent_events, ".", "👀  ")}</Text>
-          </View>
-        </View>
+        {/* Creates boxes with vertical bars for multiline text data */}
+        <VerticalBarBox 
+          header="Recent Events"
+          rawText={contactData[0].recent_events}
+          emoji="👀"  
+          color = {Colors.magenta}/>
+          
+        <VerticalBarBox 
+          header="Hobbies"
+          rawText={contactData[0].hobbies}
+          emoji="⚽️"  
+          color = {Colors.blue}/>
 
-        {/* Hobbies Box with vertical bar */}
-        <View style={displayStyle.notesContainer}>
-          <View style={{...displayStyle.verticalBarNotes, backgroundColor: Colors.blue}} />
-          <View style={displayStyle.notesContent}>
-            <Text style={displayStyle.label}>Hobbies</Text>
-            <Text style={displayStyle.text}>{makeTextHeader(contactData[0].hobbies, ".", "⚽️  ")}</Text>
-          </View>
-        </View>
+        <VerticalBarBox 
+          header="Wishes"
+          rawText={contactData[0].wishes}
+          emoji="🎁"  
+          color = {Colors.orange}/>
 
-        {/* Wishes Box with vertical bar */}
-        <View style={displayStyle.notesContainer}>
-          <View style={{...displayStyle.verticalBarNotes, backgroundColor: Colors.orange}}/>
-          <View style={displayStyle.notesContent}>
-            <Text style={displayStyle.label}>Wishes</Text>
-            <Text style={displayStyle.text}>{makeTextHeader(contactData[0].wishes, ".", "🎁  ")}</Text>
-          </View>
-        </View>
+        <VerticalBarBox 
+          header="Goals"
+          rawText={contactData[0].goals}
+          emoji="🎯"  
+          color = {Colors.teal}/>
 
-        {/* Goals Box with vertical bar */}
-        <View style={displayStyle.notesContainer}>
-          <View style={{...displayStyle.verticalBarNotes, backgroundColor: Colors.teal}} />
-          <View style={displayStyle.notesContent}>
-            <Text style={displayStyle.label}>Goals</Text>
-            <Text style={displayStyle.text}>{makeTextHeader(contactData[0].goals, ".", "🎯  ")}</Text>
-          </View>
-        </View>
-
-        {/* Notes Box with vertical bar */}
-        <View style={displayStyle.notesContainer}>
-          <View style={{...displayStyle.verticalBarNotes, backgroundColor: Colors.amber}} />
-          <View style={displayStyle.notesContent}>
-            <Text style={displayStyle.label}>Notes</Text>
-            <Text style={displayStyle.text}>{makeTextHeader(contactData[0].notes, ".", "🗒️  ")}</Text>
-          </View>
-        </View>
+        <VerticalBarBox 
+          header="Notes"
+          rawText={contactData[0].notes}
+          emoji="🗒️"  
+          color = {Colors.amber}/>
 
       </View>
     </ScrollView>

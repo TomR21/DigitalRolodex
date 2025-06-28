@@ -2,6 +2,7 @@ import { useFocusEffect } from "expo-router";
 import React from "react";
 import { FlatList, Text, View } from "react-native";
 
+import { Colors } from "@/constants/Colors";
 import { Styles } from "@/constants/Styles";
 import { BirthdayInfo, EventData, RecentEventsData } from "@/constants/Types";
 import { findDaysDifference } from "@/services/datetimeFunctions";
@@ -76,7 +77,7 @@ function findSoonEvents2(recentEventsData: Array<RecentEventsData>) {
 const EventDisplay = ({ name, event, daysLeft}: EventData) => (
   <View style={Styles.eventView}>
     <Text style={{...Styles.text, fontSize: 16}}> {name} </Text>
-    <Text style={{...Styles.text, fontSize: 14, color:'azure'}}> {event} in {daysLeft} dagen! </Text>
+    <Text style={{...Styles.text, fontSize: 14, color: Colors.lightgray}}> {event} in {daysLeft} dagen! </Text>
   </View>
 );
 
