@@ -6,7 +6,8 @@ const screenWidth = Dimensions.get('window').width;
 
 export const Styles = StyleSheet.create({
   background: {
-    backgroundColor: Colors.black
+    backgroundColor: Colors.black,
+    flex: 1
   },
   button: {
     backgroundColor: Colors.blue,

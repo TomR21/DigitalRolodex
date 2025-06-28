@@ -57,7 +57,7 @@ const SearchProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-/** Component  */
+/** Component which holds TextInput and makes use of SearchContext to pass through input text  */
 function SearchBar() {
   const { search, setSearch } = useSearch();
 
@@ -86,7 +86,7 @@ const StackLayout = () => {
 
   return ( 
     <SearchProvider>
-      <Stack screenOptions={{headerStyle: {backgroundColor: Colors.gray}}}>
+      <Stack screenOptions={{headerStyle: {backgroundColor: Colors.gray}, headerTintColor: Colors.white}}>
         
         <Stack.Screen name="index" 
           options = {{
@@ -106,7 +106,7 @@ const StackLayout = () => {
 
             // Display an add contact button (+) on the right of the header
             headerRight: () => (
-              <FontAwesome.Button size={24} name="user-plus" color="white" backgroundColor="dark" underlayColor="dark" 
+              <FontAwesome.Button size={24} name="user-plus" color={Colors.white} backgroundColor={Colors.gray} underlayColor={Colors.gray} 
                 onPress={() => openAddContactScreen()}/>
             )
 
@@ -121,9 +121,9 @@ const StackLayout = () => {
             // Display the edit and delete button on the right of the header
             headerRight: () => (
               <View style = {{flexDirection: 'row'}}>
-                <FontAwesome.Button size={24} name="pencil" color="white" backgroundColor="dark" underlayColor="dark" 
+                <FontAwesome.Button size={24} name="pencil" color={Colors.white} backgroundColor={Colors.gray} underlayColor={Colors.gray} 
                   onPress={() => openEditContactScreen(contactId)}/>
-                <FontAwesome.Button size={24} name="trash" color="white" backgroundColor="dark" underlayColor="dark" 
+                <FontAwesome.Button size={24} name="trash" color={Colors.white} backgroundColor={Colors.gray} underlayColor={Colors.gray} 
                   onPress={() => contactDeletionAlert(contactId)}/>
               </View>
             )

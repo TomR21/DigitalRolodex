@@ -7,22 +7,22 @@ import { Colors } from '@/constants/Colors';
 export default function RootLayout() {
   return (
     // Create a bottom tab to switch between the different screens
-    <Tabs screenOptions={{tabBarStyle: {backgroundColor: Colors.gray}, headerStyle: {backgroundColor: Colors.gray}}}>
+    <Tabs screenOptions={{ tabBarStyle: {backgroundColor: Colors.gray}, headerShown: false }}>
+      
       <Tabs.Screen
-        name="home/homeScreen"
+        name="home"
         options={{
-          title: 'Home',
+          title: 'Home', 
           tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color}/>,
         }}/>
       <Tabs.Screen
         name="contact"
         options={{
           title: 'Personen',
-          headerShown: false, 
           tabBarIcon: ({ color }) => <FontAwesome size={28} name="user" color={color}/>
         }}/>
       <Tabs.Screen
-        name="settings/settingScreen"
+        name="settings"
         options={{
           title: 'Settings', 
           tabBarIcon: ({ color }) => <FontAwesome size={28} name="cog" color={color}/>
