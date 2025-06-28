@@ -86,7 +86,7 @@ const StackLayout = () => {
 
   return ( 
     <SearchProvider>
-      <Stack screenOptions={{headerStyle: {backgroundColor: Colors.gray}, headerTintColor: Colors.white}}>
+      <Stack screenOptions={{ headerStyle: {backgroundColor: Colors.gray}, headerTintColor: Colors.white}}>
         
         <Stack.Screen name="index" 
           options = {{
