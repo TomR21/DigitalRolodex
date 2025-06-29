@@ -1,25 +1,39 @@
 import { useFocusEffect, useRouter } from 'expo-router';
 import React from "react";
-import { FlatList, Keyboard, Text, TouchableOpacity, View } from "react-native";
+import { Alert, FlatList, Keyboard, Text, TouchableOpacity, View } from "react-native";
 
 import { Styles } from "@/constants/Styles";
 import { Card } from '@/constants/Types';
-import { getCardsFromDatabase } from '@/services/sql_functions';
+import { editLastMetInDatabase, getCardsFromDatabase } from '@/services/sql_functions';
 import { useSearch } from './_layout';
 
-type ItemProps = {title: string, onPress(): void};
 
 /** Component which displays the contact name and activates redirect on press */
-const ClickableContact = ({ title, onPress}: ItemProps) => (
+type ItemProps = {title: string, onPress(): void, onLongPress(): void};
+
+const ClickableContact = ({ title, onPress, onLongPress}: ItemProps) => (
   <TouchableOpacity
-    onPress={onPress}
     style={Styles.clickableContactTouchable}
     activeOpacity={0.7}  // Opacity when Touchable is active (in focus)
+    onPress={onPress}
+    onLongPress={onLongPress}
   >
     <Text style={Styles.clickableContactText}> {title} </Text>
   </TouchableOpacity>
 );
 
+/** Creates an alert window to confirm if the contact last met date should be changed to today */
+function alertChangeLastMet(contactId: string, contactName: string) {
+  Alert.alert('Change Last Met Date', 'Are you sure you want to change the last met date for ' + contactName + ' to today?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'Change Date', onPress: () => editLastMetInDatabase(contactId)},
+      
+  ]);
+}
 
 /** Opens the displayContactScreen and passes along the userId */
 function openDisplayContactScreen(contactid: string) {
@@ -71,7 +85,9 @@ export default function contactScreen() {
         renderItem={({item, index}) => (
           <ClickableContact
             title={item.name}
-            onPress={() => openDisplayContactScreen(item.id.toString())}/>
+            onPress={() => openDisplayContactScreen(item.id)}
+            onLongPress={() => alertChangeLastMet(item.id, item.name)}
+          />
         )
       }/>
 

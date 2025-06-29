@@ -69,6 +69,31 @@ export async function editDatabase(contactId: string, input: QueryInput) {
   console.log("Changed info")
 }
 
+/** Change the row corresponding to contactId with all the supplied information (overrides all information) */
+export async function editLastMetInDatabase(contactId: string) { 
+  // Get current year, month and day
+  const currDate = new Date()   // Date format: Mon 30 12 1991 23:55:14 GMT+0200
+  const currYear = currDate.getFullYear().toString()
+  const currMonth = (currDate.getMonth() + 1).toString()    // months are counted from 0
+  const currDay = currDate.getDate().toString() 
+
+  // Convert to single string of format (DD-MM-YYYY)
+  const todayDate = currDay + "-" + currMonth + "-" + currYear
+
+  // Convert to SQL compatible format
+  const sqlTodayDate = sqlTypeConverter(todayDate) 
+
+  // Query to add all values into corresponding table
+  const query = `UPDATE test 
+    SET
+    last_met_date = ${sqlTodayDate}
+    WHERE id = ${contactId};`;
+
+  // Execute query and log errors or succes
+  await db.runAsync(query).catch((err) => console.log(err));
+  console.log("Changed Last Met Date to " + todayDate)
+}
+
 /** Function to obtain contact id and name from SQL database  */
 export async function getFromDatabase(contactId: string) {
   // Array to store the data_row objects retrieved from the query
