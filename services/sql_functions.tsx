@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 
-import { BirthdayInfo, Card, QueryInput, QueryOutput, RecentEventsData } from '@/constants/Types';
+import { BirthdayInfo, Card, LastMetData, QueryInput, QueryOutput, RecentEventsData } from '@/constants/Types';
 
 
 // Create a database connection at the opening of the application. 
@@ -110,6 +110,17 @@ export async function getRecentEventsFromDatabase() {
 
   // `getAllAsync()` is useful when you want to get all results as an array of objects.
   allRows = await  db.getAllAsync('SELECT id, name, recent_events FROM test WHERE recent_events IS NOT NULL')
+  console.log(allRows)
+
+  return allRows;
+}
+
+/** Gets all ids, names and recent_events with non-empty event values */
+export async function getLastMetDateFromDatabase() {
+  let allRows: Array<LastMetData>
+
+  // `getAllAsync()` is useful when you want to get all results as an array of objects.
+  allRows = await  db.getAllAsync('SELECT id, name, last_met_date FROM test WHERE last_met_date IS NOT NULL')
   console.log(allRows)
 
   return allRows;

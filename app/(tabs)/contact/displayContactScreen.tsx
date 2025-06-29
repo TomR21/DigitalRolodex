@@ -97,7 +97,7 @@ export default function displayContactScreen() {
             {contactData[0].last_met_date} {makeLastMetHeader(contactData[0].last_met_date)}</Text>
         </View>
 
-        <View style={displayStyle.divider} />
+        <View style={displayStyle.divider}/>
 
         {/* Display contact info labels and values side by side*/}
         <View style={{flexDirection: 'row', alignItems: 'center'}}>

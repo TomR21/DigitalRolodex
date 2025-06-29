@@ -1,5 +1,5 @@
 
-/** Calculayes the numbers of days between either a date and today or two different dates. 
+/** Calculates the numbers of days between either a date and today or two different dates. 
  * Does not account for the differences in years */
 export function findDaysDifference(dateString1: string, dateString2?: string): number {
   const millisecondsPerDay = 24 * 60 * 60 * 1000;
@@ -13,12 +13,13 @@ export function findDaysDifference(dateString1: string, dateString2?: string): n
     const [day, month, _] = dateString2!.split('-');
     const date2 = new Date(currYear, +month-1, +day).valueOf()
 
-    return Math.round((date1 - date2) / millisecondsPerDay);
+    return Math.round((date2 - date1) / millisecondsPerDay);
+
   } else {
 
     const date2 = Date.now()
 
-    return Math.round((date1 - date2) / millisecondsPerDay);
+    return Math.round((date2 - date1) / millisecondsPerDay);
   }
 }
 

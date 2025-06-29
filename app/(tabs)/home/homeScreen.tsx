@@ -2,11 +2,12 @@ import { useFocusEffect } from "expo-router";
 import React from "react";
 import { FlatList, Text, View } from "react-native";
 
+import { VerticalBarBox } from "@/components";
 import { Colors } from "@/constants/Colors";
-import { Styles } from "@/constants/Styles";
-import { BirthdayInfo, EventData, RecentEventsData } from "@/constants/Types";
+import { Styles, displayStyle } from "@/constants/Styles";
+import { BirthdayInfo, EventData, LastMetData, RecentEventsData } from "@/constants/Types";
 import { findDaysDifference } from "@/services/datetimeFunctions";
-import { getBirthdaysFromDatabase, getRecentEventsFromDatabase } from "@/services/sql_functions";
+import { getBirthdaysFromDatabase, getLastMetDateFromDatabase, getRecentEventsFromDatabase } from "@/services/sql_functions";
 
 // Voor starten van de applicatie
 // npx expo start
@@ -33,7 +34,7 @@ function findBirthdaysThisMonth(birthdayData: Array<BirthdayInfo>) {
 }
 
 /** Returns an array of objects containing the name, event name and date of events occuring this month  */
-function findSoonEvents2(recentEventsData: Array<RecentEventsData>) {
+function findSoonEvents(recentEventsData: Array<RecentEventsData>) {
   // Text variable to store all output information
   var eventArray: Array<EventData> = []
 
@@ -70,22 +71,45 @@ function findSoonEvents2(recentEventsData: Array<RecentEventsData>) {
       }
     }
   }
+
+  // Sort the array from most recent to last happened
+  eventArray.sort(function(a, b) {
+    var numA = Number(a.daysLeft)
+    var numB = Number(b.daysLeft)
+    return (numA < numB) ? -1 : (numA > numB) ? 1 : 0;
+  });
+
   return eventArray
 }
 
-/** Component which displays the event info */
-const EventDisplay = ({ name, event, daysLeft}: EventData) => (
-  <View style={Styles.eventView}>
-    <Text style={{...Styles.text, fontSize: 16}}> {name} </Text>
-    <Text style={{...Styles.text, fontSize: 14, color: Colors.lightgray}}> {event} in {daysLeft} dagen! </Text>
-  </View>
-);
+/** Returns an array of objects containing the id, name, last_met_date and amount of days since last seen */
+function findHighDaysLastMet(lastMetRawData: Array<LastMetData>) {
+  //Array to store all output information
+  var lastMetArray: Array<LastMetData> = []
+
+  // Loop over every contact
+  let contact: LastMetData;
+  for (contact of lastMetRawData) {
+
+    // Obtain the number of days between today and contact's birthday
+    const daysDiff = findDaysDifference(contact["last_met_date"]) 
+
+    // Add to text if birthday is within the next or previous 30 days
+    if ( Math.abs(daysDiff) > 50) {
+      const res = {id: contact.id, name: contact.name, last_met_date: contact.last_met_date, daysDiff: daysDiff.toString()}
+      lastMetArray.push(res)
+      }
+  }
+
+  return lastMetArray
+}
 
 
 function Index() {
   
   // Use state to store birthday text and an array of events taking place soon
   const [birthdayText, setBirthdayText] = React.useState<string>("");
+  const [lastMetData, setLastMetData]   = React.useState<Array<LastMetData>>([]);
   const [eventData, setEventData]       = React.useState<Array<EventData>>([]);
 
   // Obtain the list of all birthdays each time the screen is in focus 
@@ -97,10 +121,12 @@ function Index() {
       // Get all birthdays, names and contact ID's from SQL data 
       const birthdayData = await getBirthdaysFromDatabase(); 
       const recentEventsData = await getRecentEventsFromDatabase();
+      const lastMetRawData = await getLastMetDateFromDatabase();
 
       // Set all the text fields to birthdays this month
       setBirthdayText(findBirthdaysThisMonth(birthdayData))
-      setEventData(findSoonEvents2(recentEventsData))
+      setEventData(findSoonEvents(recentEventsData))
+      setLastMetData(findHighDaysLastMet(lastMetRawData))
       };
 
       fetchDataAsync();
@@ -110,17 +136,36 @@ function Index() {
   return (
     <View style={Styles.background}>
       <Text style={Styles.text}> Verjaardagen </Text>
-      <Text style={Styles.textEvents}> {birthdayText} {'\n'}</Text>
-      <Text style={Styles.text}> Upcoming Events </Text>
+      <Text style={Styles.textEvents}> {birthdayText}</Text>
+
+      <View style={displayStyle.divider} />
 
       {/* Create a list of events taking place this month */}
+      <Text style={Styles.text}> Upcoming Events </Text>
       <FlatList
         data={eventData}
         renderItem={({item, index}) => (
-          <EventDisplay
-            name={item.name}
-            event={item.event}
-            daysLeft={item.daysLeft}/>
+            <VerticalBarBox 
+            header = {item.name}
+            rawText = {item.event + "is over " + item.daysLeft + " dagen"} 
+            emoji = ""
+            color = {Colors.teal}
+          />
+      )}/>
+
+      <View style={displayStyle.divider} />
+
+      {/* Create a list of events taking place this month */}
+      <Text style={Styles.text}>Long Time No See </Text>
+      <FlatList
+        data={lastMetData}
+        renderItem={({item, index}) => (
+          <VerticalBarBox 
+            header = {item.name}
+            rawText = {"Alweer " + item.daysDiff! + " dagen geleden!"} 
+            emoji = ""
+            color = {Colors.magenta}
+          />
       )}/>
     </View>
   );

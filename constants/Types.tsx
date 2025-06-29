@@ -61,3 +61,10 @@ export interface EventData {
   event: string | undefined,  // allow undefined values if regex string does not match any characters
   daysLeft: string
 }
+
+export interface LastMetData {
+  id: string,
+  name: string,
+  last_met_date: string,  // null not allowed because only entered birthday entries are considered
+  daysDiff?: string
+}
