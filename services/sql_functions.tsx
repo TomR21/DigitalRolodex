@@ -4,7 +4,7 @@ import { BirthdayInfo, Card, LastMetData, QueryInput, QueryOutput, RecentEventsD
 
 
 // Create a database connection at the opening of the application. 
-const db = SQLite.openDatabaseSync('contactData');
+export const db = SQLite.openDatabaseSync('contactData');
 
 
 /** Converts null and empty strings to null values and adds quotations to string.
@@ -201,7 +201,7 @@ export async function createDatabase() {
     id INTEGER PRIMARY KEY NOT NULL, 
     tag_name TEXT NOT NULL, 
     notify_recently_met BOOL);
-  INSERT INTO tag (tag_name, notify_recently_met) VALUES ('Unspecified', 0);
+  INSERT INTO tag (tag_name, notify_recently_met) VALUES ('Familie', 0);
   INSERT INTO tag (tag_name, notify_recently_met) VALUES ('Vriend', 1);
   INSERT INTO tag (tag_name, notify_recently_met) VALUES ('Collega', 0);`
 
