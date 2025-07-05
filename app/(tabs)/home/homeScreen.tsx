@@ -24,9 +24,13 @@ function findBirthdaysThisMonth(birthdayData: Array<BirthdayInfo>) {
     // Obtain the number of days between today and contact's birthday
     const daysDiff = findDaysDifference(contact["birthday"]) 
 
-    // Add to text if birthday is within the next or previous 30 days
-    if ( Math.abs(daysDiff) < 30) {
-      birthdayText += "  🎉  " + contact["name"] + " is jarig over " + daysDiff + " dagen!\n "
+    // Add to text if birthday is within the next 30 days or previous 2 days
+    if ( daysDiff > 0 && daysDiff < 2 ) {
+      birthdayText += "  🎉  " + contact["name"] + " was jarig " + daysDiff + " dag geleden!\n "
+    } else if ( daysDiff == 0 ) {
+      birthdayText += "  🎉  " + contact["name"] + " is vandaag jarig!\n "
+    } else if ( daysDiff > -30 && daysDiff < 0) {
+      birthdayText += "  🎉  " + contact["name"] + " is jarig over " + -1*daysDiff + " dagen!\n "
     }
   }
 
