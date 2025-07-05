@@ -1,10 +1,10 @@
 import * as SQLite from 'expo-sqlite';
 
 import { BirthdayInfo, Card, LastMetData, QueryInput, QueryOutput, RecentEventsData } from '@/constants/Types';
-
+import DB from '@/services/DatabaseConnection';
 
 // Create a database connection at the opening of the application. 
-export const db = SQLite.openDatabaseSync('contactData');
+const db = SQLite.openDatabaseSync('contactData');
 
 
 /** Converts null and empty strings to null values and adds quotations to string.
@@ -30,10 +30,8 @@ export async function addToDatabase(input: QueryInput) {
     ${SQL_input.email}, ${SQL_input.job}, ${SQL_input.employer}, ${SQL_input.knowFrom}, ${SQL_input.knowFromDate}, ${SQL_input.lastMetDate}, 
     ${SQL_input.hobbies}, ${SQL_input.goals}, ${SQL_input.wishes}, ${SQL_input.recentEvents}, ${SQL_input.notes});`;
 
-  console.log(query)
-
-  // Execute query and log errors or succes
-  await db.runAsync(query).catch((err) => console.log(err));
+  // Execute query
+  await DB.executeWriteQuery(query)
   console.log("Saved info")
 }
 
@@ -65,7 +63,7 @@ export async function editDatabase(contactId: string, input: QueryInput) {
     WHERE id = ${contactId};`;
 
   // Execute query and log errors or succes
-  await db.runAsync(query).catch((err) => console.log(err));
+  DB.executeWriteQuery(query)
   console.log("Changed info")
 }
 
@@ -90,19 +88,18 @@ export async function editLastMetInDatabase(contactId: string) {
     WHERE id = ${contactId};`;
 
   // Execute query and log errors or succes
-  await db.runAsync(query).catch((err) => console.log(err));
+  await DB.executeWriteQuery(query)
   console.log("Changed Last Met Date to " + todayDate)
 }
 
-/** Function to obtain contact id and name from SQL database  */
+/** Function to obtain all contact info from specific contact from SQL database  */
 export async function getFromDatabase(contactId: string) {
   // Array to store the data_row objects retrieved from the query
   let allRows: Array<QueryOutput>;
 
-  // `getAllAsync()` is useful when you want to get all results as an array of objects.
+  // Obtain all information from specific contact
   const query = `SELECT * FROM test WHERE id=${contactId}`
-  allRows = await db.getAllAsync(query)
-  console.log("Got from query: ", allRows)
+  allRows = await DB.executeReadQuery(query)
 
   return allRows;
 }
@@ -112,19 +109,20 @@ export async function getCardsFromDatabase() {
   // Array to store the Card objects retrieved from the query
   let allRows: Array<Card>;
 
-  // `getAllAsync()` is useful when you want to get all results as an array of objects.
-  allRows = await  db.getAllAsync('SELECT id, name FROM test ORDER BY name')
-  console.log(allRows)
+  // Obtain id and ordered name from all contacts 
+  const query = `SELECT id, name FROM test ORDER BY name`
+  allRows = await DB.executeReadQuery(query)
 
   return allRows;
 }
 
+/** Function to obtain all contacts with non empty birthdays with id and name from SQL database  */
 export async function getBirthdaysFromDatabase() {
   let allRows: Array<BirthdayInfo>
 
-  // `getAllAsync()` is useful when you want to get all results as an array of objects.
-  allRows = await  db.getAllAsync('SELECT id, name, birthday FROM test WHERE birthday IS NOT NULL')
-  console.log(allRows)
+  // Obtain id and ordered name from all contacts 
+  const query = `SELECT id, name, birthday FROM test WHERE birthday IS NOT NULL`
+  allRows = await DB.executeReadQuery(query)
 
   return allRows;
 }
@@ -132,10 +130,9 @@ export async function getBirthdaysFromDatabase() {
 /** Gets all ids, names and recent_events with non-empty event values */
 export async function getRecentEventsFromDatabase() {
   let allRows: Array<RecentEventsData>
-
-  // `getAllAsync()` is useful when you want to get all results as an array of objects.
-  allRows = await  db.getAllAsync('SELECT id, name, recent_events FROM test WHERE recent_events IS NOT NULL')
-  console.log(allRows)
+ 
+  const query = `SELECT id, name, recent_events FROM test WHERE recent_events IS NOT NULL`
+  allRows = await DB.executeReadQuery(query)
 
   return allRows;
 }
@@ -144,13 +141,11 @@ export async function getRecentEventsFromDatabase() {
 export async function getLastMetDateFromDatabase() {
   let allRows: Array<LastMetData>
 
-  // `getAllAsync()` is useful when you want to get all results as an array of objects.
-  allRows = await  db.getAllAsync('SELECT id, name, last_met_date FROM test WHERE last_met_date IS NOT NULL')
-  console.log(allRows)
+  const query = `SELECT id, name, last_met_date FROM test WHERE last_met_date IS NOT NULL`
+  allRows = await DB.executeReadQuery(query)
 
   return allRows;
 }
-
 
 /** Function to obtain contact id and name from SQL database  */
 export async function removeFromDatabase(contactId: string) {
@@ -159,8 +154,7 @@ export async function removeFromDatabase(contactId: string) {
 
   // `getAllAsync()` is useful when you want to get all results as an array of objects.
   const query = `DELETE FROM test WHERE id=${contactId}`
-  const result = await db.getAllAsync(query).catch((err) => console.log(err))
-  console.log("Deletion completed")
+  await DB.executeWriteQuery(query)
 }
 
 
@@ -205,5 +199,5 @@ export async function createDatabase() {
   INSERT INTO tag (tag_name, notify_recently_met) VALUES ('Vriend', 1);
   INSERT INTO tag (tag_name, notify_recently_met) VALUES ('Collega', 0);`
 
-  await db.execAsync(createContactQuery);
+  await DB.executeWriteQuery(createContactQuery);
 } 

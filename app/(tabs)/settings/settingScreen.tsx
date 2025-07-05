@@ -5,19 +5,22 @@ import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 
 import { Styles } from '@/constants/Styles';
-import { db } from '@/services/sql_functions';
+import DB from '@/services/DatabaseConnection';
 
 
 /** Closes the database connection and provides a share option for all database files */
 async function shareDB() {
   try {
     // Check current journalling mode for testing purposes (cannot share only contactData while in WAL mode)
-    const journalMode = db.getFirstSync('PRAGMA journal_mode');
+    const journalMode = await DB.executeReadQuery('PRAGMA journal_mode');
     console.log('Journal mode:', journalMode);
 
     // Close the database connection first
-    db.closeSync();  // nodig???
-    
+    DB.disconnect()
+
+    // Merge -wal and -shm files with core database
+    // Then need for searching all separate files goes away
+
     // Wait for file system to sync
     await new Promise(resolve => setTimeout(resolve, 500));
     
@@ -53,6 +56,10 @@ async function shareDB() {
   } catch (error) {
     console.error('Error exporting database files:', error);
   }
+
+  // Reopen connection to the database
+  DB.connect()
+
 };
 
 
