@@ -65,11 +65,11 @@ function findSoonEvents(recentEventsData: Array<RecentEventsData>) {
         const daysDiff = findDaysDifference(eventDate.toString())
         
         // If event is in this month add it to output text
-        if ( daysDiff < 30 && daysDiff > -1 ) {
+        if ( daysDiff > -30 && daysDiff < 1 ) {
           // Matches the regex expression to obtain all text before "[". ? required for null matching. 
           const eventName = recentEvent.match(regex2)?.toString()
           
-          const res = {name: contact.name, event: eventName, daysLeft: daysDiff.toString()}
+          const res = {name: contact.name, event: eventName, daysLeft: daysDiff}
           eventArray.push(res)
         }   
       }
@@ -100,7 +100,7 @@ function findHighDaysLastMet(lastMetRawData: Array<LastMetData>) {
 
     // Add to text if birthday is within the next or previous 30 days
     if ( Math.abs(daysDiff) > 50) {
-      const res = {id: contact.id, name: contact.name, last_met_date: contact.last_met_date, daysDiff: daysDiff.toString()}
+      const res = {id: contact.id, name: contact.name, last_met_date: contact.last_met_date, daysDiff: daysDiff}
       lastMetArray.push(res)
       }
   }
@@ -151,7 +151,7 @@ function Index() {
         renderItem={({item, index}) => (
             <VerticalBarBox 
             header = {item.name}
-            rawText = {item.event + "is over " + item.daysLeft + " dagen"} 
+            rawText = {item.event + "is over " + -1*item.daysLeft + " dagen"} 
             emoji = ""
             color = {Colors.teal}
           />
