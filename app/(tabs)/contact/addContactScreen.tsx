@@ -2,9 +2,22 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 
+import DropdownComponent from '@/components/Dropdown';
 import { Styles } from "@/constants/Styles";
 import { QueryInput } from '@/constants/Types';
 import { addToDatabase, editDatabase, getFromDatabase } from '@/services/sql_functions';
+
+
+const data = [
+  { label: 'Item 1', value: '1' },
+  { label: 'Item 2', value: '2' },
+  { label: 'Item 3', value: '3' },
+  { label: 'Item 4', value: '4' },
+  { label: 'Item 5', value: '5' },
+  { label: 'Item 6', value: '6' },
+  { label: 'Item 7', value: '7' },
+  { label: 'Item 8', value: '8' },
+];
 
 
 /** Decider function to add new user or edit information based on contactId existence */
@@ -47,6 +60,8 @@ export default function addContactScreen() {
   const [wishes, setWishes]             = React.useState<string|null>(null);
   const [recentEvents, setRecentEvents] = React.useState<string|null>(null);
   const [notes, setNotes]               = React.useState<string|null>(null);
+
+  const [tag, setTag]                   = React.useState<Number>(0);
   
   // Object which stores all the current fields in the TextInput fields
   const input: QueryInput = {
@@ -237,6 +252,8 @@ export default function addContactScreen() {
           placeholderTextColor = 'gray'/>
 
       </View>
+
+      <DropdownComponent/> 
 
       <TouchableOpacity style={Styles.button} 
         onPress={() => changeDatabase(contactId, input)}>
