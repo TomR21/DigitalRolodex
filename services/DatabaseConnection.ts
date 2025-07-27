@@ -89,13 +89,76 @@ class DatabaseManager {
     if ( !this.connection ) {
       throw new Error('Database not connected. Call connect() first.');
     }
-    
+
     // Log all errors created for unsuccessful query
     try {
       await this.connection.runAsync(query)
       console.log("Performed query: ", query)
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  
+  /** Creates a new database to export  */
+  public async createExportDatabase() {
+    try {
+      // Create a new database file for export
+      const exportDb = SQLite.openDatabaseSync('export_database.db')
+      
+      // Get all table schemas from original database
+      const tables = await this.executeReadQuery('SELECT name, sql FROM sqlite_master WHERE type="table"')
+      
+      // For each table check existence and delete it when present
+      for (const table of tables) {
+
+        const foundTable = exportDb.getAllSync(`SELECT name FROM sqlite_master WHERE type='table' AND name='${table.name}'`)
+        
+        if ( foundTable ) {
+          try {
+            exportDb.execSync(`DROP TABLE IF EXISTS ${table.name}`)
+            console.log('Table ', table.name, ' has been dropped')
+          } catch (dropError) {
+            console.warn(`Could not drop table ${table.name}:`, dropError)
+          }
+        }
+      }
+
+      // Copy data from each table and put into new database
+      for (const table of tables) {
+        const tableName = table.name;
+
+        // Rereate table structure from copied database
+        if (table.sql) {
+          exportDb.execSync(table.sql);
+        }
+
+        // Create new tables
+        if (tableName !== 'sqlite_sequence') { // Skip system tables
+          const rows = await this.executeReadQuery(`SELECT * FROM ${tableName}`);
+          
+          if (rows.length > 0) {
+            // Get column names
+            const columns = Object.keys(rows[0]);
+            const placeholders = columns.map(() => '?').join(', ');
+            const columnNames = columns.join(', ');
+            
+            const insertSQL = `INSERT INTO ${tableName} (${columnNames}) VALUES (${placeholders})`;
+            
+            // Insert all rows
+            for (const row of rows) {
+              const values = columns.map(col => row[col]);
+              exportDb.runSync(insertSQL, values);
+            }
+          }
+        }
+      }
+    
+      // Close export database
+      exportDb.closeSync();
+    
+    } catch (error) {
+      console.error('Error creating export database:', error);
     }
   }
 

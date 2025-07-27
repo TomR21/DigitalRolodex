@@ -8,25 +8,19 @@ import { Styles } from '@/constants/Styles';
 import DB from '@/services/DatabaseConnection';
 
 
-/** Closes the database connection and provides a share option for all database files */
-async function shareDB() {
+/** Creates export database and provides a share option for export database files */
+async function shareDB(): Promise<void> {
   try {
-    // Check current journalling mode for testing purposes (cannot share only contactData while in WAL mode)
-    const journalMode = await DB.executeReadQuery('PRAGMA journal_mode');
-    console.log('Journal mode:', journalMode);
 
-    // Close the database connection first
-    DB.disconnect()
-
-    // Merge -wal and -shm files with core database
-    // Then need for searching all separate files goes away
+    // Create copy of current database info
+    await DB.createExportDatabase()
 
     // Wait for file system to sync
     await new Promise(resolve => setTimeout(resolve, 500));
     
     // Directory of SQL database files
     const sqliteDir = `${FileSystem.documentDirectory}SQLite`;
-    const baseFileName = 'contactData';
+    const baseFileName = 'export_database'; //contactData
     
     // Check for all possible SQLite files including WAL and SHM files for full backup
     const possibleFiles = [
@@ -53,14 +47,12 @@ async function shareDB() {
         }
       }
     }
+
   } catch (error) {
     console.error('Error exporting database files:', error);
   }
 
-  // Reopen connection to the database
-  DB.connect()
-
-};
+}
 
 
 function settingScreen() {
