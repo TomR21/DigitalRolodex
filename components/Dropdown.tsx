@@ -5,9 +5,14 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { Tag } from '@/constants/Types';
 import { Colors } from "../constants/Colors";
 
+// Input property types
+interface inputProps {
+  tagData: Array<Tag>,   
+  onChange: React.Dispatch<React.SetStateAction<Tag>>
+}
 
 /** Component which displays all tag names and saves the chosen option. Default is the first option. */
-const DropdownComponent = ({ tagData }: { tagData: Array<Tag>}) => {
+const DropdownComponent = ({ tagData, onChange }: inputProps) => {
 
   const [value, setValue] = useState<Tag>(tagData[0])
 
@@ -34,7 +39,7 @@ const DropdownComponent = ({ tagData }: { tagData: Array<Tag>}) => {
           valueField="id"
           placeholder={'Select relation'}
           value={value}
-          onChange={tag => {setValue(tag);console.log(tag)} }
+          onChange={tag => {setValue(tag);onChange(tag);console.log(tag)} }
           renderItem={renderItem}
       />
     </View>

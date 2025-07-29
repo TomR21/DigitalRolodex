@@ -56,7 +56,7 @@ export default function addContactScreen() {
   const [recentEvents, setRecentEvents] = React.useState<string|null>(null);
   const [notes, setNotes]               = React.useState<string|null>(null);
 
-  const [tag, setTag]                   = React.useState<Number>(0);
+  const [tag, setTag]                   = React.useState<Tag>(data[0]);
   
   // Object which stores all the current fields in the TextInput fields
   const input: QueryInput = {
@@ -248,7 +248,7 @@ export default function addContactScreen() {
 
       </View>
 
-      <DropdownComponent tagData={data}/> 
+      <DropdownComponent tagData={data} onChange={setTag}/> 
 
       <TouchableOpacity style={Styles.button} 
         onPress={() => changeDatabase(contactId, input)}>
