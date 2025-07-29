@@ -2,29 +2,22 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 
+import { Tag } from '@/constants/Types';
 import { Colors } from "../constants/Colors";
 
-interface Data {
-  label: string, 
-  value: Number
-}
 
-const data = [
-{ label: 'Unspecified', value: 0 },
-{ label: 'Vriend', value: 1 },
-{ label: 'Collega', value: 2 }
-];
+/** Component which displays all tag names and saves the chosen option. Default is the first option. */
+const DropdownComponent = ({ tagData }: { tagData: Array<Tag>}) => {
 
-//
-const DropdownComponent = () => {
-  const [value, setValue] = useState<null|Number>(null);
+  const [value, setValue] = useState<Tag>(tagData[0])
 
-  const renderItem = (item: Data) => {
-    const isSelected = item.value === value;
+  // Change color to white of currently selected tag
+  const renderItem = (tag: Tag) => {
+    const isSelected = tag.id === value.id;
 
     return (
     <View style={styles.container}>
-      <Text style={[styles.itemText, isSelected && styles.selectedTextStyle]}> {item.label} </Text>
+      <Text style={[styles.itemText, isSelected && styles.selectedTextStyle]}> {tag.tag_name} </Text>
     </View>
   )}
 
@@ -35,13 +28,13 @@ const DropdownComponent = () => {
           containerStyle={styles.container}
           placeholderStyle={styles.itemText}
           selectedTextStyle={styles.selectedTextStyle}
-          data={data}
+          data={tagData}
           maxHeight={300}
-          labelField="label"
-          valueField="value"
+          labelField="tag_name"
+          valueField="id"
           placeholder={'Select relation'}
           value={value}
-          onChange={item => {setValue(item.value)} }
+          onChange={tag => {setValue(tag);console.log(tag)} }
           renderItem={renderItem}
       />
     </View>

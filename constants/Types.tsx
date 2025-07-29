@@ -44,6 +44,11 @@ export interface Card {
     name: string
 }
 
+export interface Tag {
+  id: Number,
+  tag_name: string
+}
+
 export interface BirthdayInfo {
   id: string,
   name: string,

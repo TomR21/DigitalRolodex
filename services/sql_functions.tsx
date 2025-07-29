@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 
-import { BirthdayInfo, Card, LastMetData, QueryInput, QueryOutput, RecentEventsData } from '@/constants/Types';
+import { BirthdayInfo, Card, LastMetData, QueryInput, QueryOutput, RecentEventsData, Tag } from '@/constants/Types';
 import DB from '@/services/DatabaseConnection';
 
 // Create a database connection at the opening of the application. 
@@ -111,6 +111,18 @@ export async function getCardsFromDatabase() {
 
   // Obtain id and ordered name from all contacts 
   const query = `SELECT id, name FROM test ORDER BY name`
+  allRows = await DB.executeReadQuery(query)
+
+  return allRows;
+}
+
+/** Function to obtain all tag ids and tag names from SQL database  */
+export async function getTagsFromDatabase() {
+  // Array to store the Card objects retrieved from the query
+  let allRows: Array<Tag>;
+
+  // Obtain id and ordered name from all contacts 
+  const query = `SELECT id, tag_name FROM tag ORDER BY id`
   allRows = await DB.executeReadQuery(query)
 
   return allRows;

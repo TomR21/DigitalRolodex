@@ -4,20 +4,15 @@ import { Text, TextInput, TouchableOpacity, View } from "react-native";
 
 import DropdownComponent from '@/components/Dropdown';
 import { Styles } from "@/constants/Styles";
-import { QueryInput } from '@/constants/Types';
+import { QueryInput, Tag } from '@/constants/Types';
 import { addToDatabase, editDatabase, getFromDatabase } from '@/services/sql_functions';
 
 
-const data = [
-  { label: 'Item 1', value: '1' },
-  { label: 'Item 2', value: '2' },
-  { label: 'Item 3', value: '3' },
-  { label: 'Item 4', value: '4' },
-  { label: 'Item 5', value: '5' },
-  { label: 'Item 6', value: '6' },
-  { label: 'Item 7', value: '7' },
-  { label: 'Item 8', value: '8' },
-];
+const data: Array<Tag> = [
+  { tag_name: 'Unspecified', id: 1 },
+  { tag_name: 'Vriend', id: 2 },
+  { tag_name: 'Collega', id: 3 },
+]
 
 
 /** Decider function to add new user or edit information based on contactId existence */
@@ -253,7 +248,7 @@ export default function addContactScreen() {
 
       </View>
 
-      <DropdownComponent/> 
+      <DropdownComponent tagData={data}/> 
 
       <TouchableOpacity style={Styles.button} 
         onPress={() => changeDatabase(contactId, input)}>
