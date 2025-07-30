@@ -1,15 +1,12 @@
-import * as SQLite from 'expo-sqlite';
-
+import DB from '@/services/DatabaseConnection';
 
 export async function addColumnToDatabase(name: string) {
-  const db = await SQLite.openDatabaseAsync('contactData');
 
-  const query = `ALTER TABLE test ADD COLUMN ${name};`;
+  //const query = `ALTER TABLE tag ADD COLUMN ${name} INTEGER;`;
   //const query = `ALTER TABLE test DROP COLUMN tag_id;`
   //const query = `ALTER TABLE test ADD COLUMN tag_id INTEGER REFERENCES tag(id);`
-  //const query = `UPDATE test SET tag_id = 1 WHERE name='A';`
-  const result = await db.execAsync(query).catch(err => console.log(err));
-  //const result = await db.getAllAsync(query).catch(err => console.log(err));
-  //console.log(result.lastInsertRowId, result.changes)
+  const query = `UPDATE tag SET notify_number_days = 90;`
+  const result = await DB.executeWriteQuery(query)
+
   console.log(result)
 }

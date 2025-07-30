@@ -154,7 +154,9 @@ export async function getRecentEventsFromDatabase() {
 export async function getLastMetDateFromDatabase() {
   let allRows: Array<LastMetData>
 
-  const query = `SELECT id, name, last_met_date FROM test WHERE last_met_date IS NOT NULL`
+  const query = `SELECT test.id, test.name, test.last_met_date, tag.notify_recently_met, tag.notify_number_days 
+  FROM test INNER JOIN tag on tag.id = test.tag_id 
+  WHERE test.last_met_date IS NOT NULL;`
   allRows = await DB.executeReadQuery(query)
 
   return allRows;
@@ -165,7 +167,6 @@ export async function removeFromDatabase(contactId: string) {
   
   console.log("About to delete: ", contactId)
 
-  // `getAllAsync()` is useful when you want to get all results as an array of objects.
   const query = `DELETE FROM test WHERE id=${contactId}`
   await DB.executeWriteQuery(query)
 }

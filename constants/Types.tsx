@@ -21,9 +21,9 @@ export interface QueryInput {
 
 // Interface to store all data retrieved from a row of the SQL database
 export interface QueryOutput {
-  id: Number,
+  id: number,
   name: string,
-  tag_id: Number,
+  tag_id: number,
   birthday: string | null,
   address: string | null,
   location: string | null, 
@@ -73,5 +73,7 @@ export interface LastMetData {
   id: string,
   name: string,
   last_met_date: string,  // null not allowed because only entered birthday entries are considered
-  daysDiff?: number
+  daysDiff?: number,
+  notify_recently_met: boolean,
+  notify_number_days: number
 }

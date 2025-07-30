@@ -75,7 +75,7 @@ class DatabaseManager {
     // Log all errors created for unsuccessful query
     try {
       const results = await this.connection.getAllAsync(query)
-      console.log("Obtained results: ", results)
+      //console.log("Obtained results: ", results)
       return results
     } catch (error) {
       console.log(error)

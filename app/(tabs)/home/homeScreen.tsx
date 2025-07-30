@@ -94,16 +94,18 @@ function findHighDaysLastMet(lastMetRawData: Array<LastMetData>) {
   // Loop over every contact
   let contact: LastMetData;
   for (contact of lastMetRawData) {
-
+    
     // Obtain the number of days between today and contact's birthday
     const daysDiff = findDaysDifference(contact["last_met_date"]) 
 
     // Add to text if birthday is within the next or previous 30 days
-    if ( Math.abs(daysDiff) > 50) {
-      const res = {id: contact.id, name: contact.name, last_met_date: contact.last_met_date, daysDiff: daysDiff}
+    if ( contact.notify_recently_met && Math.abs(daysDiff) > contact.notify_number_days) {
+      const res = {id: contact.id, name: contact.name, last_met_date: contact.last_met_date, daysDiff: daysDiff, 
+        notify_recently_met: contact.notify_recently_met, notify_number_days: contact.notify_number_days}
       lastMetArray.push(res)
       }
-  }
+  } 
+  console.log("Array: ", lastMetArray)
 
   return lastMetArray
 }
@@ -159,7 +161,7 @@ function Index() {
 
       <View style={displayStyle.divider} />
 
-      {/* Create a list of events taking place this month */}
+      {/* Create list of people seen longer ago then tag notify date */}
       <Text style={Styles.text}>Long Time No See </Text>
       <FlatList
         data={lastMetData}

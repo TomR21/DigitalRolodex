@@ -59,7 +59,10 @@ function settingScreen() {
   return (
     <View style={Styles.background}>
       <Text style={Styles.text}> Setting 1 </Text>
-      <Button title="Share DB" onPress={() => shareDB()}/>  
+      <Button title="Share DB" onPress={() => shareDB()}/> 
+
+      {/* <Button title = "Add Col" onPress={() => addColumnToDatabase("notify_number_days")}/>  */}
+
     </View>
   );
 }

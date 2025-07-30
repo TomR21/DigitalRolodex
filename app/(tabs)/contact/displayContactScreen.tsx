@@ -44,7 +44,7 @@ export default function displayContactScreen() {
   const { contactId } = useLocalSearchParams<{ contactId: string }>();
   
   // Use state to hold contact data
-  const initialData = {id:0, name:"", birthday:"", address:"", location:"", celnumber:"", email:"", job:"", employer:"",
+  const initialData = {id:0, name:"", tag_id:0, birthday:"", address:"", location:"", celnumber:"", email:"", job:"", employer:"",
     know_from:"", know_from_date:"", last_met_date:"", hobbies:"", goals:"", wishes:"", recent_events:"", notes:""}
   const [contactData, setContactData] = React.useState<Array<QueryOutput>>([initialData]);
 
