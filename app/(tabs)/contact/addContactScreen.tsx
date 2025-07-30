@@ -5,14 +5,12 @@ import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import DropdownComponent from '@/components/Dropdown';
 import { Styles } from "@/constants/Styles";
 import { QueryInput, Tag } from '@/constants/Types';
-import { addToDatabase, editDatabase, getFromDatabase } from '@/services/sql_functions';
+import { addToDatabase, editDatabase, getFromDatabase, getTagsFromDatabase } from '@/services/sql_functions';
 
 
-const data: Array<Tag> = [
-  { tag_name: 'Unspecified', id: 1 },
-  { tag_name: 'Vriend', id: 2 },
-  { tag_name: 'Collega', id: 3 },
-]
+//
+// AFMAKEN TAG_ID OPHALEN EN WEER VERANDEREN BIJ EDITS
+//
 
 
 /** Decider function to add new user or edit information based on contactId existence */
@@ -56,11 +54,13 @@ export default function addContactScreen() {
   const [recentEvents, setRecentEvents] = React.useState<string|null>(null);
   const [notes, setNotes]               = React.useState<string|null>(null);
 
-  const [tag, setTag]                   = React.useState<Tag>(data[0]);
+  const [tagData, setTagData]           = React.useState<Array<Tag>>([{id:0, tag_name: "empty"}])
+  const [tag, setTag]                   = React.useState<Tag>(tagData[0]);
   
   // Object which stores all the current fields in the TextInput fields
   const input: QueryInput = {
     name: name,
+    tag_id: tag.id,
     birthday: birthday,
     address: address,
     location: location,
@@ -81,9 +81,14 @@ export default function addContactScreen() {
   // Load all information upon visiting the screen
   React.useEffect(() => {
     const fetchDataAsync = async () => {
-      // Get SQL data from row corresponding to contactId 
-      const sqlData = await getFromDatabase(contactId); 
+      // Fetch current tags and save them for dropdown
+      const tagData = await getTagsFromDatabase()
+      console.log(tagData)
+      setTagData(tagData)
 
+      // Get SQL data from row corresponding to contactId 
+      const sqlData = await getFromDatabase(contactId)
+      
       console.log("Will fill the fields with: ", sqlData)
 
       // Set all the text fields to current data 
@@ -103,6 +108,7 @@ export default function addContactScreen() {
       setWishes(sqlData[0].wishes)
       setRecentEvents(sqlData[0].recent_events)
       setNotes(sqlData[0].notes)
+      setTag({id: sqlData[0].tag_id, tag_name: ""})
     };
     
     fetchDataAsync();
@@ -248,7 +254,7 @@ export default function addContactScreen() {
 
       </View>
 
-      <DropdownComponent tagData={data} onChange={setTag}/> 
+      <DropdownComponent tagData={tagData} currTag={tag} onChange={setTag}/> 
 
       <TouchableOpacity style={Styles.button} 
         onPress={() => changeDatabase(contactId, input)}>
@@ -258,4 +264,3 @@ export default function addContactScreen() {
     </View>
   )
 };
-

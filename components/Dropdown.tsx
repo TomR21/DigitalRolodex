@@ -1,24 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 
 import { Tag } from '@/constants/Types';
 import { Colors } from "../constants/Colors";
 
-// Input property types
+// Input property types, needs currently selected value to be present in parent component
 interface inputProps {
   tagData: Array<Tag>,   
+  currTag: Tag,
   onChange: React.Dispatch<React.SetStateAction<Tag>>
 }
 
 /** Component which displays all tag names and saves the chosen option. Default is the first option. */
-const DropdownComponent = ({ tagData, onChange }: inputProps) => {
-
-  const [value, setValue] = useState<Tag>(tagData[0])
+const DropdownComponent = ({ tagData, currTag, onChange }: inputProps) => {
 
   // Change color to white of currently selected tag
   const renderItem = (tag: Tag) => {
-    const isSelected = tag.id === value.id;
+    const isSelected = tag.id === currTag.id;
 
     return (
     <View style={styles.container}>
@@ -38,8 +37,8 @@ const DropdownComponent = ({ tagData, onChange }: inputProps) => {
           labelField="tag_name"
           valueField="id"
           placeholder={'Select relation'}
-          value={value}
-          onChange={tag => {setValue(tag);onChange(tag);console.log(tag)} }
+          value={currTag}
+          onChange={tag => {onChange(tag);console.log(tag)} }
           renderItem={renderItem}
       />
     </View>

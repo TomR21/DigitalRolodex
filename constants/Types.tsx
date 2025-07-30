@@ -1,6 +1,7 @@
 // Interface to store all data to put in the SQL database
 export interface QueryInput {
   name: string,
+  tag_id: Number,
   birthday: string | null,
   address: string | null,
   location: string | null,
@@ -20,8 +21,9 @@ export interface QueryInput {
 
 // Interface to store all data retrieved from a row of the SQL database
 export interface QueryOutput {
-  id: number,
+  id: Number,
   name: string,
+  tag_id: Number,
   birthday: string | null,
   address: string | null,
   location: string | null, 

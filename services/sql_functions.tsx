@@ -24,9 +24,9 @@ export async function addToDatabase(input: QueryInput) {
 
   // Query to add all values into corresponding table
   const query = `INSERT INTO test 
-    (name, birthday, address, location, celnumber, email, job, employer, know_from, know_from_date, last_met_date, 
+    (name, tag_id, birthday, address, location, celnumber, email, job, employer, know_from, know_from_date, last_met_date, 
     hobbies, goals, wishes, recent_events, notes) 
-    VALUES (${SQL_input.name}, ${SQL_input.birthday}, ${SQL_input.address}, ${SQL_input.location}, ${SQL_input.celnumber}, 
+    VALUES (${SQL_input.name}, ${SQL_input.tag_id}, ${SQL_input.birthday}, ${SQL_input.address}, ${SQL_input.location}, ${SQL_input.celnumber}, 
     ${SQL_input.email}, ${SQL_input.job}, ${SQL_input.employer}, ${SQL_input.knowFrom}, ${SQL_input.knowFromDate}, ${SQL_input.lastMetDate}, 
     ${SQL_input.hobbies}, ${SQL_input.goals}, ${SQL_input.wishes}, ${SQL_input.recentEvents}, ${SQL_input.notes});`;
 
@@ -45,6 +45,7 @@ export async function editDatabase(contactId: string, input: QueryInput) {
   const query = `UPDATE test 
     SET
     name =          ${SQL_input.name},
+    tag_id =        ${SQL_input.tag_id},
     birthday =      ${SQL_input.birthday},
     address =       ${SQL_input.address},
     location =      ${SQL_input.location},
