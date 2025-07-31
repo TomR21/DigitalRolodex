@@ -1,4 +1,5 @@
 import * as SQLite from 'expo-sqlite';
+import { Alert } from 'react-native';
 
 // Filename of the SQL database
 const databaseFilename = 'contactData'
@@ -42,7 +43,7 @@ class DatabaseManager {
     }  
   }
 
-  /** Tries connecting to the SQL database when not already connected */
+  /** Tries connecting to the SQLite database when not already connected */
   public disconnect(): null {
     // End function if there is no connection
     if ( !this.connection ) {
@@ -75,10 +76,16 @@ class DatabaseManager {
     // Log all errors created for unsuccessful query
     try {
       const results = await this.connection.getAllAsync(query)
-      //console.log("Obtained results: ", results)
       return results
     } catch (error) {
+      
+      // Show error message in console and app
       console.log(error)
+      Alert.alert('Execution Failed', 'Was not able to execute query:\n' + query + '\n\n' + error, [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+      }]);
       return []
     }
   }
@@ -95,7 +102,14 @@ class DatabaseManager {
       await this.connection.runAsync(query)
       console.log("Performed query: ", query)
     } catch (error) {
+      
+      // Show error message in console and app
       console.log(error)
+      Alert.alert('Execution Failed', 'Was not able to execute query:\n' + query + '\n\n' + error, [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+      }]);
     }
   }
 
