@@ -86,29 +86,31 @@ export default function addContactScreen() {
       console.log(tagData)
       setTagData(tagData)
 
-      // Get SQL data from row corresponding to contactId 
-      const sqlData = await getFromDatabase(contactId)
-      
-      console.log("Will fill the fields with: ", sqlData)
+      // Get SQLite data from row corresponding to contactId if passed through
+      if ( contactId !== undefined) { 
+        const sqlData = await getFromDatabase(contactId)
+        
+        console.log("Will fill the fields with: ", sqlData)
 
-      // Set all the text fields to current data 
-      setName(sqlData[0].name)
-      setBirthday(sqlData[0].birthday)
-      setAddress(sqlData[0].address)
-      setLocation(sqlData[0].location)
-      setCelnumber(sqlData[0].celnumber)
-      setEmail(sqlData[0].email)
-      setJob(sqlData[0].job)
-      setEmployer(sqlData[0].employer)
-      setKnowFrom(sqlData[0].know_from)
-      setKnowFromDate(sqlData[0].know_from_date)
-      setLastMetDate(sqlData[0].last_met_date)
-      setHobbies(sqlData[0].hobbies)
-      setGoals(sqlData[0].goals)
-      setWishes(sqlData[0].wishes)
-      setRecentEvents(sqlData[0].recent_events)
-      setNotes(sqlData[0].notes)
-      setTag({id: sqlData[0].tag_id, tag_name: ""})
+        // Set all the text fields to current data 
+        setName(sqlData[0].name)
+        setBirthday(sqlData[0].birthday)
+        setAddress(sqlData[0].address)
+        setLocation(sqlData[0].location)
+        setCelnumber(sqlData[0].celnumber)
+        setEmail(sqlData[0].email)
+        setJob(sqlData[0].job)
+        setEmployer(sqlData[0].employer)
+        setKnowFrom(sqlData[0].know_from)
+        setKnowFromDate(sqlData[0].know_from_date)
+        setLastMetDate(sqlData[0].last_met_date)
+        setHobbies(sqlData[0].hobbies)
+        setGoals(sqlData[0].goals)
+        setWishes(sqlData[0].wishes)
+        setRecentEvents(sqlData[0].recent_events)
+        setNotes(sqlData[0].notes)
+        setTag({id: sqlData[0].tag_id, tag_name: ""})
+      }
     };
     
     fetchDataAsync();
