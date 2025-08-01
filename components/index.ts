@@ -1,4 +1,5 @@
+import DropdownComponent from "./Dropdown";
 import VerticalBarBox from "./VerticalBarBox";
 
-export { VerticalBarBox };
+export { DropdownComponent, VerticalBarBox };
 

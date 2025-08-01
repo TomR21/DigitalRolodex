@@ -1,9 +1,10 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TextInput, View } from "react-native";
 
-import DropdownComponent from '@/components/Dropdown';
-import { Styles } from "@/constants/Styles";
+import { DropdownComponent, VerticalBarBox } from '@/components';
+import { Colors } from '@/constants/Colors';
+import { Styles, displayStyle } from "@/constants/Styles";
 import { QueryInput, Tag } from '@/constants/Types';
 import { addToDatabase, editDatabase, getFromDatabase, getTagsFromDatabase } from '@/services/sql_functions';
 
@@ -113,151 +114,138 @@ export default function addContactScreen() {
 
   // Return addContactScreen element
   return (
-    <View style={Styles.background}>
+     <ScrollView contentContainerStyle={displayStyle.scrollContainer}>
+      <View style={displayStyle.card}>
 
-      <Text style={Styles.text}> Enter Personal Information </Text> 
-      <View>
+        <DropdownComponent tagData={tagData} currTag={tag} onChange={setTag}/>
 
-      <View style= {Styles.textInputPlacing}>
-        <View style = {Styles.textInputBox}>
-        <TextInput  style = {Styles.textInput}
+        {/* Header with name and job */}
+        <View style={displayStyle.headerSection}>
+          <TextInput  style = {{...displayStyle.name}}
             onChangeText={name => setName(name)}
             value={name}
             placeholder="Enter Name"
             placeholderTextColor = 'gray' />
+          <View style={{...displayStyle.roleBadge, flexDirection: "row", alignItems: "center"}}>
+            <TextInput style = {Styles.textInput}
+              onChangeText={job => setJob(job)}
+              value={job ?? undefined}
+              placeholder="Enter Job"
+              placeholderTextColor = 'gray'/>
+            <Text style={displayStyle.roleText}> @ </Text>
+            <TextInput style = {Styles.textInput}
+              onChangeText={employer => setEmployer(employer)}
+              value={employer ?? undefined}
+              placeholder="Enter Employer"
+              placeholderTextColor = 'gray'/>
+          </View>
         </View>
-        <View style = {Styles.textInputBox}>
-        <TextInput style = {Styles.textInput} 
-            onChangeText={birthday => setBirthday(birthday)}
-            value={birthday ?? undefined}
-            placeholder="Enter Birthday"
-            placeholderTextColor = 'gray'/>
-        </View>
-      </View>
 
-      <View style = {Styles.textInputPlacing}>
-        <View style = {Styles.textInputBox}>
-        <TextInput style = {Styles.textInput}
-            onChangeText={address => setAddress(address)}
-            value={address ?? undefined}
-            placeholder="Enter Address"
-            placeholderTextColor = 'gray'/>
-        </View>
-        <View style = {Styles.textInputBox}>
-        <TextInput style = {Styles.textInput}
-            onChangeText={location => setLocation(location)}
-            value={location ?? undefined}
-            placeholder="Enter Living Location"
-            placeholderTextColor = 'gray'/>
-        </View>
-      </View>
+        <View style={displayStyle.divider} />
 
-      <View style = {Styles.textInputPlacing}>
-        <View style = {Styles.textInputBox}>
-        <TextInput style = {Styles.textInput}
-            onChangeText={celnumber => setCelnumber(celnumber)}
-            value={celnumber ?? undefined}
-            placeholder="Enter Celphone Number"
-            placeholderTextColor = 'gray'/>
+        {/* Display birthday and other timestamps labels and values side by side*/}
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={{...displayStyle.label, width: '30%'}}>Birthday</Text>
+          <TextInput style = {Styles.textInput} 
+              onChangeText={birthday => setBirthday(birthday)}
+              value={birthday ?? undefined}
+              placeholder="DD-MM-YYYY"
+              placeholderTextColor = 'gray'/>
         </View>
-        <View style = {Styles.textInputBox}>
-        <TextInput style = {Styles.textInput}
-            onChangeText={email => setEmail(email)}
-            value={email ?? undefined}
-            placeholder="Enter Email"
-            placeholderTextColor = 'gray'/>
-        </View>
-      </View>
-
-      <View style = {Styles.textInputPlacing}>
-        <View style = {Styles.textInputBox}>
-        <TextInput style = {Styles.textInput}
-            onChangeText={job => setJob(job)}
-            value={job ?? undefined}
-            placeholder="Enter Job"
-            placeholderTextColor = 'gray'/>
-        </View>
-        <View style = {Styles.textInputBox}>
-        <TextInput style = {Styles.textInput}
-            onChangeText={employer => setEmployer(employer)}
-            value={employer ?? undefined}
-            placeholder="Enter Employer"
-            placeholderTextColor = 'gray'/>
-        </View>
-      </View>
-
-      <View style = {Styles.textInputPlacing}>
-        <View style = {Styles.textInputBox}>
-        <TextInput style = {Styles.textInput}
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={{...displayStyle.label, width: '30%'}}>First Met</Text>
+          <TextInput style = {Styles.textInput}
             onChangeText={knowFrom => setKnowFrom(knowFrom)}
             value={knowFrom ?? undefined}
-            placeholder="Eerste ontmoeting"
+            placeholder="Where Met"
             placeholderTextColor = 'gray'/>
-        </View>
-        <View style = {Styles.textInputBox}>
-        <TextInput style = {Styles.textInput}
+          <TextInput style = {Styles.textInput}
             onChangeText={knowFromDate => setKnowFromDate(knowFromDate)}
             value={knowFromDate ?? undefined}
-            placeholder="Datum Eerste Ontmoeting"
+            placeholder="DD-MM-YYYY"
             placeholderTextColor = 'gray'/>
         </View>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={{...displayStyle.label, width: '30%'}}>Last Met</Text>
+          <TextInput style = {Styles.textInput}
+            onChangeText={lastMetDate => setLastMetDate(lastMetDate)}
+            value={lastMetDate ?? undefined}
+            placeholder="Enter Last Met Date"
+            placeholderTextColor = 'gray'/>
+        </View>
+
+        <View style={displayStyle.divider}/>
+
+        {/* Display contact info labels and values side by side*/}
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={{...displayStyle.label, width: '30%'}}>Phone</Text>
+          <TextInput style = {Styles.textInput}
+              onChangeText={celnumber => setCelnumber(celnumber)}
+              value={celnumber ?? undefined}
+              placeholder="Enter Celphone Number"
+              placeholderTextColor = 'gray'/>
+        </View>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={{...displayStyle.label, width: '30%'}}>Email</Text>
+          <TextInput style = {Styles.textInput}
+              onChangeText={email => setEmail(email)}
+              value={email ?? undefined}
+              placeholder="Enter Email"
+              placeholderTextColor = 'gray'/>
+        </View>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={{...displayStyle.label, width: '30%'}}>Address</Text>
+          <TextInput style = {Styles.textInput}
+              onChangeText={address => setAddress(address)}
+              value={address ?? undefined}
+              placeholder="Enter Address"
+              placeholderTextColor = 'gray'/>
+        </View>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={{...displayStyle.label, width: '30%'}}>Location</Text>
+          <TextInput style = {Styles.textInput}
+              onChangeText={location => setLocation(location)}
+              value={location ?? undefined}
+              placeholder="Enter Living Location"
+              placeholderTextColor = 'gray'/>
+        </View>
+
+        <View style={[displayStyle.divider, { marginVertical: 24 }]} />
+
+        {/* Creates boxes with vertical bars for multiline text data */}
+        <VerticalBarBox 
+          header="Recent Events"
+          rawText="recent events"
+          emoji="👀"  
+          color = {Colors.magenta}/>
+          
+        <VerticalBarBox 
+          header="Hobbies"
+          rawText="hobbies"
+          emoji="⚽️"  
+          color = {Colors.blue}/>
+
+        <VerticalBarBox 
+          header="Wishes"
+          rawText="wishes"
+          emoji="🎁"  
+          color = {Colors.orange}/>
+
+        <VerticalBarBox 
+          header="Goals"
+          rawText="goals"
+          emoji="🎯"  
+          color = {Colors.teal}/>
+
+        <VerticalBarBox 
+          header="Notes"
+          rawText="notes"
+          emoji="🗒️"  
+          color = {Colors.amber}/>
+
       </View>
+    </ScrollView>
 
-      <View style = {Styles.textInputPlacing}>
-        <View style = {Styles.textInputBox}>
-        <TextInput style = {Styles.textInput}
-            onChangeText={notes => setNotes(notes)}
-            value={notes ?? undefined}
-            placeholder="Enter Notes"
-            placeholderTextColor = 'gray'/>
-        </View>
-        <View style = {Styles.textInputBox}>
-        <TextInput style = {Styles.textInput}
-            onChangeText={hobbies => setHobbies(hobbies)}
-            value={hobbies ?? undefined}
-            placeholder="Enter Hobbies"
-            placeholderTextColor = 'gray'/>
-        </View>
-      </View>
-
-      <View style = {Styles.textInputPlacing}>
-        <View style = {Styles.textInputBox}>
-        <TextInput style = {Styles.textInput} 
-            onChangeText={goals => setGoals(goals)}
-            value={goals ?? undefined}
-            placeholder="Enter Goals"
-            placeholderTextColor = 'gray'/>
-        </View>
-        <View style = {Styles.textInputBox}>
-        <TextInput style = {Styles.textInput}
-            onChangeText={wishes => setWishes(wishes)}
-            value={wishes ?? undefined}
-            placeholder="Enter Wishes"
-            placeholderTextColor = 'gray'/>
-        </View>
-      </View>
-
-      <TextInput style = {Styles.textInput}
-          onChangeText={recentEvents => setRecentEvents(recentEvents)}
-          value={recentEvents ?? undefined}
-          placeholder="Enter Recent Events"
-          placeholderTextColor = 'gray'/>
-
-      <TextInput style = {Styles.textInput}
-          onChangeText={lastMetDate => setLastMetDate(lastMetDate)}
-          value={lastMetDate ?? undefined}
-          placeholder="Enter Last Met Date"
-          placeholderTextColor = 'gray'/>
-
-      </View>
-
-      <DropdownComponent tagData={tagData} currTag={tag} onChange={setTag}/> 
-
-      <TouchableOpacity style={Styles.button} 
-        onPress={() => changeDatabase(contactId, input)}>
-        <Text style={Styles.text}> Save Information </Text>
-      </TouchableOpacity>
-
-    </View>
+    
   )
 };

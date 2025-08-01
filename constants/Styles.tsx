@@ -63,7 +63,7 @@ export const Styles = StyleSheet.create({
   },
   textInputBox: {
     flex: 0.5,
-    height: 40
+    //height: 40
   },
   textInputPlacing: {
     flexDirection: "row"
