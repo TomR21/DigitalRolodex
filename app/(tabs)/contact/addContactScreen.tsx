@@ -8,11 +8,6 @@ import { QueryInput, Tag } from '@/constants/Types';
 import { addToDatabase, editDatabase, getFromDatabase, getTagsFromDatabase } from '@/services/sql_functions';
 
 
-//
-// AFMAKEN TAG_ID OPHALEN EN WEER VERANDEREN BIJ EDITS
-//
-
-
 /** Decider function to add new user or edit information based on contactId existence */
 async function changeDatabase(contactId: string, input: QueryInput) {
   

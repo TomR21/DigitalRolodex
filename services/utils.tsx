@@ -1,4 +1,4 @@
-import DB from '@/services/DatabaseConnection';
+import DB from '@/services/DatabaseManager';
 
 export async function addColumnToDatabase(name: string) {
 

@@ -1,10 +1,5 @@
-import * as SQLite from 'expo-sqlite';
-
 import { BirthdayInfo, Card, LastMetData, QueryInput, QueryOutput, RecentEventsData, Tag } from '@/constants/Types';
-import DB from '@/services/DatabaseConnection';
-
-// Create a database connection at the opening of the application. 
-const db = SQLite.openDatabaseSync('contactData');
+import DB from '@/services/DatabaseManager';
 
 
 /** Converts null and empty strings to null values and adds quotations to string.

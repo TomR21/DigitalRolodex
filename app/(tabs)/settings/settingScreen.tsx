@@ -5,7 +5,7 @@ import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 
 import { Styles } from '@/constants/Styles';
-import DB from '@/services/DatabaseConnection';
+import DB from '@/services/DatabaseManager';
 
 
 /** Creates export database and provides a share option for export database files */
