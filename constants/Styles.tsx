@@ -63,7 +63,7 @@ export const Styles = StyleSheet.create({
   },
   textInputBox: {
     flex: 0.5,
-    //height: 40
+    height: 20
   },
   textInputPlacing: {
     flexDirection: "row"
@@ -127,6 +127,7 @@ export const displayStyle = StyleSheet.create({
     fontSize: 16,
     color: Colors.white,
     lineHeight: 22,
+    paddingVertical: 0,   // Remove vertical padding to shrink <TextInput> height to <Text>  
   },
   notesContainer: {
     flexDirection: 'row',

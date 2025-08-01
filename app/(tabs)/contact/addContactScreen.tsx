@@ -1,6 +1,6 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from "react";
-import { ScrollView, Text, TextInput, View } from "react-native";
+import { ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 import { DropdownComponent, VerticalBarBox } from '@/components';
 import { Colors } from '@/constants/Colors';
@@ -146,20 +146,20 @@ export default function addContactScreen() {
         {/* Display birthday and other timestamps labels and values side by side*/}
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>Birthday</Text>
-          <TextInput style = {Styles.textInput} 
-              onChangeText={birthday => setBirthday(birthday)}
-              value={birthday ?? undefined}
-              placeholder="DD-MM-YYYY"
-              placeholderTextColor = 'gray'/>
+          <TextInput style = {displayStyle.text} 
+            onChangeText={birthday => setBirthday(birthday)}
+            value={birthday ?? undefined}
+            placeholder="DD-MM-YYYY"
+            placeholderTextColor = 'gray'/>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>First Met</Text>
-          <TextInput style = {Styles.textInput}
+          <TextInput style = {displayStyle.text}
             onChangeText={knowFrom => setKnowFrom(knowFrom)}
             value={knowFrom ?? undefined}
             placeholder="Where Met"
             placeholderTextColor = 'gray'/>
-          <TextInput style = {Styles.textInput}
+          <TextInput style = {displayStyle.text}
             onChangeText={knowFromDate => setKnowFromDate(knowFromDate)}
             value={knowFromDate ?? undefined}
             placeholder="DD-MM-YYYY"
@@ -167,7 +167,7 @@ export default function addContactScreen() {
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>Last Met</Text>
-          <TextInput style = {Styles.textInput}
+          <TextInput style = {displayStyle.text}
             onChangeText={lastMetDate => setLastMetDate(lastMetDate)}
             value={lastMetDate ?? undefined}
             placeholder="Enter Last Met Date"
@@ -179,7 +179,7 @@ export default function addContactScreen() {
         {/* Display contact info labels and values side by side*/}
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>Phone</Text>
-          <TextInput style = {Styles.textInput}
+          <TextInput style = {displayStyle.text}
               onChangeText={celnumber => setCelnumber(celnumber)}
               value={celnumber ?? undefined}
               placeholder="Enter Celphone Number"
@@ -187,7 +187,7 @@ export default function addContactScreen() {
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>Email</Text>
-          <TextInput style = {Styles.textInput}
+          <TextInput style = {displayStyle.text}
               onChangeText={email => setEmail(email)}
               value={email ?? undefined}
               placeholder="Enter Email"
@@ -195,7 +195,7 @@ export default function addContactScreen() {
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>Address</Text>
-          <TextInput style = {Styles.textInput}
+          <TextInput style = {displayStyle.text}
               onChangeText={address => setAddress(address)}
               value={address ?? undefined}
               placeholder="Enter Address"
@@ -203,7 +203,7 @@ export default function addContactScreen() {
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>Location</Text>
-          <TextInput style = {Styles.textInput}
+          <TextInput style = {displayStyle.text}
               onChangeText={location => setLocation(location)}
               value={location ?? undefined}
               placeholder="Enter Living Location"
@@ -211,7 +211,6 @@ export default function addContactScreen() {
         </View>
 
         <View style={[displayStyle.divider, { marginVertical: 24 }]} />
-
         {/* Creates boxes with vertical bars for multiline text data */}
         <VerticalBarBox 
           header="Recent Events"
@@ -242,8 +241,13 @@ export default function addContactScreen() {
           rawText="notes"
           emoji="🗒️"  
           color = {Colors.amber}/>
-
       </View>
+
+      <TouchableOpacity style={Styles.button} 
+        onPress={() => changeDatabase(contactId, input)}>
+        <Text style={Styles.text}> Save Information </Text>
+      </TouchableOpacity>
+
     </ScrollView>
 
     
