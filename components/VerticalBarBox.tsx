@@ -28,7 +28,7 @@ const  VerticalBarBox = ({header, rawText, emoji, color}: InputTypes) => (
       <View style={{...displayStyle.verticalBarNotes, backgroundColor: color}} />
         <View style={displayStyle.notesContent}>
         <Text style={displayStyle.label}>{header}</Text>
-        <Text style={displayStyle.text}>{makeMultilineText(rawText, ".", emoji)}</Text>
+        <Text style={displayStyle.text}>{makeMultilineText(rawText, "\n", emoji)}</Text>
       </View>
     </View>
 ) 

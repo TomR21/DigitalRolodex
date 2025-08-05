@@ -2,12 +2,14 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from "react";
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 
-import { DropdownComponent, VerticalBarBox } from '@/components';
+import { DropdownComponent, VerticalBarInputBox } from '@/components';
 import { Colors } from '@/constants/Colors';
 import { Styles, displayStyle } from "@/constants/Styles";
 import { QueryInput, Tag } from '@/constants/Types';
 import { addToDatabase, editDatabase, getFromDatabase, getTagsFromDatabase } from '@/services/sql_functions';
 
+
+//TODO: Move page up when keyboard is active (otherwise bottom input not visible) 
 
 /** Decider function to add new user or edit information based on contactId existence */
 async function changeDatabase(contactId: string, input: QueryInput) {
@@ -212,35 +214,36 @@ export default function addContactScreen() {
 
         <View style={[displayStyle.divider, { marginVertical: 24 }]} />
         {/* Creates boxes with vertical bars for multiline text data */}
-        <VerticalBarBox 
-          header="Recent Events"
-          rawText="recent events"
-          emoji="👀"  
-          color = {Colors.magenta}/>
+        
+        <VerticalBarInputBox
+          header="Recent Events [DD-MM-YYYY]"
+          color = {Colors.magenta}
+          rawText={recentEvents}
+          onChange={setRecentEvents}/>
           
-        <VerticalBarBox 
+        <VerticalBarInputBox
           header="Hobbies"
-          rawText="hobbies"
-          emoji="⚽️"  
-          color = {Colors.blue}/>
+          color = {Colors.blue}
+          rawText={hobbies}
+          onChange={setHobbies}/>
 
-        <VerticalBarBox 
+        <VerticalBarInputBox
           header="Wishes"
-          rawText="wishes"
-          emoji="🎁"  
-          color = {Colors.orange}/>
+          color = {Colors.orange}
+          rawText={wishes}
+          onChange={setWishes}/>
 
-        <VerticalBarBox 
+        <VerticalBarInputBox
           header="Goals"
-          rawText="goals"
-          emoji="🎯"  
-          color = {Colors.teal}/>
+          color = {Colors.teal}
+          rawText={goals}
+          onChange={setGoals}/>
 
-        <VerticalBarBox 
+        <VerticalBarInputBox
           header="Notes"
-          rawText="notes"
-          emoji="🗒️"  
-          color = {Colors.amber}/>
+          color = {Colors.amber}
+          rawText={notes}
+          onChange={setNotes}/>
       </View>
 
       <TouchableOpacity style={Styles.button} 
