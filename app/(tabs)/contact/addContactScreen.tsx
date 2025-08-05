@@ -1,6 +1,6 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from "react";
-import { ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 import { DropdownComponent, VerticalBarInputBox } from '@/components';
 import { Colors } from '@/constants/Colors';
@@ -114,8 +114,13 @@ export default function addContactScreen() {
     fetchDataAsync();
   }, []);
 
-  // Return addContactScreen element
+  // Return addContactScreen element. Wrap Scrollview inside KeyboardAvoidingView
+  // to ensure all inputs are visible with keyboard active
   return (
+    <KeyboardAvoidingView 
+      style={Styles.background}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+
      <ScrollView contentContainerStyle={displayStyle.scrollContainer}>
       <View style={displayStyle.card}>
 
@@ -253,6 +258,6 @@ export default function addContactScreen() {
 
     </ScrollView>
 
-    
+  </KeyboardAvoidingView>
   )
 };
