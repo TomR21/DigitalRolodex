@@ -10,3 +10,10 @@ export async function addColumnToDatabase(name: string) {
 
   console.log(result)
 }
+
+// Replaces part of a string of a column for all entries of the database
+export async function updateDatabase() {
+  const query = `UPDATE test SET notes = replace(notes, '.', '\n');`  //column, old, new
+  await DB.executeWriteQuery(query)
+  console.log("Done")
+}

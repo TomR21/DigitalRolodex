@@ -53,7 +53,7 @@ function findSoonEvents(recentEventsData: Array<RecentEventsData>) {
   // Loop over every contact to find applicable events with date
   for (contact of recentEventsData) {
     
-    const recentEvents = contact["recent_events"].split(".")
+    const recentEvents = contact["recent_events"].split("\n")
     
     // For every event check if it contains a date 
     for (recentEvent of recentEvents) {
