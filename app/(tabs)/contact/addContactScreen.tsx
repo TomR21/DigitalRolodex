@@ -13,19 +13,23 @@ import { addToDatabase, editDatabase, getFromDatabase, getTagsFromDatabase } fro
 
 /** Decider function to add new user or edit information based on contactId existence */
 async function changeDatabase(contactId: string, input: QueryInput) {
-  
+  // Do not go back to previous page upon saving unless query is performed successfully
+  var success = false;
+
   // Create new row when not directed to screen with contactId, else edit
   if (contactId === undefined) {
     console.log("Creating addition query")
-    await addToDatabase(input)
+    success = await addToDatabase(input)
   } else {
     console.log("Creating edit query")
-    await editDatabase(contactId, input)
+    success = await editDatabase(contactId, input)
   }
 
-  // Go back to page where we came from
-  const router = useRouter()
-  router.back()
+  // Go back to page where we came from when database has been changed
+  if ( success ) {
+    const router = useRouter()
+    router.back()
+  }
 }
 
 

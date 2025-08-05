@@ -11,7 +11,7 @@ function sqlTypeConverter (value: string | null) {
 }
 
 /** Adds info from input to SQL database */
-export async function addToDatabase(input: QueryInput) {
+export async function addToDatabase(input: QueryInput): Promise<boolean> {
   console.log("Trying to save information...")
   
   // Convert every contact property except contactId to either null or string with single quotation marks
@@ -26,12 +26,13 @@ export async function addToDatabase(input: QueryInput) {
     ${SQL_input.hobbies}, ${SQL_input.goals}, ${SQL_input.wishes}, ${SQL_input.recentEvents}, ${SQL_input.notes});`;
 
   // Execute query
-  await DB.executeWriteQuery(query)
+  const isPerformed = await DB.executeWriteQuery(query)
   console.log("Saved info")
+  return isPerformed
 }
 
 /** Change the row corresponding to contactId with all the supplied information (overrides all information) */
-export async function editDatabase(contactId: string, input: QueryInput) { 
+export async function editDatabase(contactId: string, input: QueryInput): Promise<boolean> { 
   // Convert every contact property except contactId to either null or string with single quotation marks
   let SQL_input = Object.fromEntries(Object.entries(input).map(([key, value]) => [key, sqlTypeConverter(value)]))
   console.log(SQL_input)
@@ -59,8 +60,9 @@ export async function editDatabase(contactId: string, input: QueryInput) {
     WHERE id = ${contactId};`;
 
   // Execute query and log errors or succes
-  DB.executeWriteQuery(query)
+  const isPerformed = await DB.executeWriteQuery(query)
   console.log("Changed info")
+  return isPerformed;
 }
 
 /** Change the row corresponding to contactId with all the supplied information (overrides all information) */

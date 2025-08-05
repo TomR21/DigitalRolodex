@@ -91,19 +91,24 @@ class DatabaseManager {
   }
 
   /** Executes write queries like INSERT, UPDATE and DELETE */
-  public async executeWriteQuery(query: string): Promise<void> {
+  public async executeWriteQuery(query: string): Promise<boolean> {
     // Throw error when there is no connection
     if ( !this.connection ) {
       throw new Error('Database not connected. Call connect() first.');
     }
 
+    // Return variable to let function know if query has been performed 
+    var isPerformed;
+
     // Log all errors created for unsuccessful query
     try {
       await this.connection.runAsync(query)
+      isPerformed = true;
       console.log("Performed query: ", query)
     } catch (error) {
       
       // Show error message in console and app
+      isPerformed = false;
       console.log(error)
       Alert.alert('Execution Failed', 'Was not able to execute query:\n' + query + '\n\n' + error, [
         {
@@ -111,6 +116,7 @@ class DatabaseManager {
           style: 'cancel',
       }]);
     }
+    return isPerformed
   }
 
   
