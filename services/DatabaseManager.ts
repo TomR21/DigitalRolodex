@@ -1,3 +1,4 @@
+import { drizzle } from 'drizzle-orm/expo-sqlite';
 import * as SQLite from 'expo-sqlite';
 import { Alert } from 'react-native';
 
@@ -34,6 +35,7 @@ class DatabaseManager {
     // Try to connect to database and else throw error 
     try {
       this.connection = SQLite.openDatabaseSync(databaseFilename);
+      const db = drizzle(this.connection);
       this.isConnected = true;
       console.log('Database connected successfully');
       return this.connection;
