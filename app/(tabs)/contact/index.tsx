@@ -82,6 +82,7 @@ export default function contactScreen() {
         onScrollBeginDrag={() => {
               Keyboard.dismiss()} // disable keyboard on scroll (automatically puts search bar out of focus)
         }
+        keyboardShouldPersistTaps="always" // click on card directly with open keyboard 
         renderItem={({item, index}) => (
           <ClickableContact
             title={item.name}
