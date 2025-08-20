@@ -1,5 +1,3 @@
-import { contactTable } from '@/db/schema';
-import { drizzle } from 'drizzle-orm/expo-sqlite';
 import * as SQLite from 'expo-sqlite';
 import { Alert } from 'react-native';
 
@@ -80,9 +78,9 @@ class DatabaseManager {
       const results = await this.connection.getAllAsync(query)
       
       // Get results using drizzle
-      const drizzDB = drizzle(this.connection);
-      const users = await drizzDB.select().from(contactTable);
-      console.log("Drizzie\n", users)
+      //const drizzDB = drizzle(this.connection);
+      //const users = await drizzDB.select().from(contactTable);
+      //console.log("Drizzie\n", users)
 
       return results
     } catch (error) {

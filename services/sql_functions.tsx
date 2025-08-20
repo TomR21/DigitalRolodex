@@ -1,5 +1,9 @@
-import { BirthdayInfo, Card, LastMetData, QueryInput, QueryOutput, RecentEventsData, Tag } from '@/constants/Types';
+import { BirthdayInfo, Card, LastMetData, QueryInput, RecentEventsData, Tag } from '@/constants/Types';
+import { contactTable } from '@/db/schema';
 import DB from '@/services/DatabaseManager';
+import { eq } from 'drizzle-orm';
+import { drizzle } from 'drizzle-orm/expo-sqlite';
+
 
 
 /** Converts null and empty strings to null values and adds quotations to string.
@@ -90,16 +94,22 @@ export async function editLastMetInDatabase(contactId: string) {
   console.log("Changed Last Met Date to " + todayDate)
 }
 
-/** Function to obtain all contact info from specific contact from SQL database  */
-export async function getFromDatabase(contactId: string) {
+/** Function to obtain all contact info from specific contact from SQL database */
+export async function getFromDatabase(contactId: string): Promise<typeof contactTable.$inferSelect> {
   // Array to store the data_row objects retrieved from the query
-  let allRows: Array<QueryOutput>;
+  var allRows: typeof contactTable.$inferSelect[]
+  
+  // Establish database connection when not connected
+  if ( !DB.connection ) {
+    DB.connect()
+  }
 
-  // Obtain all information from specific contact
-  const query = `SELECT * FROM test WHERE id=${contactId}`
-  allRows = await DB.executeReadQuery(query)
-
-  return allRows;
+  // Retrieve all user info from contactId
+  const drizzDB = drizzle(DB.connection!)
+  allRows = await drizzDB.select().from(contactTable).where(eq(contactTable.id, Number(contactId)))
+  
+  // As contactId is unique there will always be only 1 item
+  return allRows[0]
 }
 
 /** Function to obtain contact id and name from SQL database  */

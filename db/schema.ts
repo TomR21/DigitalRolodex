@@ -1,9 +1,9 @@
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const contactTable = sqliteTable("test", {
-  id: int('id').primaryKey(),
+  id: int('id').primaryKey().notNull(),
   tag_id: int('tag_id').notNull().references(() => tagTable.id),
-  name: text('name').notNull(),
+  name: text().notNull(),
   birthday: text(),
   location: text(),
   address: text(),

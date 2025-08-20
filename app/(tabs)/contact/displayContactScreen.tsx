@@ -5,7 +5,7 @@ import { ScrollView, Text, View } from "react-native";
 import { VerticalBarBox } from '@/components';
 import { Colors } from '@/constants/Colors';
 import { displayStyle } from '@/constants/Styles';
-import { QueryOutput } from '@/constants/Types';
+import { contactTable } from '@/db/schema';
 import { findDaysDifference, findYearsDifference } from '@/services/datetimeFunctions';
 import { getFromDatabase } from '@/services/sql_functions';
 
@@ -45,8 +45,9 @@ export default function displayContactScreen() {
   
   // Use state to hold contact data
   const initialData = {id:0, name:"", tag_id:0, birthday:"", address:"", location:"", celnumber:"", email:"", job:"", employer:"",
-    know_from:"", know_from_date:"", last_met_date:"", hobbies:"", goals:"", wishes:"", recent_events:"", notes:""}
-  const [contactData, setContactData] = React.useState<Array<QueryOutput>>([initialData]);
+    know_from:"", know_from_date:"", last_met_date:"", hobbies:"", goals:"", wishes:"", recent_events:"", notes:"", linkedin:""}
+  //const [contactData, setContactData] = React.useState<Array<QueryOutput>>([initialData]);
+  const [contactData, setContactData] = React.useState<typeof contactTable.$inferSelect>(initialData);
 
   // Obtain the list of all contacts each time the screen is in focus 
   useFocusEffect(
@@ -71,10 +72,10 @@ export default function displayContactScreen() {
 
         {/* Header with name and job */}
         <View style={displayStyle.headerSection}>
-          <Text style={displayStyle.name}> {contactData[0].name} </Text>
+          <Text style={displayStyle.name}> {contactData.name} </Text>
           <View style={displayStyle.roleBadge}>
             <Text style={displayStyle.roleText}>
-              {contactData[0].job} @ {contactData[0].employer}
+              {contactData.job} @ {contactData.employer}
             </Text>
           </View>
         </View>
@@ -85,16 +86,16 @@ export default function displayContactScreen() {
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>Birthday</Text>
           <Text adjustsFontSizeToFit={true} numberOfLines={1} style={displayStyle.text}>
-            {contactData[0].birthday} {makeAgeHeader(contactData[0].birthday)}</Text>
+            {contactData.birthday} {makeAgeHeader(contactData.birthday)}</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>First Met</Text>
-          <Text adjustsFontSizeToFit={true} numberOfLines={1} style={displayStyle.text}>{contactData[0].know_from} {contactData[0].know_from_date}</Text>
+          <Text adjustsFontSizeToFit={true} numberOfLines={1} style={displayStyle.text}>{contactData.know_from} {contactData.know_from_date}</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>Last Met</Text>
           <Text adjustsFontSizeToFit={true} numberOfLines={1} style={displayStyle.text}>
-            {contactData[0].last_met_date} {makeLastMetHeader(contactData[0].last_met_date)}</Text>
+            {contactData.last_met_date} {makeLastMetHeader(contactData.last_met_date)}</Text>
         </View>
 
         <View style={displayStyle.divider}/>
@@ -102,19 +103,19 @@ export default function displayContactScreen() {
         {/* Display contact info labels and values side by side*/}
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>Phone</Text>
-          <Text adjustsFontSizeToFit={true} numberOfLines={1} style={displayStyle.text}>{contactData[0].celnumber}</Text>
+          <Text adjustsFontSizeToFit={true} numberOfLines={1} style={displayStyle.text}>{contactData.celnumber}</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>Email</Text>
-          <Text adjustsFontSizeToFit={true} numberOfLines={1} style={displayStyle.text}>{contactData[0].email}</Text>
+          <Text adjustsFontSizeToFit={true} numberOfLines={1} style={displayStyle.text}>{contactData.email}</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>Address</Text>
-          <Text adjustsFontSizeToFit={true} numberOfLines={1} style={displayStyle.text}>{contactData[0].address}</Text>
+          <Text adjustsFontSizeToFit={true} numberOfLines={1} style={displayStyle.text}>{contactData.address}</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>Location</Text>
-          <Text adjustsFontSizeToFit={true} numberOfLines={1} style={displayStyle.text}>{contactData[0].location}</Text>
+          <Text adjustsFontSizeToFit={true} numberOfLines={1} style={displayStyle.text}>{contactData.location}</Text>
         </View>
 
         <View style={[displayStyle.divider, { marginVertical: 24 }]} />
@@ -122,31 +123,31 @@ export default function displayContactScreen() {
         {/* Creates boxes with vertical bars for multiline text data */}
         <VerticalBarBox 
           header="Recent Events"
-          rawText={contactData[0].recent_events}
+          rawText={contactData.recent_events}
           emoji="👀"  
           color = {Colors.magenta}/>
           
         <VerticalBarBox 
           header="Hobbies"
-          rawText={contactData[0].hobbies}
+          rawText={contactData.hobbies}
           emoji="⚽️"  
           color = {Colors.blue}/>
 
         <VerticalBarBox 
           header="Wishes"
-          rawText={contactData[0].wishes}
+          rawText={contactData.wishes}
           emoji="🎁"  
           color = {Colors.orange}/>
 
         <VerticalBarBox 
           header="Goals"
-          rawText={contactData[0].goals}
+          rawText={contactData.goals}
           emoji="🎯"  
           color = {Colors.teal}/>
 
         <VerticalBarBox 
           header="Notes"
-          rawText={contactData[0].notes}
+          rawText={contactData.notes}
           emoji="🗒️"  
           color = {Colors.amber}/>
 
