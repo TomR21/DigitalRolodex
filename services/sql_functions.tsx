@@ -174,8 +174,14 @@ export async function removeFromDatabase(contactId: string) {
   
   console.log("About to delete: ", contactId)
 
-  const query = `DELETE FROM test WHERE id=${contactId}`
-  await DB.executeWriteQuery(query)
+  // Establish database connection when not connected
+  if ( !DB.connection ) {
+    DB.connect()
+  }
+
+  // Delete contact info from specific contactId
+  const drizzDB = drizzle(DB.connection!)
+  await drizzDB.delete(contactTable).where(eq(contactTable.id, Number(contactId)))
 }
 
 
