@@ -42,7 +42,7 @@ export interface QueryOutput {
 }
 
 export interface Card {
-    id: string,
+    id: number,
     name: string
 }
 

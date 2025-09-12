@@ -86,8 +86,8 @@ export default function contactScreen() {
         renderItem={({item, index}) => (
           <ClickableContact
             title={item.name}
-            onPress={() => openDisplayContactScreen(item.id)}
-            onLongPress={() => alertChangeLastMet(item.id, item.name)}
+            onPress={() => openDisplayContactScreen(item.id.toString())}
+            onLongPress={() => alertChangeLastMet(item.id.toString(), item.name)}
           />
         )
       }/>

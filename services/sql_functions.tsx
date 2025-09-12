@@ -1,7 +1,7 @@
-import { BirthdayInfo, Card, LastMetData, QueryInput, RecentEventsData, Tag } from '@/constants/Types';
-import { contactTable } from '@/db/schema';
+import { QueryInput } from '@/constants/Types';
+import { contactTable, tagTable } from '@/db/schema';
 import DB from '@/services/DatabaseManager';
-import { eq } from 'drizzle-orm';
+import { eq, isNotNull } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/expo-sqlite';
 
 
@@ -114,57 +114,87 @@ export async function getFromDatabase(contactId: string): Promise<typeof contact
 
 /** Function to obtain contact id and name from SQL database  */
 export async function getCardsFromDatabase() {
-  // Array to store the Card objects retrieved from the query
-  let allRows: Array<Card>;
+  
+  // Establish database connection when not connected
+  if ( !DB.connection ) {
+    DB.connect()
+  }
 
-  // Obtain id and ordered name from all contacts 
-  const query = `SELECT id, name FROM test ORDER BY name`
-  allRows = await DB.executeReadQuery(query)
+  // Retrieve all user info from contactId
+  const drizzDB = drizzle(DB.connection!)
+  const allRows = await drizzDB.select({id: contactTable.id, name: contactTable.name}).from(contactTable).orderBy(contactTable.name)
 
   return allRows;
 }
 
 /** Function to obtain all tag ids and tag names from SQL database  */
 export async function getTagsFromDatabase() {
-  // Array to store the Card objects retrieved from the query
-  let allRows: Array<Tag>;
 
-  // Obtain id and ordered name from all contacts 
-  const query = `SELECT id, tag_name FROM tag ORDER BY id`
-  allRows = await DB.executeReadQuery(query)
+  // Establish database connection when not connected
+  if ( !DB.connection ) {
+    DB.connect()
+  }
+
+  // Retrieve all tag ids and names from via Drizzle 
+  const drizzDB = drizzle(DB.connection!)
+  const allRows = await drizzDB.select({id: tagTable.id, tag_name: tagTable.tag_name}).from(tagTable).orderBy(tagTable.id)
 
   return allRows;
 }
 
 /** Function to obtain all contacts with non empty birthdays with id and name from SQL database  */
 export async function getBirthdaysFromDatabase() {
-  let allRows: Array<BirthdayInfo>
 
-  // Obtain id and ordered name from all contacts 
-  const query = `SELECT id, name, birthday FROM test WHERE birthday IS NOT NULL`
-  allRows = await DB.executeReadQuery(query)
+  // Establish database connection when not connected
+  if ( !DB.connection ) {
+    DB.connect()
+  }
+
+  // Retrieve all tag ids and names from via Drizzle 
+  const drizzDB = drizzle(DB.connection!)
+  const allRows = await drizzDB.select({id: contactTable.id, name: contactTable.name, birthday: contactTable.birthday})
+                    .from(contactTable).where(isNotNull(contactTable.birthday))
 
   return allRows;
 }
 
 /** Gets all ids, names and recent_events with non-empty event values */
 export async function getRecentEventsFromDatabase() {
-  let allRows: Array<RecentEventsData>
- 
-  const query = `SELECT id, name, recent_events FROM test WHERE recent_events IS NOT NULL`
-  allRows = await DB.executeReadQuery(query)
+
+  // Establish database connection when not connected
+  if ( !DB.connection ) {
+    DB.connect()
+  }
+
+  // Retrieve all tag ids and names from via Drizzle 
+  const drizzDB = drizzle(DB.connection!)
+  const allRows = await drizzDB.select({id: contactTable.id, name: contactTable.name, recent_events: contactTable.recent_events})
+                    .from(contactTable).where(isNotNull(contactTable.recent_events))
 
   return allRows;
 }
 
 /** Gets all ids, names and recent_events with non-empty event values */
 export async function getLastMetDateFromDatabase() {
-  let allRows: Array<LastMetData>
 
-  const query = `SELECT test.id, test.name, test.last_met_date, tag.notify_recently_met, tag.notify_number_days 
-  FROM test INNER JOIN tag on tag.id = test.tag_id 
-  WHERE test.last_met_date IS NOT NULL;`
-  allRows = await DB.executeReadQuery(query)
+   // Establish database connection when not connected
+  if ( !DB.connection ) {
+    DB.connect()
+  }
+
+  // All columns to be requested from the query
+  const columns = {
+    id: contactTable.id, 
+    name: contactTable.name, 
+    last_met_date: contactTable.last_met_date,
+    notify_recently_met: tagTable.notify_recently_met,
+    notify_number_days: tagTable.notify_number_days
+  }
+
+  // Retrieve all tag ids and names from via Drizzle 
+  const drizzDB = drizzle(DB.connection!)
+  const allRows = await drizzDB.select(columns).from(contactTable).innerJoin(tagTable, eq(contactTable.tag_id, tagTable.id))
+                    .where(isNotNull(contactTable.last_met_date))
 
   return allRows;
 }
