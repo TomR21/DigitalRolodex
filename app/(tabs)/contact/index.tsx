@@ -30,7 +30,7 @@ function alertChangeLastMet(contactId: string, contactName: string) {
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
-      {text: 'Change Date', onPress: () => editLastMetInDatabase(contactId)},
+      {text: 'Change Date', onPress: () => editLastMetInDatabase(Number(contactId))},
       
   ]);
 }

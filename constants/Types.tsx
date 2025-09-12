@@ -1,7 +1,7 @@
 // Interface to store all data to put in the SQL database
 export interface QueryInput {
   name: string,
-  tag_id: Number,
+  tag_id: number,
   birthday: string | null,
   address: string | null,
   location: string | null,
@@ -47,7 +47,7 @@ export interface Card {
 }
 
 export interface Tag {
-  id: Number,
+  id: number,
   tag_name: string
 }
 

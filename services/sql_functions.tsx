@@ -1,18 +1,8 @@
-import { QueryInput } from '@/constants/Types';
 import { contactTable, tagTable } from '@/db/schema';
 import DB from '@/services/DatabaseManager';
 import { eq, isNotNull } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/expo-sqlite';
 
-
-
-/** Converts null and empty strings to null values and adds quotations to string.
- *  Function is required to parse both null values and strings into 1 SQL statement. 
- */
-function sqlTypeConverter (value: string | null) {
-  const output: string|null = (value === null || value == "") ? null : `'${value}'`  
-  return output
-}
 
 /** Adds info from input to SQL database */
 export async function addToDatabase(input: typeof contactTable.$inferInsert): Promise<boolean> {
@@ -43,41 +33,35 @@ export async function addToDatabase(input: typeof contactTable.$inferInsert): Pr
 }
 
 /** Change the row corresponding to contactId with all the supplied information (overrides all information) */
-export async function editDatabase(contactId: string, input: QueryInput): Promise<boolean> { 
-  // Convert every contact property except contactId to either null or string with single quotation marks
-  let SQL_input = Object.fromEntries(Object.entries(input).map(([key, value]) => [key, sqlTypeConverter(value)]))
-  console.log(SQL_input)
+export async function editDatabase(contactId: number, input: typeof contactTable.$inferInsert): Promise<boolean> { 
+  
+  console.log("Trying to save information...")
 
-  // Query to add all values into corresponding table
-  const query = `UPDATE test 
-    SET
-    name =          ${SQL_input.name},
-    tag_id =        ${SQL_input.tag_id},
-    birthday =      ${SQL_input.birthday},
-    address =       ${SQL_input.address},
-    location =      ${SQL_input.location},
-    celnumber =     ${SQL_input.celnumber},
-    email =         ${SQL_input.email},
-    job =           ${SQL_input.job},
-    employer =      ${SQL_input.employer},
-    know_from =     ${SQL_input.knowFrom},
-    know_from_date= ${SQL_input.knowFromDate},
-    last_met_date = ${SQL_input.lastMetDate}, 
-    hobbies =       ${SQL_input.hobbies},
-    goals =         ${SQL_input.goals},
-    wishes =        ${SQL_input.wishes},
-    recent_events = ${SQL_input.recentEvents},
-    notes =         ${SQL_input.notes}
-    WHERE id = ${contactId};`;
+  // Establish database connection when not connected
+  if ( !DB.connection ) {
+    DB.connect()
+  }
+  const drizzDB = drizzle(DB.connection!)
 
-  // Execute query and log errors or succes
-  const isPerformed = await DB.executeWriteQuery(query)
-  console.log("Changed info")
-  return isPerformed;
+  // Set input to type of contact in Contact Table
+  type Contact = typeof contactTable.$inferInsert;
+  const newContact: Contact = input
+  
+  // Insert contact, keep track of status insertion
+  let isPerformed: boolean = false
+  try {
+    await drizzDB.update(contactTable).set(newContact).where(eq(contactTable.id, contactId))
+    isPerformed = true
+    console.log("Saved info")
+  } catch {
+    console.log("Error adding contact")
+  }
+
+  return isPerformed
 }
 
 /** Change the row corresponding to contactId with all the supplied information (overrides all information) */
-export async function editLastMetInDatabase(contactId: string) { 
+export async function editLastMetInDatabase(contactId: number) { 
   // Get current year, month and day
   const currDate = new Date()   // Date format: Mon 30 12 1991 23:55:14 GMT+0200
   const currYear = currDate.getFullYear().toString()
@@ -87,17 +71,15 @@ export async function editLastMetInDatabase(contactId: string) {
   // Convert to single string of format (DD-MM-YYYY)
   const todayDate = currDay + "-" + currMonth + "-" + currYear
 
-  // Convert to SQL compatible format
-  const sqlTodayDate = sqlTypeConverter(todayDate) 
+  // Establish database connection when not connected
+  if ( !DB.connection ) {
+    DB.connect()
+  }
+  const drizzDB = drizzle(DB.connection!)
 
-  // Query to add all values into corresponding table
-  const query = `UPDATE test 
-    SET
-    last_met_date = ${sqlTodayDate}
-    WHERE id = ${contactId};`;
+  // Update last met date for specific contact
+  await drizzDB.update(contactTable).set({last_met_date: todayDate}).where(eq(contactTable.id, contactId))
 
-  // Execute query and log errors or succes
-  await DB.executeWriteQuery(query)
   console.log("Changed Last Met Date to " + todayDate)
 }
 

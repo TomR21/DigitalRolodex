@@ -22,7 +22,7 @@ async function changeDatabase(contactId: string, input: QueryInput) {
     success = await addToDatabase(input)
   } else {
     console.log("Creating edit query")
-    success = await editDatabase(contactId, input)
+    success = await editDatabase(Number(contactId), input)
   }
 
   // Go back to page where we came from when database has been changed
