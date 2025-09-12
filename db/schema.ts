@@ -15,7 +15,7 @@ export const contactTable = sqliteTable("test", {
   goals: text(),
   recent_events: text(),
   linkedin: text(),
-  email: text('email'),
+  email: text(),
   notes: text(),
   know_from: text(),
   know_from_date: text(),

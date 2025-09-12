@@ -15,23 +15,30 @@ function sqlTypeConverter (value: string | null) {
 }
 
 /** Adds info from input to SQL database */
-export async function addToDatabase(input: QueryInput): Promise<boolean> {
+export async function addToDatabase(input: typeof contactTable.$inferInsert): Promise<boolean> {
+
   console.log("Trying to save information...")
+
+  // Establish database connection when not connected
+  if ( !DB.connection ) {
+    DB.connect()
+  }
+  const drizzDB = drizzle(DB.connection!)
+
+  // Set input to type of contact in Contact Table
+  type Contact = typeof contactTable.$inferInsert;
+  const newContact: Contact = input
   
-  // Convert every contact property except contactId to either null or string with single quotation marks
-  let SQL_input = Object.fromEntries(Object.entries(input).map(([key, value]) => [key, sqlTypeConverter(value)]))
+  // Insert contact, keep track of status insertion
+  let isPerformed: boolean = false
+  try {
+    await drizzDB.insert(contactTable).values(newContact)
+    isPerformed = true
+    console.log("Saved info")
+  } catch {
+    console.log("Error adding contact")
+  }
 
-  // Query to add all values into corresponding table
-  const query = `INSERT INTO test 
-    (name, tag_id, birthday, address, location, celnumber, email, job, employer, know_from, know_from_date, last_met_date, 
-    hobbies, goals, wishes, recent_events, notes) 
-    VALUES (${SQL_input.name}, ${SQL_input.tag_id}, ${SQL_input.birthday}, ${SQL_input.address}, ${SQL_input.location}, ${SQL_input.celnumber}, 
-    ${SQL_input.email}, ${SQL_input.job}, ${SQL_input.employer}, ${SQL_input.knowFrom}, ${SQL_input.knowFromDate}, ${SQL_input.lastMetDate}, 
-    ${SQL_input.hobbies}, ${SQL_input.goals}, ${SQL_input.wishes}, ${SQL_input.recentEvents}, ${SQL_input.notes});`;
-
-  // Execute query
-  const isPerformed = await DB.executeWriteQuery(query)
-  console.log("Saved info")
   return isPerformed
 }
 
@@ -108,6 +115,8 @@ export async function getFromDatabase(contactId: string): Promise<typeof contact
   const drizzDB = drizzle(DB.connection!)
   allRows = await drizzDB.select().from(contactTable).where(eq(contactTable.id, Number(contactId)))
   
+  console.log(allRows[0])
+
   // As contactId is unique there will always be only 1 item
   return allRows[0]
 }
