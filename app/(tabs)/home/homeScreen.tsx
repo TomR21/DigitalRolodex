@@ -21,6 +21,10 @@ function findBirthdaysThisMonth(birthdayData: Array<BirthdayInfo>) {
   let contact: BirthdayInfo;
   for (contact of birthdayData) {
 
+    if ( contact["birthday"] == null) {
+      continue
+    }
+
     // Obtain the number of days between today and contact's birthday
     const daysDiff = findDaysDifference(contact["birthday"]) 
 
@@ -53,6 +57,10 @@ function findSoonEvents(recentEventsData: Array<RecentEventsData>) {
   // Loop over every contact to find applicable events with date
   for (contact of recentEventsData) {
     
+    if ( contact["recent_events"] == null ) {
+      continue
+    }
+
     const recentEvents = contact["recent_events"].split("\n")
     
     // For every event check if it contains a date 
@@ -95,6 +103,9 @@ function findHighDaysLastMet(lastMetRawData: Array<LastMetData>) {
   let contact: LastMetData;
   for (contact of lastMetRawData) {
     
+    if ( contact["last_met_date"] == null ) {
+      continue
+    }
     // Obtain the number of days between today and contact's birthday
     const daysDiff = findDaysDifference(contact["last_met_date"]) 
 

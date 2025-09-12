@@ -25,6 +25,6 @@ export const contactTable = sqliteTable("test", {
 export const tagTable = sqliteTable("tag", {
   id: int().primaryKey(),
   tag_name: text().notNull(),  
-  notify_recently_met: int({ mode: 'boolean' }),
-  notify_number_days: int(),
+  notify_recently_met: int({ mode: 'boolean' }).notNull(),
+  notify_number_days: int().notNull(),
 });

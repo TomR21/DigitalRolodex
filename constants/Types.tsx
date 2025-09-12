@@ -52,15 +52,15 @@ export interface Tag {
 }
 
 export interface BirthdayInfo {
-  id: string,
+  id: number,
   name: string,
-  birthday: string // null not allowed because only entered birthday entries are considered
+  birthday: string | null // null not allowed because only entered birthday entries are considered
 }
 
 export interface RecentEventsData {
-  id: string,
+  id: number,
   name: string,
-  recent_events: string  // null not allowed because only entered birthday entries are considered
+  recent_events: string | null // null not allowed because only entered birthday entries are considered
 }
 
 export interface EventData {
@@ -70,9 +70,9 @@ export interface EventData {
 }
 
 export interface LastMetData {
-  id: string,
+  id: number,
   name: string,
-  last_met_date: string,  // null not allowed because only entered birthday entries are considered
+  last_met_date: string | null,  // null not allowed because only entered birthday entries are considered
   daysDiff?: number,
   notify_recently_met: boolean,
   notify_number_days: number
