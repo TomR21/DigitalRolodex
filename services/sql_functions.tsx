@@ -6,7 +6,7 @@ import { drizzle } from 'drizzle-orm/expo-sqlite';
 
 
 /** Adds info from input to SQL database */
-export async function addToDatabase(input: typeof contactTable.$inferInsert): Promise<boolean> {
+export async function addToDatabase(input: QueryInput): Promise<boolean> {
 
   console.log("Trying to save information...")
 
@@ -16,14 +16,32 @@ export async function addToDatabase(input: typeof contactTable.$inferInsert): Pr
   }
   const drizzDB = drizzle(DB.connection!)
 
-  // Set input to type of contact in Contact Table
+  // Convert field input data to sql column names
   type Contact = typeof contactTable.$inferInsert;
-  const newContact: Contact = input
+  const contactInfo: Contact = {
+    name :          input.name,
+    tag_id :        input.tag_id,
+    birthday :      input.birthday,
+    address :       input.address,
+    location :      input.location,
+    celnumber :     input.celnumber,
+    email :         input.email,
+    job :           input.job,
+    employer :      input.employer,
+    know_from :     input.knowFrom,
+    know_from_date: input.knowFromDate,
+    last_met_date : input.lastMetDate, 
+    hobbies :       input.hobbies,
+    goals :         input.goals,
+    wishes :        input.wishes,
+    recent_events : input.recentEvents,
+    notes :         input.notes,
+  }
   
   // Insert contact, keep track of status insertion
   let isPerformed: boolean = false
   try {
-    await drizzDB.insert(contactTable).values(newContact)
+    await drizzDB.insert(contactTable).values(contactInfo)
     isPerformed = true
     console.log("Saved info")
   } catch {
