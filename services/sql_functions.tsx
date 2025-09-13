@@ -1,3 +1,4 @@
+import { QueryInput } from '@/constants/Types';
 import { contactTable, tagTable } from '@/db/schema';
 import DB from '@/services/DatabaseManager';
 import { eq, isNotNull } from 'drizzle-orm';
@@ -33,7 +34,7 @@ export async function addToDatabase(input: typeof contactTable.$inferInsert): Pr
 }
 
 /** Change the row corresponding to contactId with all the supplied information (overrides all information) */
-export async function editDatabase(contactId: number, input: typeof contactTable.$inferInsert): Promise<boolean> { 
+export async function editDatabase(contactId: number, input: QueryInput): Promise<boolean> { 
   
   console.log("Trying to save information...")
 
@@ -43,14 +44,32 @@ export async function editDatabase(contactId: number, input: typeof contactTable
   }
   const drizzDB = drizzle(DB.connection!)
 
-  // Set input to type of contact in Contact Table
+  // Convert field input data to sql column names
   type Contact = typeof contactTable.$inferInsert;
-  const newContact: Contact = input
+  const contactInfo: Contact = {
+    name :          input.name,
+    tag_id :        input.tag_id,
+    birthday :      input.birthday,
+    address :       input.address,
+    location :      input.location,
+    celnumber :     input.celnumber,
+    email :         input.email,
+    job :           input.job,
+    employer :      input.employer,
+    know_from :     input.knowFrom,
+    know_from_date: input.knowFromDate,
+    last_met_date : input.lastMetDate, 
+    hobbies :       input.hobbies,
+    goals :         input.goals,
+    wishes :        input.wishes,
+    recent_events : input.recentEvents,
+    notes :         input.notes,
+  }
   
   // Insert contact, keep track of status insertion
   let isPerformed: boolean = false
   try {
-    await drizzDB.update(contactTable).set(newContact).where(eq(contactTable.id, contactId))
+    await drizzDB.update(contactTable).set(contactInfo).where(eq(contactTable.id, contactId))
     isPerformed = true
     console.log("Saved info")
   } catch {
@@ -247,5 +266,5 @@ export async function createDatabase() {
   INSERT INTO tag (tag_name, notify_recently_met) VALUES ('Vriend', 1);
   INSERT INTO tag (tag_name, notify_recently_met) VALUES ('Collega', 0);`
 
-  await DB.executeWriteQuery(createContactQuery);
+  //await DB.executeWriteQuery(createContactQuery);
 } 

@@ -54,7 +54,6 @@ class DatabaseManager {
     try {
       this.connection.closeSync();
       console.log(this.connection)
-      console.log(typeof(this.connection))
       this.isConnected = false;
       this.connection = null
       console.log('Database connected successfully');
@@ -64,7 +63,6 @@ class DatabaseManager {
       throw error;
     }  
   }
-
 
   /** Executes read-only queries */
   public async executeReadQuery(query: string): Promise<any[]> {
@@ -76,12 +74,6 @@ class DatabaseManager {
     // Log all errors created for unsuccessful query
     try {
       const results = await this.connection.getAllAsync(query)
-      
-      // Get results using drizzle
-      //const drizzDB = drizzle(this.connection);
-      //const users = await drizzDB.select().from(contactTable);
-      //console.log("Drizzie\n", users)
-
       return results
     } catch (error) {
       
@@ -96,36 +88,6 @@ class DatabaseManager {
     }
   }
 
-  /** Executes write queries like INSERT, UPDATE and DELETE */
-  public async executeWriteQuery(query: string): Promise<boolean> {
-    // Throw error when there is no connection
-    if ( !this.connection ) {
-      throw new Error('Database not connected. Call connect() first.');
-    }
-
-    // Return variable to let function know if query has been performed 
-    var isPerformed;
-
-    // Log all errors created for unsuccessful query
-    try {
-      await this.connection.runAsync(query)
-      isPerformed = true;
-      console.log("Performed query: ", query)
-    } catch (error) {
-      
-      // Show error message in console and app
-      isPerformed = false;
-      console.log(error)
-      Alert.alert('Execution Failed', 'Was not able to execute query:\n' + query + '\n\n' + error, [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-      }]);
-    }
-    return isPerformed
-  }
-
-  
   /** Creates a new database to export  */
   public async createExportDatabase() {
     try {
