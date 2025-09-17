@@ -8,7 +8,7 @@ import { Colors } from '@/constants/Colors';
 
 /** Opens the displayContactScreen */
 function openAddContactScreen(router: Router) {
-  router.push("../contact/addContactScreen")
+  router.push("../contact/AddContactScreen")
 }
 
 /** Context from search bar that will be passed on to contact list for filtering */
@@ -85,7 +85,7 @@ const StackLayout = () => {
 
           }}/>
     
-        <Stack.Screen name="addContactScreen" options={{title: "Add Contact Information"}}/>
+        <Stack.Screen name="AddContactScreen" options={{title: "Add Contact Information"}}/>
         
         <Stack.Screen name="DisplayContactScreen" 
           options = {{

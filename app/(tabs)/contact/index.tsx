@@ -50,7 +50,7 @@ function dataFilter(dataArray: Array<Card>, search: string) {
 }
 
 
-export default function contactScreen() {
+export default function ContactScreen() {
   
   // Holds all card information: (name, id) of all contacts
   const [data, setData] = React.useState<Array<Card>>([]);

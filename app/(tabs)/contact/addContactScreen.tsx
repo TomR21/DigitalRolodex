@@ -32,7 +32,7 @@ async function changeDatabase(router: Router, contactId: string, input: QueryInp
 }
 
 
-export default function addContactScreen() {
+export default function AddContactScreen() {
 
   // Retrieve passed contactId parameter   
   const { contactId } = useLocalSearchParams<{ contactId: string }>();

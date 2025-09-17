@@ -55,7 +55,7 @@ async function shareDB(): Promise<void> {
 }
 
 
-function settingScreen() {
+function SettingScreen() {
   return (
     <View style={Styles.background}>
       <Text style={Styles.text}> Setting 1 </Text>
@@ -67,4 +67,4 @@ function settingScreen() {
   );
 }
 
-export default settingScreen;
+export default SettingScreen;

@@ -13,7 +13,7 @@ import { getFromDatabase, removeFromDatabase } from '@/services/sql_functions';
 
 /** Pushes user to addContactScreen with contactId to edit info */
 function openEditContactScreen(router: Router, contactId: string) {
-  router.push({pathname: "../contact/addContactScreen", params: {contactId: contactId}})
+  router.push({pathname: "../contact/AddContactScreen", params: {contactId: contactId}})
 }
 
 /** Deletes contact in SQL database and goes back to previous screen */
