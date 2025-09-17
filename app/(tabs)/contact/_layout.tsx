@@ -1,41 +1,14 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Stack, useGlobalSearchParams, useRouter } from 'expo-router';
+import { Router, Stack, useRouter } from 'expo-router';
 import { createContext, useContext, useState } from 'react';
-import { Alert, Text, TextInput, View } from 'react-native';
+import { Text, TextInput, View } from 'react-native';
 
 import { Colors } from '@/constants/Colors';
-import { removeFromDatabase } from '@/services/sql_functions';
 
 
 /** Opens the displayContactScreen */
-function openAddContactScreen() {
-  const router = useRouter();
+function openAddContactScreen(router: Router) {
   router.push("../contact/addContactScreen")
-}
-
-/** Pushes user to addContactScreen with contactId to edit info */
-function openEditContactScreen(contactId: string) {
-  const router = useRouter()
-  router.push({pathname: "../contact/addContactScreen", params: {contactId: contactId}})
-}
-
-/** Creates an alert window to confirm if the info corresponding contactId needs to be removed  */
-function contactDeletionAlert(contactId: string) {
-  Alert.alert('Delete Contact Information', 'Are you sure you want to delete all the information about this contact?', [
-      {
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-      },
-      {text: 'Delete', onPress: () => deleteContact(contactId)},
-  ]);
-}
-
-/** Deletes contact in SQL database and goes back to previous screen */
-async function deleteContact(contactId: string) {
-  await removeFromDatabase(contactId)
-  const router = useRouter()
-  router.back()
 }
 
 /** Context from search bar that will be passed on to contact list for filtering */
@@ -81,8 +54,8 @@ function SearchBar() {
 
 
 const StackLayout = () => {
-  // Obtain current contactId if passed through
-  const { contactId } = useGlobalSearchParams<{ contactId: string }>();
+  // use router to navigate to other screens 
+  const router = useRouter();
 
   return ( 
     <SearchProvider>
@@ -107,27 +80,16 @@ const StackLayout = () => {
             // Display an add contact button (+) on the right of the header
             headerRight: () => (
               <FontAwesome.Button size={24} name="user-plus" color={Colors.white} backgroundColor={Colors.gray} underlayColor={Colors.gray} 
-                onPress={() => openAddContactScreen()}/>
+                onPress={() => openAddContactScreen(router)}/>
             )
 
           }}/>
     
         <Stack.Screen name="addContactScreen" options={{title: "Add Contact Information"}}/>
         
-        <Stack.Screen name="displayContactScreen" 
+        <Stack.Screen name="DisplayContactScreen" 
           options = {{
             title: "Contact Info",
-            
-            // Display the edit and delete button on the right of the header
-            headerRight: () => (
-              <View style = {{flexDirection: 'row'}}>
-                <FontAwesome.Button size={24} name="pencil" color={Colors.white} backgroundColor={Colors.gray} underlayColor={Colors.gray} 
-                  onPress={() => openEditContactScreen(contactId)}/>
-                <FontAwesome.Button size={24} name="trash" color={Colors.white} backgroundColor={Colors.gray} underlayColor={Colors.gray} 
-                  onPress={() => contactDeletionAlert(contactId)}/>
-              </View>
-            )
-
           }}/>
 
       </Stack>

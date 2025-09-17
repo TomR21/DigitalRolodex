@@ -1,14 +1,38 @@
-import { useFocusEffect, useLocalSearchParams } from 'expo-router';
-import React from 'react';
-import { ScrollView, Text, View } from "react-native";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { Router, useFocusEffect, useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
+import React, { useLayoutEffect } from 'react';
+import { Alert, ScrollView, Text, View } from "react-native";
 
 import { VerticalBarBox } from '@/components';
 import { Colors } from '@/constants/Colors';
 import { displayStyle } from '@/constants/Styles';
 import { contactTable } from '@/db/schema';
 import { findDaysDifference, findYearsDifference } from '@/services/datetimeFunctions';
-import { getFromDatabase } from '@/services/sql_functions';
+import { getFromDatabase, removeFromDatabase } from '@/services/sql_functions';
 
+
+/** Pushes user to addContactScreen with contactId to edit info */
+function openEditContactScreen(router: Router, contactId: string) {
+  router.push({pathname: "../contact/addContactScreen", params: {contactId: contactId}})
+}
+
+/** Deletes contact in SQL database and goes back to previous screen */
+async function deleteContact(router: Router, contactId: string) {
+  await removeFromDatabase(contactId)
+  router.back()
+}
+
+/** Creates an alert window to confirm if the info corresponding contactId needs to be removed  */
+function contactDeletionAlert(router: Router, contactId: string) {
+  Alert.alert('Delete Contact Information', 'Are you sure you want to delete all the information about this contact?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'Delete', onPress: () => deleteContact(router, contactId)},
+  ]);
+}
 
 /** Return empty header for unknown age and age within brackets for calculated age  */
 function makeAgeHeader(date: string | null) {
@@ -38,15 +62,17 @@ function makeLastMetHeader(date: string | null) {
 }
 
 
-export default function displayContactScreen() {
-
+export default function DisplayContactScreen() {
+  
   // Retrieve passed contactId parameter   
   const { contactId } = useLocalSearchParams<{ contactId: string }>();
-  
+
+  // use router to navigate to other screens 
+  const router = useRouter();
+
   // Use state to hold contact data
   const initialData = {id:0, name:"", tag_id:0, birthday:"", address:"", location:"", celnumber:"", email:"", job:"", employer:"",
     know_from:"", know_from_date:"", last_met_date:"", hobbies:"", goals:"", wishes:"", recent_events:"", notes:"", linkedin:""}
-  //const [contactData, setContactData] = React.useState<Array<QueryOutput>>([initialData]);
   const [contactData, setContactData] = React.useState<typeof contactTable.$inferSelect>(initialData);
 
   // Obtain the list of all contacts each time the screen is in focus 
@@ -63,7 +89,23 @@ export default function displayContactScreen() {
 
       getToken();
 
-    }, []));
+    }, [contactId]));
+
+
+    const navigation = useNavigation();
+    useLayoutEffect(() => {
+      navigation.setOptions({
+            // Display the edit and delete button on the right of the header
+            headerRight: () => (
+              <View style = {{flexDirection: 'row'}}>
+                <FontAwesome.Button size={24} name="pencil" color={Colors.white} backgroundColor={Colors.gray} underlayColor={Colors.gray} 
+                  onPress={() => openEditContactScreen(router, contactId)}/>
+                <FontAwesome.Button size={24} name="trash" color={Colors.white} backgroundColor={Colors.gray} underlayColor={Colors.gray} 
+                  onPress={() => contactDeletionAlert(router, contactId)}/>
+              </View>
+            ),
+          })
+  },[navigation, contactId]);
 
 
   return (

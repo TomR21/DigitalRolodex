@@ -1,4 +1,4 @@
-import { useFocusEffect, useRouter } from 'expo-router';
+import { Router, useFocusEffect, useRouter } from 'expo-router';
 import React from "react";
 import { Alert, FlatList, Keyboard, Text, TouchableOpacity, View } from "react-native";
 
@@ -36,10 +36,9 @@ function alertChangeLastMet(contactId: string, contactName: string) {
 }
 
 /** Opens the displayContactScreen and passes along the userId */
-function openDisplayContactScreen(contactid: string) {
-  const router = useRouter();
+function openDisplayContactScreen(router: Router, contactid: string) {
   console.log(contactid, " has been pressed")
-  router.push({pathname: "../contact/displayContactScreen", params: {contactId: contactid}})
+  router.push({pathname: "../contact/DisplayContactScreen", params: {contactId: contactid}})
 }
 
 
@@ -58,6 +57,9 @@ export default function contactScreen() {
 
   // Find the search value entered in the search bar, default is ''
   const { search } = useSearch();
+
+  // use router to navigate to other screens 
+  const router = useRouter();
 
   // Obtain the name and contactId of all contacts each time the screen is in focus 
   useFocusEffect(
@@ -86,7 +88,7 @@ export default function contactScreen() {
         renderItem={({item, index}) => (
           <ClickableContact
             title={item.name}
-            onPress={() => openDisplayContactScreen(item.id.toString())}
+            onPress={() => openDisplayContactScreen(router, item.id.toString())}
             onLongPress={() => alertChangeLastMet(item.id.toString(), item.name)}
           />
         )

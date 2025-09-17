@@ -1,4 +1,4 @@
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { Router, useLocalSearchParams, useRouter } from 'expo-router';
 import React from "react";
 import { KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 
@@ -12,7 +12,7 @@ import { addToDatabase, editDatabase, getFromDatabase, getTagsFromDatabase } fro
 //TODO: Move page up when keyboard is active (otherwise bottom input not visible) 
 
 /** Decider function to add new user or edit information based on contactId existence */
-async function changeDatabase(contactId: string, input: QueryInput) {
+async function changeDatabase(router: Router, contactId: string, input: QueryInput) {
   // Do not go back to previous page upon saving unless query is performed successfully
   var success = false;
 
@@ -27,7 +27,6 @@ async function changeDatabase(contactId: string, input: QueryInput) {
 
   // Go back to page where we came from when database has been changed
   if ( success ) {
-    const router = useRouter()
     router.back()
   }
 }
@@ -37,6 +36,9 @@ export default function addContactScreen() {
 
   // Retrieve passed contactId parameter   
   const { contactId } = useLocalSearchParams<{ contactId: string }>();
+
+  // use router to navigate to other screens
+  const router = useRouter()
 
   // Variables states to keep track of TextInput field values
   const [name, setName]                 = React.useState<string>('');
@@ -256,7 +258,7 @@ export default function addContactScreen() {
       </View>
 
       <TouchableOpacity style={Styles.button} 
-        onPress={() => changeDatabase(contactId, input)}>
+        onPress={() => changeDatabase(router, contactId, input)}>
         <Text style={Styles.text}> Save Information </Text>
       </TouchableOpacity>
 
