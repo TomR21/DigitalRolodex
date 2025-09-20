@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `test_name_unique` ON `test` (`name`);
