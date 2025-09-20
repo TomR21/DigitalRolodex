@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Text, View } from 'react-native';
 
-import * as FileSystem from 'expo-file-system';
+import { Directory, File, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 
 import { Styles } from '@/constants/Styles';
@@ -18,35 +18,24 @@ async function shareDB(): Promise<void> {
     // Wait for file system to sync
     await new Promise(resolve => setTimeout(resolve, 500));
     
-    // Directory of SQL database files
-    const sqliteDir = `${FileSystem.documentDirectory}SQLite`;
-    const baseFileName = 'export_database'; //contactData
+    // Obtain path to SQLite directory
+    const sqlDirectory = new Directory(Paths.document, "SQLite")
     
-    // Check for all possible SQLite files including WAL and SHM files for full backup
-    const possibleFiles = [
-      `${baseFileName}`,           // Main database file
-      `${baseFileName}.db`,        // With .db extension
-      `${baseFileName}-wal`,       // Write-Ahead Log
-      `${baseFileName}-shm`       // Shared Memory
-    ];
-    
+    // Find export DB file
+    const baseFileName = 'export_database.db'; //contains copy of contactData
+    const file = new File(sqlDirectory, baseFileName) 
+
     // Check if file exists at path and provide share option
-    for (const fileName of possibleFiles) {
-      const filePath = `${sqliteDir}/${fileName}`;
-      const fileInfo = await FileSystem.getInfoAsync(filePath);
-      
-      if (fileInfo.exists) {
-        console.log(`Found file: ${fileName}, size: ${fileInfo.size}`);
-        
-        // Share file if it is not empty
-        if (fileInfo.size > 0) {
-          await Sharing.shareAsync(filePath, {
-            mimeType: 'application/x-sqlite3',
-            dialogTitle: `Share ${fileName}`
-          });
-        }
-      }
-    }
+    if ( file.exists ) {
+      console.log(`Found file: ${file.name}, size: ${file.size}`);
+
+      // Share file if it is not empty
+      if (file.size > 0) {
+        await Sharing.shareAsync(file.uri, {
+          mimeType: 'application/x-sqlite3',
+          dialogTitle: `Share ${file.name}`
+        });
+    }}
 
   } catch (error) {
     console.error('Error exporting database files:', error);
