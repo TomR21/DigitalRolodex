@@ -1,4 +1,4 @@
-CREATE TABLE `test` (
+CREATE TABLE IF NOT EXISTS `test` (
 	`id` integer PRIMARY KEY NOT NULL,
 	`tag_id` integer,
 	`name` text NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE `test` (
 	FOREIGN KEY (`tag_id`) REFERENCES `tag`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
-CREATE TABLE `tag` (
+CREATE TABLE IF NOT EXISTS`tag` (
 	`id` integer PRIMARY KEY NOT NULL,
 	`tag_name` text NOT NULL,
 	`notify_recently_met` integer,
