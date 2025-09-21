@@ -140,17 +140,17 @@ export default function AddContactScreen() {
             placeholder="Enter Name"
             placeholderTextColor = 'gray' />
           <View style={{...displayStyle.roleBadge, flexDirection: "row", alignItems: "center"}}>
-            <TextInput style = {Styles.textInput}
+            <TextInput style = {{...Styles.textInput, width: '50%'}}
               onChangeText={job => setJob(job)}
               value={job ?? undefined}
               placeholder="Enter Job"
-              placeholderTextColor = 'gray'/>
+              placeholderTextColor = {Colors.smoke}/>
             <Text style={displayStyle.roleText}> @ </Text>
-            <TextInput style = {Styles.textInput}
+            <TextInput style = {{...Styles.textInput, width: '50%'}}
               onChangeText={employer => setEmployer(employer)}
               value={employer ?? undefined}
               placeholder="Enter Employer"
-              placeholderTextColor = 'gray'/>
+              placeholderTextColor = {Colors.smoke}/>
           </View>
         </View>
 
@@ -159,7 +159,7 @@ export default function AddContactScreen() {
         {/* Display birthday and other timestamps labels and values side by side*/}
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>Birthday</Text>
-          <TextInput style = {displayStyle.text} 
+          <TextInput style = {{...displayStyle.text, width: '70%'}} 
             onChangeText={birthday => setBirthday(birthday)}
             value={birthday ?? undefined}
             placeholder="DD-MM-YYYY"
@@ -167,20 +167,20 @@ export default function AddContactScreen() {
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>First Met</Text>
-          <TextInput style = {displayStyle.text}
+          <TextInput style = {{...displayStyle.text, width: '40%'}}
             onChangeText={knowFrom => setKnowFrom(knowFrom)}
             value={knowFrom ?? undefined}
             placeholder="Where Met"
             placeholderTextColor = 'gray'/>
-          <TextInput style = {displayStyle.text}
+          <TextInput style = {{...displayStyle.text, width: '30%'}}
             onChangeText={knowFromDate => setKnowFromDate(knowFromDate)}
             value={knowFromDate ?? undefined}
-            placeholder="DD-MM-YYYY"
+            placeholder="DD-MM-YY"
             placeholderTextColor = 'gray'/>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>Last Met</Text>
-          <TextInput style = {displayStyle.text}
+          <TextInput style = {{...displayStyle.text, width: '70%'}}
             onChangeText={lastMetDate => setLastMetDate(lastMetDate)}
             value={lastMetDate ?? undefined}
             placeholder="Enter Last Met Date"
@@ -192,15 +192,15 @@ export default function AddContactScreen() {
         {/* Display contact info labels and values side by side*/}
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>Phone</Text>
-          <TextInput style = {displayStyle.text}
-              onChangeText={celnumber => setCelnumber(celnumber)}
+          <TextInput style = {{...displayStyle.text, width: '70%'}} // width required to prevent 
+              onChangeText={celnumber => setCelnumber(celnumber)}   // text flickering on input
               value={celnumber ?? undefined}
               placeholder="Enter Celphone Number"
               placeholderTextColor = 'gray'/>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>Email</Text>
-          <TextInput style = {displayStyle.text}
+          <TextInput style = {{...displayStyle.text, width: '70%'}}
               onChangeText={email => setEmail(email)}
               value={email ?? undefined}
               placeholder="Enter Email"
@@ -208,7 +208,7 @@ export default function AddContactScreen() {
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>Address</Text>
-          <TextInput style = {displayStyle.text}
+          <TextInput style = {{...displayStyle.text, width: '70%'}}
               onChangeText={address => setAddress(address)}
               value={address ?? undefined}
               placeholder="Enter Address"
@@ -216,7 +216,7 @@ export default function AddContactScreen() {
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{...displayStyle.label, width: '30%'}}>Location</Text>
-          <TextInput style = {displayStyle.text}
+          <TextInput style = {{...displayStyle.text, width: '70%'}}
               onChangeText={location => setLocation(location)}
               value={location ?? undefined}
               placeholder="Enter Living Location"
